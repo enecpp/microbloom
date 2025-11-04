@@ -1,0 +1,114 @@
+@namespace microbloom.Pages
+@page "/employer/applications/{JobId:int}"
+@using microbloom.DTOs
+@using Microsoft.AspNetCore.Components.Authorization
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<PageTitle>Baþvurularý Yönet</PageTitle>
+
+<div class="container my-5">
+    <div class="row mb-4">
+     <div class="col-md-12">
+      <AuthorizeView>
+     <Authorized>
+ <a href="/employer/dashboard" class="btn btn-secondary mb-3">
+  <i class="bi bi-arrow-left"></i> Dashboard'a Dön
+  </a>
+     <h1>
+ <i class="bi bi-inbox"></i> Ýþ Ýlaný Baþvurularý
+   </h1>
+        <p class="lead text-muted">Bu ilana gelen baþvurularý yönetin.</p>
+     </Authorized>
+      <NotAuthorized>
+      <div class="alert alert-warning">
+ <i class="bi bi-lock"></i> Bu sayfaya eriþmek için giriþ yapmalýsýnýz.
+    </div>
+   </NotAuthorized>
+    </AuthorizeView>
+    </div>
+  </div>
+
+  <AuthorizeView>
+  <Authorized>
+  <div class="row">
+   <div class="col-md-12">
+    <div class="card">
+   <div class="card-body">
+ @if (applications == null)
+   {
+      <p><em>Baþvurular yükleniyor...</em></p>
+        }
+    else if (!applications.Any())
+    {
+     <p class="text-muted">Bu ilana henüz baþvuru yapýlmamýþtýr.</p>
+   }
+ else
+      {
+  <table class="table table-hover">
+    <thead>
+  <tr>
+  <th>Adayýn Adý</th>
+     <th>E-posta</th>
+      <th>Baþvuru Tarihi</th>
+    <th>Durum</th>
+ </tr>
+        </thead>
+    <tbody>
+         @foreach (var app in applications)
+        {
+ <tr>
+  <td><strong>@app.JobTitle</strong></td>
+     <td>@app.AppUserId</td>
+    <td>@app.ApplicationDate.ToShortDateString()</td>
+       <td>
+       @if (app.Status == "Pending")
+    {
+       <span class="badge bg-warning">Beklemede</span>
+            }
+     else if (app.Status == "Accepted")
+       {
+     <span class="badge bg-success">Onaylandý</span>
+   }
+        else
+ {
+    <span class="badge bg-danger">Reddedildi</span>
+    }
+        </td>
+         </tr>
+          }
+          </tbody>
+     </table>
+      }
+  </div>
+    </div>
+   </div>
+     </div>
+  </Authorized>
+  </AuthorizeView>
+ </div>
+
+@code {
+ [Parameter]
+    public int JobId { get; set; }
+
+  private List<ApplicationDto>? applications;
+
+  protected override async Task OnInitializedAsync()
+   {
+      await LoadApplications();
+   }
+
+private async Task LoadApplications()
+  {
+ try
+     {
+   applications = await Http.GetFromJsonAsync<List<ApplicationDto>>($"api/employer/applications/{JobId}");
+     }
+    catch (Exception ex)
+     {
+    Console.WriteLine($"Hata: {ex.Message}");
+  applications = new List<ApplicationDto>();
+     }
+    }
+}

@@ -1,0 +1,200 @@
+﻿@namespace microbloom.Pages
+@page "/job/{JobId:int}"
+
+@using microbloom.DTOs
+@using Microsoft.AspNetCore.Components.Authorization
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<PageTitle>İş İlanı Detayı</PageTitle>
+
+@if (jobDetail == null)
+{
+   <p><em>İlan detayı yükleniyor...</em></p>
+}
+else
+{
+   <div class="container my-5">
+     <div class="row">
+  <div class="col-md-8">
+     <div class="card mb-4">
+      <div class="card-body">
+    <h1 class="card-title">@jobDetail.Title</h1>
+     <h3 class="text-primary">@jobDetail.CompanyName</h3>
+     <p class="text-muted">
+     <i class="bi bi-geo-alt"></i> @jobDetail.Location - 
+<i class="bi bi-calendar"></i> @jobDetail.PostedDate.ToLongDateString() tarihinde yayınlandı
+            </p>
+        </div>
+ </div>
+
+   <div class="card mb-4">
+   <div class="card-body">
+ <h5 class="card-title">
+      <i class="bi bi-briefcase"></i> İş Tanımı
+  </h5>
+        <p style="white-space: pre-wrap; line-height: 1.6;">@jobDetail.JobDescription</p>
+</div>
+     </div>
+
+ <div class="card">
+    <div class="card-body">
+           <h5 class="card-title">
+      <i class="bi bi-building"></i> Şirket Hakkında
+ </h5>
+   <p style="line-height: 1.6;">@jobDetail.CompanyDescription</p>
+   </div>
+       </div>
+      </div>
+
+ <div class="col-md-4">
+    <AuthorizeView Context="authContext">
+    <Authorized>
+      <div class="card sticky-top" style="top: 20px;">
+          <div class="card-body">
+         @if (hasApplied)
+    {
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle-fill"></i> 
+  <strong>Başvurunuz Kaydedildi</strong>
+   <p class="mb-0 mt-2 small">Bu ilana başarıyla başvurdunuz. İşveren sizinle iletişime geçecektir.</p>
+    </div>
+   }
+      else
+   {
+        <h5 class="card-title">
+          <i class="bi bi-check-circle"></i> Başvuruya Hazır
+    </h5>
+     <p class="card-text text-muted small">Hoş geldin, <strong>@authContext.User.Identity?.Name</strong></p>
+
+      @if (!string.IsNullOrEmpty(successMessage))
+       {
+ <div class="alert alert-success alert-dismissible fade show" role="alert">
+   <i class="bi bi-check-circle"></i> @successMessage
+    <button type="button" class="btn-close" @onclick="() => successMessage = string.Empty"></button>
+           </div>
+   }
+
+               @if (!string.IsNullOrEmpty(errorMessage))
+        {
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-circle"></i> @errorMessage
+     <button type="button" class="btn-close" @onclick="() => errorMessage = string.Empty"></button>
+           </div>
+       }
+
+         <button class="btn btn-primary w-100" @onclick="ApplyToJob" disabled="@isApplying">
+            @if (isApplying)
+{
+ <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+    <span>Başvuru Yapılıyor...</span>
+     }
+       else
+       {
+   <span><i class="bi bi-send"></i> Hemen Başvur</span>
+        }
+</button>
+       
+       <p class="small text-muted mt-3">
+ <i class="bi bi-info-circle"></i> Başvurunuz işverene iletilecek ve sizinle iletişime geçilecektir.
+   </p>
+       }
+  </div>
+      </div>
+       </Authorized>
+ <NotAuthorized>
+        <div class="card sticky-top" style="top: 20px;">
+ <div class="card-body">
+            <h5 class="card-title">
+      <i class="bi bi-lock"></i> Başvuru İçin Giriş Yapın
+  </h5>
+   <p class="card-text">Bu ilana başvurmak için giriş yapmanız gerekiyor.</p>
+       <a href="/account/login" class="btn btn-primary w-100 mb-2">
+     <i class="bi bi-box-arrow-in-right"></i> Giriş Yap
+   </a>
+           <a href="/account/register" class="btn btn-success w-100">
+<i class="bi bi-person-plus"></i> Kayıt Ol
+  </a>
+         </div>
+   </div>
+       </NotAuthorized>
+    </AuthorizeView>
+     </div>
+    </div>
+   </div>
+}
+
+@code {
+  [Parameter]
+    public int JobId { get; set; }
+
+    private JobPostingDetailDto? jobDetail;
+    private string errorMessage = string.Empty;
+    private string successMessage = string.Empty;
+    private bool isApplying = false;
+    private bool hasApplied = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+    try
+      {
+ jobDetail = await Http.GetFromJsonAsync<JobPostingDetailDto>($"api/jobpostings/{JobId}");
+       }
+   catch (Exception ex)
+       {
+            errorMessage = $"İlan detayı çekerken hata oluştu: {ex.Message}";
+     Console.WriteLine(errorMessage);
+       }
+    }
+
+    private async Task ApplyToJob()
+    {
+    try
+        {
+   isApplying = true;
+         errorMessage = string.Empty;
+        successMessage = string.Empty;
+
+           var response = await Http.PostAsync($"api/jobpostings/{JobId}/apply", null);
+
+   if (response.IsSuccessStatusCode)
+   {
+ successMessage = "Başvurunuz başarıyla kaydedildi!";
+    hasApplied = true;
+   await Task.Delay(1500);
+   }
+else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+      {
+      errorMessage = "Başvuru yapmak için giriş yapmanız gerekiyor.";
+  await Task.Delay(1500);
+  NavigationManager.NavigateTo("/account/login");
+    }
+       else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+         {
+    var errorContent = await response.Content.ReadAsStringAsync();
+          if (errorContent.Contains("zaten başvuru", StringComparison.OrdinalIgnoreCase))
+      {
+       hasApplied = true;
+     successMessage = "Bu ilana zaten başvurdunuz.";
+  }
+else
+  {
+            errorMessage = $"Başvuru yapılamadı: {errorContent}";
+          }
+    }
+    else
+ {
+      var errorContent = await response.Content.ReadAsStringAsync();
+ errorMessage = $"Başvuru yapılamadı: {errorContent}";
+}
+  }
+catch (Exception ex)
+      {
+ errorMessage = $"Hata: {ex.Message}";
+        }
+   finally
+        {
+           isApplying = false;
+   }
+    }
+}

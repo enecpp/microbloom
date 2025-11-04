@@ -1,0 +1,169 @@
+@namespace microbloom.Pages
+@page "/"
+@page "/jobs"
+
+@using microbloom.DTOs
+@using Microsoft.AspNetCore.Components.Authorization
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<PageTitle>Ýþ Ýlanlarý - MicroBloom</PageTitle>
+
+<div class="container my-5">
+    <div class="row mb-5">
+        <div class="col-md-12">
+    <div class="card shadow">
+                <div class="card-body">
+          <h1 class="card-title mb-4">
+              <i class="bi bi-briefcase"></i> Tüm Aktif Ýþ Ýlanlarý
+       </h1>
+
+      <div class="row">
+  <div class="col-md-6">
+           <div class="input-group mb-3">
+              <input type="text" 
+  class="form-control" 
+        placeholder="Örn: .NET Geliþtirici"
+        @bind="searchKeyword" 
+         @onkeyup="HandleKeyPress" />
+        <button class="btn btn-outline-primary" @onclick="PerformSearch">
+             <i class="bi bi-search"></i> Ara
+         </button>
+       </div>
+    </div>
+   <div class="col-md-6">
+    <div class="input-group mb-3">
+          <input type="text" 
+          class="form-control" 
+      placeholder="Konum: Ýstanbul"
+             @bind="searchLocation" 
+   @onkeyup="HandleKeyPress" />
+       <button class="btn btn-outline-primary" @onclick="PerformSearch">
+             <i class="bi bi-search"></i> Ara
+      </button>
+   </div>
+   </div>
+               </div>
+
+           <button class="btn btn-secondary" @onclick="ResetSearch">
+          <i class="bi bi-arrow-clockwise"></i> Sýfýrla
+              </button>
+           </div>
+   </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+   @if (jobList == null)
+    {
+ <div class="alert alert-info">
+    <i class="bi bi-hourglass-split"></i> Ýlanlar yükleniyor...
+         </div>
+       }
+   else if (!jobList.Any())
+       {
+         <div class="alert alert-warning">
+ <i class="bi bi-exclamation-triangle"></i> Gösterilecek aktif ilan bulunamadý.
+       </div>
+            }
+     else
+       {
+       <div class="row">
+                    @foreach (var job in jobList)
+        {
+           <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card h-100 shadow-sm job-card">
+       <div class="card-body">
+     <h5 class="card-title">@job.Title</h5>
+        <p class="card-subtitle mb-2 text-primary">
+       <i class="bi bi-building"></i> @job.CompanyName
+               </p>
+          <p class="card-text small text-muted">
+        <i class="bi bi-geo-alt"></i> @job.Location
+        </p>
+       <p class="card-text small">
+          <i class="bi bi-calendar"></i> @job.PostedDate.ToShortDateString()
+     </p>
+      <p class="card-text" style="max-height: 80px; overflow: hidden; text-overflow: ellipsis;">
+              @job.Description
+    </p>
+       </div>
+             <div class="card-footer bg-white">
+    <a href="/job/@job.Id" class="btn btn-primary w-100">
+      <i class="bi bi-arrow-right"></i> Detaylarý Gör
+      </a>
+       </div>
+     </div>
+    </div>
+         }
+            </div>
+    }
+      </div>
+ </div>
+</div>
+
+@code {
+    // API'den gelen veriyi tutacaðýmýz liste
+    private List<JobPostingDto> jobList;
+    private string searchKeyword = string.Empty;
+    private string searchLocation = string.Empty;
+
+  // Sayfa ilk yüklendiðinde bu metot otomatik olarak çalýþýr
+  protected override async Task OnInitializedAsync()
+    {
+        await LoadJobs();
+    }
+
+private async Task LoadJobs()
+    {
+    try
+        {
+   // API'mize GET isteði atýyoruz
+    jobList = await Http.GetFromJsonAsync<List<JobPostingDto>>("api/jobpostings");
+ }
+      catch (Exception ex)
+        {
+   Console.WriteLine($"Ýlanlarý çekerken hata oluþtu: {ex.Message}");
+     jobList = new List<JobPostingDto>();
+ }
+    }
+
+    private async Task PerformSearch()
+    {
+        try
+   {
+            if (string.IsNullOrWhiteSpace(searchKeyword) && string.IsNullOrWhiteSpace(searchLocation))
+            {
+             await LoadJobs();
+     return;
+       }
+
+   var keyword = Uri.EscapeDataString(searchKeyword ?? string.Empty);
+  var location = Uri.EscapeDataString(searchLocation ?? string.Empty);
+            
+  jobList = await Http.GetFromJsonAsync<List<JobPostingDto>>(
+          $"api/jobpostings/search?keyword={keyword}&location={location}");
+        }
+        catch (Exception ex)
+    {
+            Console.WriteLine($"Arama sýrasýnda hata oluþtu: {ex.Message}");
+   jobList = new List<JobPostingDto>();
+        }
+    }
+
+    private async Task ResetSearch()
+    {
+        searchKeyword = string.Empty;
+        searchLocation = string.Empty;
+        await LoadJobs();
+    }
+
+    private async Task HandleKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await PerformSearch();
+        }
+    }
+}

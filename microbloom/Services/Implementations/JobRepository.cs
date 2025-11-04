@@ -16,7 +16,11 @@ namespace microbloom.Services.Implementations
 
         public async Task<List<JobPostingDto>> GetAllJobsAsync()
         {
-            return await _context.JobPostings
+            var jobPostings = _context.JobPostings;
+            if (jobPostings == null)
+                return new();
+
+            return await jobPostings
                 .Include(jp => jp.Company)
                 .Where(jp => jp.IsActive)
                 .OrderByDescending(jp => jp.PostedDate)
@@ -25,7 +29,7 @@ namespace microbloom.Services.Implementations
                     Id = jp.Id,
                     Title = jp.Title,
                     Description = jp.Description,
-                    CompanyName = jp.Company.Name,
+                    CompanyName = jp.Company == null ? "" : jp.Company.Name,
                     Location = jp.Location,
                     PostedDate = jp.PostedDate,
                     IsActive = jp.IsActive
@@ -33,18 +37,22 @@ namespace microbloom.Services.Implementations
                 .ToListAsync();
         }
 
-        public async Task<JobPostingDetailDto> GetJobByIdAsync(int jobId)
+        public async Task<JobPostingDetailDto?> GetJobByIdAsync(int jobId)
         {
-            return await _context.JobPostings
+            var jobPostings = _context.JobPostings;
+            if (jobPostings == null)
+                return null;
+
+            return await jobPostings
                 .Include(jp => jp.Company)
                 .Where(jp => jp.Id == jobId)
                 .Select(jp => new JobPostingDetailDto
                 {
                     Id = jp.Id,
                     Title = jp.Title,
-                    CompanyName = jp.Company.Name,
-                    CompanyDescription = jp.Company.Description,
-                    CompanyId = jp.Id,
+                    CompanyName = jp.Company == null ? "" : jp.Company.Name,
+                    CompanyDescription = jp.Company == null ? "" : jp.Company.Description,
+                    CompanyId = jp.CompanyId,
                     Location = jp.Location,
                     JobDescription = jp.Description,
                     PostedDate = jp.PostedDate,
@@ -55,20 +63,24 @@ namespace microbloom.Services.Implementations
 
         public async Task<List<JobPostingDto>> SearchJobsAsync(string keyword, string location)
         {
-            var query = _context.JobPostings
+            var jobPostings = _context.JobPostings;
+            if (jobPostings == null)
+                return new();
+
+            var query = jobPostings
                 .Include(jp => jp.Company)
                 .Where(jp => jp.IsActive);
 
             if (!string.IsNullOrWhiteSpace(keyword))
             {
                 query = query.Where(jp =>
-                    jp.Title.Contains(keyword) ||
-                    jp.Description.Contains(keyword));
+                    (jp.Title != null && jp.Title.Contains(keyword)) ||
+                    (jp.Description != null && jp.Description.Contains(keyword)));
             }
 
             if (!string.IsNullOrWhiteSpace(location))
             {
-                query = query.Where(jp => jp.Location.Contains(location));
+                query = query.Where(jp => jp.Location != null && jp.Location.Contains(location));
             }
 
             return await query
@@ -78,7 +90,7 @@ namespace microbloom.Services.Implementations
                     Id = jp.Id,
                     Title = jp.Title,
                     Description = jp.Description,
-                    CompanyName = jp.Company.Name,
+                    CompanyName = jp.Company == null ? "" : jp.Company.Name,
                     Location = jp.Location,
                     PostedDate = jp.PostedDate,
                     IsActive = jp.IsActive
@@ -88,6 +100,19 @@ namespace microbloom.Services.Implementations
 
         public async Task ApplyForJobAsync(int jobId, string userId)
         {
+            var applications = _context.JobApplications;
+            if (applications == null)
+                throw new InvalidOperationException("Database bağlantısında hata.");
+
+            // Çift başvuru kontrol et
+            var existingApplication = await applications
+                .FirstOrDefaultAsync(ja => ja.JobPostingId == jobId && ja.AppUserId == userId);
+
+            if (existingApplication != null)
+            {
+                throw new InvalidOperationException("Bu ilana zaten başvurdunuz.");
+            }
+
             var application = new JobApplication
             {
                 JobPostingId = jobId,
@@ -96,13 +121,17 @@ namespace microbloom.Services.Implementations
                 Status = "Pending"
             };
 
-            _context.JobApplications.Add(application);
+            applications.Add(application);
             await _context.SaveChangesAsync();
         }
 
         public async Task<List<ApplicationDto>> GetUserApplicationsAsync(string userId)
         {
-            return await _context.JobApplications
+            var applications = _context.JobApplications;
+            if (applications == null)
+                return new();
+
+            return await applications
                 .Include(ja => ja.JobPosting)
                 .Where(ja => ja.AppUserId == userId)
                 .OrderByDescending(ja => ja.ApplicationDate)
@@ -110,7 +139,7 @@ namespace microbloom.Services.Implementations
                 {
                     Id = ja.Id,
                     JobPostingId = ja.JobPostingId,
-                    JobTitle = ja.JobPosting.Title,
+                    JobTitle = ja.JobPosting == null ? "" : ja.JobPosting.Title,
                     AppUserId = ja.AppUserId,
                     ApplicationDate = ja.ApplicationDate,
                     Status = ja.Status

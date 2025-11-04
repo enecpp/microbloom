@@ -1,0 +1,69 @@
+@namespace microbloom.Pages
+@page "/"
+@using Microsoft.AspNetCore.Components.Authorization
+
+<PageTitle>Anasayfa - MicroBloom</PageTitle>
+
+<div class="container-fluid hero-section">
+    <AuthorizeView>
+        <Authorized>
+       <div class="row align-items-center min-vh-100">
+      <div class="col-md-6">
+         <div class="hero-content">
+    <h1 class="display-3 fw-bold mb-4">Hoþ Geldin, <span class="text-primary">@context.User.Identity?.Name</span>!</h1>
+     <p class="lead mb-4">MicroBloom platformunda en iyi iþ fýrsatlarýný keþfet ve kariyerini geliþtir.</p>
+   <a class="btn btn-primary btn-lg me-3" href="/jobs" role="button">
+                 <i class="bi bi-briefcase"></i> Ýlanlarý Gör
+  </a>
+       <a class="btn btn-outline-secondary btn-lg" href="/account/logout" role="button">
+              <i class="bi bi-box-arrow-right"></i> Çýkýþ Yap
+    </a>
+   </div>
+ </div>
+              <div class="col-md-6">
+     <div class="hero-image">
+           <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+         <circle cx="250" cy="250" r="240" fill="#e7f1ff" opacity="0.5"/>
+     <circle cx="250" cy="250" r="200" fill="#d4e5ff" opacity="0.5"/>
+      <path d="M 150 200 Q 200 150, 250 200 Q 300 250, 250 300 Q 200 250, 150 200" fill="#007bff" opacity="0.8"/>
+     </svg>
+        </div>
+        </div>
+          </div>
+        </Authorized>
+ <NotAuthorized>
+            <div class="row align-items-center min-vh-100">
+        <div class="col-md-6">
+  <div class="hero-content">
+    <h1 class="display-3 fw-bold mb-4">Kariyer Yolculuðuna <span class="text-primary">Hoþ Geldin</span></h1>
+          <p class="lead mb-4">MicroBloom, seniniz için en iyi iþ fýrsatlarýný bulduðu özzel bir platform. Binlerce iþveren tarafýndan güvenilen platformda yeni fýrsatlarý keþfet.</p>
+        <p class="mb-4">Hemen baþla, kayýt ol veya giriþ yap:</p>
+             <div class="button-group">
+       <a class="btn btn-primary btn-lg me-3" href="/account/login" role="button">
+     <i class="bi bi-box-arrow-in-right"></i> Giriþ Yap
+    </a>
+    <a class="btn btn-success btn-lg" href="/account/register" role="button">
+     <i class="bi bi-person-plus"></i> Kayýt Ol
+       </a>
+        </div>
+       <p class="mt-5 text-muted">MicroBloom'a katýlan 10,000+ kullanýcý ile birlikte ol.</p>
+       </div>
+       </div>
+                <div class="col-md-6">
+  <div class="hero-image">
+   <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+     <circle cx="250" cy="250" r="240" fill="#e7f1ff" opacity="0.5"/>
+             <circle cx="250" cy="250" r="200" fill="#d4e5ff" opacity="0.5"/>
+  <g transform="translate(250, 250)">
+      <rect x="-60" y="-80" width="120" height="160" fill="#007bff" rx="10" opacity="0.8"/>
+      <rect x="-40" y="-60" width="80" height="30" fill="#0056b3" rx="5"/>
+   <circle cx="-20" cy="20" r="5" fill="white"/>
+            <circle cx="20" cy="20" r="5" fill="white"/>
+          </g>
+</svg>
+ </div>
+        </div>
+ </div>
+        </NotAuthorized>
+    </AuthorizeView>
+</div>

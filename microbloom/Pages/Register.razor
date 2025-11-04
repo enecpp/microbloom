@@ -1,0 +1,125 @@
+@namespace microbloom.Pages
+@page "/account/register"
+@using microbloom.Services.Interfaces
+@using microbloom.DTOs
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Kayýt Ol</PageTitle>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+   <div class="card shadow">
+  <div class="card-body">
+        <h2 class="card-title mb-4">Yeni Hesap Oluþtur</h2>
+
+                    @if (!string.IsNullOrEmpty(errorMessage))
+             {
+                   <div class="alert alert-danger alert-dismissible fade show" role="alert">
+       @errorMessage
+        <button type="button" class="btn-close" @onclick="() => errorMessage = string.Empty"></button>
+        </div>
+          }
+
+        @if (!string.IsNullOrEmpty(successMessage))
+     {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+   @successMessage
+          <button type="button" class="btn-close" @onclick="() => successMessage = string.Empty"></button>
+      </div>
+     }
+
+          <EditForm Model="registerDto" OnValidSubmit="HandleRegister">
+               <DataAnnotationsValidator />
+  <ValidationSummary class="alert alert-warning" />
+
+    <div class="mb-3">
+           <label for="email" class="form-label">E-posta</label>
+           <InputText id="email" class="form-control" placeholder="ornek@example.com" @bind-Value="registerDto.Email" />
+            <ValidationMessage For="@(() => registerDto.Email)" />
+   </div>
+
+       <div class="mb-3">
+           <label for="firstName" class="form-label">Adý</label>
+   <InputText id="firstName" class="form-control" placeholder="Adýnýz" @bind-Value="registerDto.FirstName" />
+       <ValidationMessage For="@(() => registerDto.FirstName)" />
+             </div>
+
+       <div class="mb-3">
+       <label for="lastName" class="form-label">Soyadý</label>
+     <InputText id="lastName" class="form-control" placeholder="Soyadýnýz" @bind-Value="registerDto.LastName" />
+              </div>
+
+        <div class="mb-3">
+      <label for="password" class="form-label">Þifre</label>
+         <InputText id="password" type="password" class="form-control" placeholder="Þifrenizi girin" @bind-Value="registerDto.Password" />
+         <ValidationMessage For="@(() => registerDto.Password)" />
+           <small class="form-text text-muted">En az 6 karakter uzunluðunda olmalýdýr.</small>
+ </div>
+
+            <div class="mb-3">
+                <label for="confirmPassword" class="form-label">Þifre Doðrulama</label>
+             <InputText id="confirmPassword" type="password" class="form-control" placeholder="Þifrenizi tekrar girin" @bind-Value="registerDto.ConfirmPassword" />
+              <ValidationMessage For="@(() => registerDto.ConfirmPassword)" />
+            </div>
+
+          <button type="submit" class="btn btn-primary w-100" disabled="@isSubmitting">
+        @if (isSubmitting)
+     {
+           <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+    <span>Kayýt Yapýlýyor...</span>
+              }
+       else
+     {
+  <span>Kayýt Ol</span>
+             }
+        </button>
+
+           <p class="mt-3 text-center">
+     Zaten hesabýn var mý? <a href="/account/login" class="text-decoration-none">Giriþ Yap</a>
+   </p>
+             </EditForm>
+     </div>
+    </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private RegisterDto registerDto = new();
+    private string errorMessage = string.Empty;
+    private string successMessage = string.Empty;
+    private bool isSubmitting = false;
+
+    private async Task HandleRegister()
+    {
+        try
+        {
+            isSubmitting = true;
+        errorMessage = string.Empty;
+        successMessage = string.Empty;
+
+    var result = await AuthService.RegisterAsync(registerDto);
+    
+            if (result.Successful)
+      {
+successMessage = "Kayýt baþarýlý! Giriþ sayfasýna yönlendiriliyorsunuz...";
+  await Task.Delay(1500);
+NavigationManager.NavigateTo("/account/login");
+         }
+      else
+            {
+             errorMessage = result.Error ?? "Kayýt sýrasýnda bir hata oluþtu.";
+         }
+        }
+     catch (Exception ex)
+        {
+      errorMessage = $"Hata: {ex.Message}";
+     }
+        finally
+        {
+            isSubmitting = false;
+        }
+    }
+}

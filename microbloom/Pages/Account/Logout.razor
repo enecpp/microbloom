@@ -1,0 +1,15 @@
+@namespace microbloom.Pages
+@page "/account/logout"
+@using microbloom.Services.Interfaces
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Çýkýþ</PageTitle>
+
+@code {
+    protected override async Task OnInitializedAsync()
+ {
+        await AuthService.LogoutAsync();
+  NavigationManager.NavigateTo("/");
+   }
+}

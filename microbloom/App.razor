@@ -1,0 +1,23 @@
+@namespace microbloom
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Routing
+@using microbloom.Shared
+
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(App).Assembly">
+  <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+    <NotFound>
+          <PageTitle>Bulunamadý</PageTitle>
+      <LayoutView Layout="@typeof(MainLayout)">
+    <div class="alert alert-warning" role="alert">
+    <h2>Sayfa Bulunamadý</h2>
+    <p>Üzgünüz, aradýðýnýz sayfa burada yok.</p>
+      </div>
+       </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>
