@@ -20,6 +20,7 @@
     </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.10" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,6 +38,8 @@
 
   <ItemGroup>
     <Folder Include="Components\" />
+    <Folder Include="Resources\Pages\Company\" />
+    <Folder Include="Resources\Shared\" />
   </ItemGroup>
 
 </Project>

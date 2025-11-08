@@ -13,7 +13,7 @@ namespace microbloom.DTOs
         public string Password { get; set; } = string.Empty;
 
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "Şifreler uyuşmuyor.")]
+        [Compare("Password", ErrorMessage = "Şifreler eşleşmiyor.")]
         public string ConfirmPassword { get; set; } = string.Empty;
 
         [Required]
@@ -21,5 +21,6 @@ namespace microbloom.DTOs
         public string? LastName { get; set; }
     }
 }
+
 
 

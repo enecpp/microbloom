@@ -1,0 +1,153 @@
+﻿@namespace microbloom.Pages
+@page "/company/job/{JobId:int}/applications"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Employer")]
+
+@using microbloom.DTOs
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<PageTitle>👥 İlan Başvuruları - microbloom</PageTitle>
+
+<div class="container my-5">
+    <div class="row mb-5">
+<div class="col-md-12">
+   <button class="btn btn-outline-secondary mb-3" @onclick="NavigateBack">
+ <i class="bi bi-arrow-left"></i> Panele Dön
+           </button>
+
+    <h1 class="display-5 mb-3">
+      👥 İlan Başvuruları
+     </h1>
+  @if (!string.IsNullOrEmpty(JobTitle))
+      {
+       <p class="lead text-muted">
+   📌 "<strong>@JobTitle</strong>" ilanına gelen başvurular
+ </p>
+     }
+    </div>
+    </div>
+
+   @if (applications == null)
+    {
+        <div class="text-center py-5">
+    <div class="spinner-border text-primary mb-3" role="status">
+       <span class="visually-hidden">Yükleniyor...</span>
+     </div>
+      <p class="text-muted">⏳ Başvurular yükleniyor...</p>
+       </div>
+}
+    else if (!applications.Any())
+     {
+      <div class="card shadow-sm border-0 text-center">
+     <div class="card-body py-5">
+         <div style="font-size: 4rem; margin-bottom: 1.5rem;">📭</div>
+  <h3 class="card-title">Henüz Başvuru Yok</h3>
+     <p class="text-muted mb-4">Bu ilana henüz başvuru yapılmamış. İlanınızın yayında olduğundan emin olun.</p>
+      <button class="btn btn-outline-primary" @onclick="NavigateBack">
+        🔄 Panele Dön
+ </button>
+      </div>
+       </div>
+     }
+    else
+    {
+   <div class="row mb-4 align-items-center">
+    <div class="col-md-6">
+   <h3 class="mb-0">
+       <i class="bi bi-card-checklist"></i> 📋 Başvurular
+        <span class="badge bg-primary ms-2">@applications.Count</span>
+     </h3>
+     </div>
+     <div class="col-md-6 text-md-end">
+  <small class="text-muted">
+   💡 Toplam @applications.Count başvuran olmuştur
+        </small>
+     </div>
+  </div>
+
+      <div class="row g-4">
+     @foreach (var app in applications)
+       {
+           <div class="col-md-6 col-lg-4">
+         <div class="card shadow-sm h-100">
+       <div class="card-body">
+      <div class="d-flex justify-content-between align-items-start mb-3">
+ <div>
+   <h5 class="card-title mb-1">
+          👤 Başvuran
+     </h5>
+            </div>
+  @if (app.Status == "Pending")
+  {
+    <span class="badge bg-warning">⏳ Beklemede</span>
+   }
+     else if (app.Status == "Approved")
+     {
+    <span class="badge bg-success">✅ Onaylandı</span>
+  }
+ else
+ {
+   <span class="badge bg-secondary">@app.Status</span>
+     }
+         </div>
+
+      <p class="card-text small mb-2">
+      <i class="bi bi-person"></i> <strong>ID:</strong> @app.AppUserId
+       </p>
+
+  <p class="card-text small mb-3">
+ <i class="bi bi-calendar-event text-primary"></i>
+   <strong>📅 Başvuru Tarihi:</strong><br />
+        @app.ApplicationDate.ToString("dd MMMM yyyy, HH:mm")
+      </p>
+
+   @if (!string.IsNullOrEmpty(app.JobTitle))
+            {
+    <p class="card-text small text-muted mb-0">
+ <i class="bi bi-briefcase"></i> 💼 @app.JobTitle
+     </p>
+           }
+    </div>
+
+      <div class="card-footer bg-light border-top">
+     <button class="btn btn-sm btn-outline-primary w-100" disabled>
+  <i class="bi bi-eye"></i> Profili Görüntüle
+    </button>
+      </div>
+      </div>
+     </div>
+         }
+   </div>
+  }
+</div>
+
+@code {
+    [Parameter]
+   public int JobId { get; set; }
+
+    private List<ApplicationDto>? applications;
+ private string? JobTitle;
+
+    protected override async Task OnInitializedAsync()
+    {
+ try
+        {
+   applications = await Http.GetFromJsonAsync<List<ApplicationDto>>($"api/company/jobs/{JobId}/applications");
+
+       if (applications != null && applications.Any())
+ {
+         JobTitle = applications.First().JobTitle;
+ }
+        }
+catch (Exception ex)
+   {
+    Console.WriteLine($"Başvurular çekilirken hata: {ex.Message}");
+      applications = new List<ApplicationDto>();
+      }
+    }
+
+    private void NavigateBack()
+    {
+     NavigationManager.NavigateTo("/company-dashboard");
+   }
+}

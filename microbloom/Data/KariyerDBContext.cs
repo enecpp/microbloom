@@ -16,6 +16,13 @@ namespace microbloom.Data
         {
             base.OnModelCreating(builder);
 
+            // AppUser - Company Relationship
+            builder.Entity<AppUser>()
+                .HasOne(u => u.Company)
+                .WithMany(c => c.Employees)
+                .HasForeignKey(u => u.CompanyId)
+                .OnDelete(DeleteBehavior.SetNull);
+
             builder.Entity<JobPosting>()
                 .HasOne(jp => jp.Company)
                 .WithMany(c => c.JobPostings)

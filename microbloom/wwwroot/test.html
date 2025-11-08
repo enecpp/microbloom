@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Logo & Emoji Test - microbloom</title>
+ <!-- Modern Fontlar: Inter (gövde) + Poppins (başlık) -->
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+ <style>
+ :root {
+ --font-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+ --font-display: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+ --font-mono: 'Courier New', ui-monospace, SFMono-Regular, Menlo, monospace;
+ --font-size-base:16px;
+ --line-height-base:1.55;
+ --heading-letter-spacing:0.5px;
+ --heading-weight:600;
+ }
+ * { box-sizing: border-box; }
+ body {
+ font-family: var(--font-base);
+ font-size: var(--font-size-base);
+ line-height: var(--line-height-base);
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+ padding:40px;
+ background: linear-gradient(135deg, #e0f7fa0%, #b2ebf2100%);
+ margin:0;
+ }
+ .font-display { font-family: var(--font-display); font-weight: var(--heading-weight); letter-spacing: var(--heading-letter-spacing); }
+ .font-base { font-family: var(--font-base); }
+ .font-mono { font-family: var(--font-mono); }
+ h1, h2 { font-family: var(--font-display); letter-spacing: var(--heading-letter-spacing); }
+ h1 { font-size:2.6rem; font-weight:700; }
+ h2 { font-size:1.4rem; font-weight:600; }
+ .test-container { max-width:900px; margin:0 auto; }
+ h1 { color: #00CED1; text-align: center; margin-bottom:40px; }
+ .test-box { background: white; padding:30px; margin:20px0; border-radius:15px; box-shadow:04px20px rgba(0,206,209,0.15); }
+ .test-box h2 { color: #00B8BA; margin-bottom:20px; border-bottom:3px solid #00CED1; padding-bottom:10px; }
+ .emoji-test { font-size:28px; line-height:2.3; }
+ .status { display: inline-block; padding:8px20px; border-radius:20px; font-weight:600; margin-top:10px; font-size:14px; font-family: var(--font-display); }
+ .status.success { background: #4caf50; color: #fff; }
+ .status.fail { background: #f44336; color: #fff; }
+ .status.pending { background: #ff9800; color: #fff; }
+ code { background: #f5f5f5; padding:2px6px; border-radius:4px; font-family: var(--font-mono); font-size:0.85rem; }
+ </style>
+</head>
+<body>
+ <div class="test-container">
+ <h1>🎨 microbloom Test Sayfası</h1>
+ 
+ <div class="test-box">
+ <h2>🖼️ Logo Testi (Yeni Modern Tasarım)</h2>
+ <div style="background: #f5f5f5; padding:30px; border-radius:10px; text-align: center;">
+ <img src="/images/logo.svg?v=8" alt="microbloom logo" style="height:60px;" id="logoImg">
+ </div>
+ <p style="margin-top:15px;">
+ <strong>Beklenen:</strong> Soyut çiçek ikon + birleşik <strong>microbloom</strong> yazısı (modern font)
+ </p>
+ <p class="status pending" id="logoStatus">⏳ Test bekleniyor...</p>
+ </div>
+
+ <div class="test-box">
+ <h2>😊 HTML Entity Emoji Testi</h2>
+ <div class="emoji-test">
+ 🏠 Ana Sayfa<br>
+ 💼 İş İlanları<br>
+ 🏢 Şirket Paneli<br>
+ 👋 Merhaba<br>
+ 📄 Başvurularım<br>
+ 🚀 Yeni İlan / Kayıt Ol<br>
+ 🚪 Çıkış<br>
+ 🔑 Giriş<br>
+ 🌟 Kariyer<br>
+ 💡 Platform
+ </div>
+ <p style="margin-top:15px;">
+ <strong>Beklenen:</strong> Renkli emojiler (soru işareti <code>??</code> değil!)
+ </p>
+ </div>
+
+ <div class="test-box">
+ <h2>📝 Sistem Bilgileri</h2>
+ <div style="background: #f9f9f9; padding:20px; border-radius:10px;">
+ <p><strong>Document Charset:</strong> <code id="charset">Loading...</code></p>
+ <p><strong>Input Encoding:</strong> <code id="encoding">Loading...</code></p>
+ <p><strong>Browser:</strong> <code id="browser">Loading...</code></p>
+ <p><strong>Platform:</strong> <code id="platform">Loading...</code></p>
+ </div>
+ </div>
+
+ <div class="test-box">
+ <h2>✨ Ekstra Emoji Testi</h2>
+<p style="font-size:36px; line-height:2; text-align: center;">
+ 🎉 🎊 ⭐ 💯 ✅ ❌ ⚠️ ℹ️<br>
+ 📧 👤 👥 🔒 📊 🎯 ⚡ 🔍<br>
+ 🤔 💚 ♾️ 🔔 🎓 💻 💡 🚀
+ </p>
+ </div>
+
+ <div class="test-box">
+ <h2>🔧 Konsol Test</h2>
+ <p>F12 tuşuna basarak Developer Tools'u açın ve Console sekmesine bakın.</p>
+ <button onclick="runTest()" style="background: #00CED1; color: white; border: none; padding:12px30px; border-radius:8px; font-size:16px; cursor: pointer; font-weight:600; box-shadow:02px8px rgba(0,206,209,0.3); font-family: var(--font-display);">
+ 🚀 Manuel Test Başlat
+ </button>
+ </div>
+ </div>
+
+ <script>
+ // Sayfa yüklendiğinde otomatik test
+ window.addEventListener('load', () => {
+ document.getElementById('charset').textContent = document.characterSet;
+ document.getElementById('encoding').textContent = (document.inputEncoding || 'N/A');
+ document.getElementById('browser').textContent = navigator.userAgent;
+ document.getElementById('platform').textContent = navigator.platform;
+ 
+ const logo = document.getElementById('logoImg');
+ let logoLoaded = false;
+ 
+ logo.addEventListener('load', () => {
+ logoLoaded = true;
+ document.getElementById('logoStatus').textContent = '✅ Logo başarıyla yüklendi!';
+ document.getElementById('logoStatus').className = 'status success';
+});
+ 
+ logo.addEventListener('error', () => {
+ document.getElementById('logoStatus').textContent = '❌ Logo yüklenemedi! /images/logo.svg?v=8 bulunamadı';
+ document.getElementById('logoStatus').className = 'status fail';
+});
+ 
+ setTimeout(() => {
+ if (!logoLoaded) {
+ document.getElementById('logoStatus').textContent = '⏳ Logo yavaş yükleniyor...';
+ document.getElementById('logoStatus').className = 'status pending';
+}
+},2000);
+ 
+ console.log('%c🚀 microbloom Test Başladı (v8 - Yeni Logo)', 'color: #00CED1; font-size:20px; font-weight: bold;');
+ console.log('🧬 Charset:', document.characterSet);
+ console.log('🔤 Encoding:', document.inputEncoding);
+ console.log('💻 Platform:', navigator.platform);
+ console.log('%c🎯 Emoji Test: ✔️', 'font-size:16px;');
+});
+ 
+function runTest() {
+ console.clear();
+ console.log('%c🚀 Manuel Test Başlatıldı', 'color: #00CED1; font-size:18px; font-weight: bold;');
+ console.log('📁 Emoji Listesi:');
+ console.log(' 🏠 Ana Sayfa');
+ console.log(' 💼 İş İlanları');
+ console.log(' 🏢 Şirket Paneli');
+ console.log(' 👋 Merhaba');
+ console.log(' 📄 Başvurularım');
+ console.log(' 🚀 Yeni İlan / Kayıt Ol');
+ console.log(' 🚪 Çıkış');
+ console.log(' 🔑 Giriş');
+ console.log('%c✅ Test tamamlandı!', 'color: #4caf50; font-weight: bold;');
+ alert('✅ Test tamamlandı!\n\nYeni modern logo görünüyor mu?\n- Soyut ikon\n- Birleşik microbloom yazısı\n\nConsole (F12) içinde detayları görebilirsiniz.');
+ }
+ </script>
+</body>
+</html>

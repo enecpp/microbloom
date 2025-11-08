@@ -1,0 +1,137 @@
+﻿@namespace microbloom.Pages
+@page "/company-dashboard"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Employer")]
+
+@using microbloom.DTOs
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<PageTitle>🏢 Şirket Paneli - microbloom</PageTitle>
+
+<div class="container my-5">
+    <div class="row mb-5">
+        <div class="col-md-12">
+       <div class="d-flex justify-content-between align-items-start">
+    <div>
+    <h1 class="display-5 mb-2">
+    🏢 Şirket Panelim
+      </h1>
+   <p class="lead text-muted">
+  Mevcut ilanlarınızı yönetin, başvuruları takip edin ve yeni ilanlar oluşturun
+      </p>
+         </div>
+   <button class="btn btn-primary btn-lg" @onclick="GoToCreateJobPage">
+      <i class="bi bi-plus-circle"></i> 🚀 Yeni İlan Oluştur
+      </button>
+            </div>
+  </div>
+    </div>
+
+    @if (myJobs == null)
+    {
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary mb-3" role="status">
+          <span class="visually-hidden">Yükleniyor...</span>
+      </div>
+      <p class="text-muted">⏳ İlanlarınız yükleniyor...</p>
+ </div>
+    }
+    else if (!myJobs.Any())
+  {
+ <div class="card shadow-sm border-0 text-center">
+<div class="card-body py-5">
+      <div style="font-size: 4rem; margin-bottom: 1.5rem;">📭</div>
+          <h3 class="card-title">Henüz İlan Yok</h3>
+      <p class="text-muted mb-4">Henüz hiç iş ilanınız bulunmuyor. İlk ilanınızı oluşturup nitelikli adayları bulmaya başlayın!</p>
+   <button class="btn btn-primary btn-lg" @onclick="GoToCreateJobPage">
+      <i class="bi bi-plus-circle"></i> 🚀 İlk İlanımı Oluştur
+    </button>
+      </div>
+  </div>
+    }
+    else
+    {
+    <div class="row mb-4 align-items-center">
+ <div class="col-md-6">
+       <h3 class="mb-0">
+         <i class="bi bi-card-list"></i> 📋 Aktif İlanlarım
+      <span class="badge bg-primary ms-2">@myJobs.Count</span>
+   </h3>
+     </div>
+     <div class="col-md-6 text-md-end">
+        <small class="text-muted">
+      💡 Tüm aktif iş ilanlarınız aşağıda listelenmiştir
+     </small>
+      </div>
+        </div>
+
+ <div class="row g-4">
+         @foreach (var job in myJobs)
+   {
+          <div class="col-md-6 col-lg-4">
+   <div class="card h-100 shadow-sm interactive-card job-card">
+   <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+  <div class="flex-grow-1">
+    <h5 class="card-title mb-1">
+      📄 @job.Title
+          </h5>
+          </div>
+     <span class="badge bg-success">✅ Aktif</span>
+         </div>
+
+            <p class="card-subtitle text-primary mb-2">
+         🏢 @job.CompanyName
+        </p>
+
+   <p class="small text-muted mb-2">
+    📍 @job.Location
+              </p>
+
+    <p class="card-text small" style="max-height: 80px; overflow: hidden; text-overflow: ellipsis; line-height: 1.5;">
+   @job.Description
+              </p>
+
+      <p class="small text-muted mt-3">
+    🗓️ Yayınlandı: @job.PostedDate.ToShortDateString()
+ </p>
+             </div>
+
+       <div class="card-footer bg-light border-top">
+  <button class="btn btn-primary w-100 btn-sm" @onclick="() => ViewApplications(job.Id)">
+         <i class="bi bi-people"></i> 👥 Başvuruları Gör
+    </button>
+       </div>
+      </div>
+             </div>
+   }
+         </div>
+    }
+</div>
+
+@code {
+    private List<JobPostingDto>? myJobs;
+
+    protected override async Task OnInitializedAsync()
+    {
+ try
+       {
+  myJobs = await Http.GetFromJsonAsync<List<JobPostingDto>>("api/company/jobs");
+        }
+catch (Exception ex)
+        {
+Console.WriteLine($"Şirket ilanları çekilirken hata: {ex.Message}");
+myJobs = new List<JobPostingDto>();
+      }
+    }
+
+    private void ViewApplications(int jobId)
+    {
+NavigationManager.NavigateTo($"/company/job/{jobId}/applications");
+     }
+
+    private void GoToCreateJobPage()
+  {
+NavigationManager.NavigateTo("/company/create-job");
+    }
+}

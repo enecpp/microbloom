@@ -8,8 +8,8 @@
 
 @code {
     protected override async Task OnInitializedAsync()
- {
+    {
         await AuthService.LogoutAsync();
-  NavigationManager.NavigateTo("/");
-   }
+        NavigationManager.NavigateTo("/", forceLoad: true);
+    }
 }

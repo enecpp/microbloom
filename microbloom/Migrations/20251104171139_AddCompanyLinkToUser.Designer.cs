@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using microbloom.Data;
 
@@ -10,9 +11,11 @@ using microbloom.Data;
 namespace microbloom.Migrations
 {
     [DbContext(typeof(KariyerDBContext))]
-    partial class KariyerDBContextModelSnapshot : ModelSnapshot
+    [Migration("20251104171139_AddCompanyLinkToUser")]
+    partial class AddCompanyLinkToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");

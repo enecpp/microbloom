@@ -2,68 +2,177 @@
 @page "/"
 @using Microsoft.AspNetCore.Components.Authorization
 
-<PageTitle>Anasayfa - MicroBloom</PageTitle>
+<PageTitle>&#x1F3E0; Ana Sayfa - microbloom</PageTitle>
 
-<div class="container-fluid hero-section">
-    <AuthorizeView>
-        <Authorized>
-       <div class="row align-items-center min-vh-100">
-      <div class="col-md-6">
-         <div class="hero-content">
-    <h1 class="display-3 fw-bold mb-4">Hoþ Geldin, <span class="text-primary">@context.User.Identity?.Name</span>!</h1>
-     <p class="lead mb-4">MicroBloom platformunda en iyi iþ fýrsatlarýný keþfet ve kariyerini geliþtir.</p>
-   <a class="btn btn-primary btn-lg me-3" href="/jobs" role="button">
-                 <i class="bi bi-briefcase"></i> Ýlanlarý Gör
-  </a>
-       <a class="btn btn-outline-secondary btn-lg" href="/account/logout" role="button">
-              <i class="bi bi-box-arrow-right"></i> Çýkýþ Yap
-    </a>
+<AuthorizeView>
+    <Authorized>
+      <div class="hero-section">
+      <div class="container">
+       <div class="row align-items-center py-5">
+     <div class="col-md-12 text-center">
+         <h1 class="display-4 mb-4 fw-bold">
+  Hoþ Geldin, <span class="text-white">@context.User.Identity?.Name</span>! &#x1F44B;
+     </h1>
+            <p class="lead mb-4" style="font-size: 1.3rem;">
+          microbloom platformunda en iyi iþ fýrsatlarýný keþfet ve kariyerini geliþtir &#x1F680;
+ </p>
+  <div class="d-flex gap-3 justify-content-center flex-wrap mt-4">
+   <a class="btn btn-light btn-lg px-5" href="/jobs" style="font-weight: 600;">
+    &#x1F4BC; Ýlanlarý Keþfet
+   </a>
+  @if (context.User.IsInRole("Employer"))
+       {
+    <a class="btn btn-outline-light btn-lg px-5" href="/company-dashboard" style="font-weight: 600;">
+   &#x1F3E2; Þirket Panelim
+        </a>
+}
+      </div>
+       </div>
+    </div>
+     </div>
+ </div>
+
+      <div class="container my-5 py-4">
+     <div class="row g-4">
+       <div class="col-md-4">
+          <div class="card border-0 shadow h-100 hover-lift">
+   <div class="card-body p-4 text-center">
+       <div class="mb-3" style="font-size: 3.5rem;">&#x1F4CA;</div>
+ <h4 class="fw-bold mb-3" style="color: var(--theme-primary);">Kariyer Takibi</h4>
+     <p class="text-muted">Baþvurularýný canlý olarak takip et, sürecini yönet ve durumunu anýnda gör.</p>
+       </div>
+       </div>
    </div>
- </div>
-              <div class="col-md-6">
-     <div class="hero-image">
-           <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-         <circle cx="250" cy="250" r="240" fill="#e7f1ff" opacity="0.5"/>
-     <circle cx="250" cy="250" r="200" fill="#d4e5ff" opacity="0.5"/>
-      <path d="M 150 200 Q 200 150, 250 200 Q 300 250, 250 300 Q 200 250, 150 200" fill="#007bff" opacity="0.8"/>
-     </svg>
+     <div class="col-md-4">
+        <div class="card border-0 shadow h-100 hover-lift">
+    <div class="card-body p-4 text-center">
+       <div class="mb-3" style="font-size: 3.5rem;">&#x1F3AF;</div>
+     <h4 class="fw-bold mb-3" style="color: var(--theme-primary);">Hedefli Arama</h4>
+      <p class="text-muted">Sana özel pozisyonlarý filtrele, akýllý eþleþtirme ile en uygun ilanlarý keþfet.</p>
+     </div>
+  </div>
+      </div>
+     <div class="col-md-4">
+  <div class="card border-0 shadow h-100 hover-lift">
+       <div class="card-body p-4 text-center">
+          <div class="mb-3" style="font-size: 3.5rem;">&#x26A1;</div>
+    <h4 class="fw-bold mb-3" style="color: var(--theme-primary);">Hýzlý Sonuç</h4>
+      <p class="text-muted">Ýþverenler sana çok hýzlý geri dönüþ yapýyor, süreç kolayca ilerliyor.</p>
+            </div>
         </div>
-        </div>
-          </div>
-        </Authorized>
- <NotAuthorized>
-            <div class="row align-items-center min-vh-100">
-        <div class="col-md-6">
-  <div class="hero-content">
-    <h1 class="display-3 fw-bold mb-4">Kariyer Yolculuðuna <span class="text-primary">Hoþ Geldin</span></h1>
-          <p class="lead mb-4">MicroBloom, seniniz için en iyi iþ fýrsatlarýný bulduðu özzel bir platform. Binlerce iþveren tarafýndan güvenilen platformda yeni fýrsatlarý keþfet.</p>
-        <p class="mb-4">Hemen baþla, kayýt ol veya giriþ yap:</p>
-             <div class="button-group">
-       <a class="btn btn-primary btn-lg me-3" href="/account/login" role="button">
-     <i class="bi bi-box-arrow-in-right"></i> Giriþ Yap
-    </a>
-    <a class="btn btn-success btn-lg" href="/account/register" role="button">
-     <i class="bi bi-person-plus"></i> Kayýt Ol
+     </div>
+    </div>
+  </div>
+    </Authorized>
+
+    <NotAuthorized>
+ <div class="hero-section">
+    <div class="container">
+   <div class="row align-items-center py-5">
+     <div class="col-md-10 mx-auto text-center">
+   <h1 class="display-3 mb-4 fw-bold">
+    Kariyer Yolculuðuna Hoþ Geldin! &#x1F680;
+  </h1>
+     <p class="lead mb-5" style="font-size: 1.4rem; line-height: 1.8;">
+     microbloom, senin için en iyi iþ fýrsatlarýný bulduðun özel bir platform.<br>
+ Binlerce iþveren tarafýndan güvenilen platformda yeni fýrsatlarý keþfet &#x1F4BC;&#x2728;
+   </p>
+     <div class="d-flex gap-3 justify-content-center flex-wrap mt-5">
+     <a class="btn btn-light btn-lg px-5" href="/account/register" style="font-size: 1.2rem; font-weight: 600;">
+ &#x2B50; Hemen Baþla
+  </a>
+     <a class="btn btn-outline-light btn-lg px-5" href="/account/login" style="font-size: 1.2rem; font-weight: 600;">
+   &#x1F511; Giriþ Yap
        </a>
+  </div>
+       <p class="mt-5" style="font-size: 1.1rem; opacity: 0.9;">
+    microbloom'a katýlan <strong>10,000+</strong> kullanýcý ile birlikte ol
+      </p>
+          </div>
+  </div>
         </div>
-       <p class="mt-5 text-muted">MicroBloom'a katýlan 10,000+ kullanýcý ile birlikte ol.</p>
+        </div>
+
+        <div class="container my-5 py-5">
+      <div class="row text-center mb-5">
+     <div class="col-12">
+          <h2 class="display-5 fw-bold mb-3">
+Neden microbloom? <span style="color: var(--theme-primary); font-size: 2.5rem;">&#x1F914;</span>
+    </h2>
+        <p class="lead text-muted">Kariyerinde fark yaratacak profesyonel özellikler</p>
+      </div>
+   </div>
+
+            <div class="row g-4">
+    <div class="col-md-4">
+       <div class="card border-0 shadow-sm h-100 hover-lift">
+         <div class="card-body p-5 text-center">
+      <div class="mb-4" style="font-size: 4rem;">&#x1F50D;</div>
+    <h4 class="fw-bold mb-3">Kolay Arama</h4>
+        <p class="text-muted">Binlerce iþ ilaný arasýndan senin için en uygun olanlarý kolayca bul.</p>
+      </div>
+     </div>
+  </div>
+      <div class="col-md-4">
+   <div class="card border-0 shadow-sm h-100 hover-lift">
+     <div class="card-body p-5 text-center">
+      <div class="mb-4" style="font-size: 4rem;">&#x26A1;</div>
+        <h4 class="fw-bold mb-3">Hýzlý Baþvuru</h4>
+      <p class="text-muted">Tek týkla iþ ilanlarýna baþvur ve iþverenlere anýnda ulaþ.</p>
        </div>
-       </div>
-                <div class="col-md-6">
-  <div class="hero-image">
-   <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-     <circle cx="250" cy="250" r="240" fill="#e7f1ff" opacity="0.5"/>
-             <circle cx="250" cy="250" r="200" fill="#d4e5ff" opacity="0.5"/>
-  <g transform="translate(250, 250)">
-      <rect x="-60" y="-80" width="120" height="160" fill="#007bff" rx="10" opacity="0.8"/>
-      <rect x="-40" y="-60" width="80" height="30" fill="#0056b3" rx="5"/>
-   <circle cx="-20" cy="20" r="5" fill="white"/>
-            <circle cx="20" cy="20" r="5" fill="white"/>
-          </g>
-</svg>
- </div>
+   </div>
+   </div>
+      <div class="col-md-4">
+  <div class="card border-0 shadow-sm h-100 hover-lift">
+     <div class="card-body p-5 text-center">
+        <div class="mb-4" style="font-size: 4rem;">&#x1F3AF;</div>
+         <h4 class="fw-bold mb-3">Doðru Eþleþme</h4>
+     <p class="text-muted">Yeteneklerine uygun iþlerde çalýþma fýrsatý yakala.</p>
+   </div>
+  </div>
+    </div>
         </div>
  </div>
-        </NotAuthorized>
-    </AuthorizeView>
-</div>
+
+  <div class="py-5 my-5" style="background: linear-gradient(135deg, rgba(0, 206, 209, 0.1) 0%, rgba(0, 184, 186, 0.1) 100%);">
+        <div class="container">
+<div class="row align-items-center">
+   <div class="col-md-6 mb-4 mb-md-0">
+             <h2 class="display-6 fw-bold mb-4">
+    Hemen Baþla! <span style="font-size: 2rem;">&#x1F680;</span>
+     </h2>
+       <p class="lead mb-4">Ücretsiz hesap oluþtur ve hayalindeki iþe kavuþ.</p>
+       <ul class="list-unstyled">
+         <li class="mb-3 d-flex align-items-center">
+      <i class="bi bi-check-circle-fill me-2" style="color: var(--theme-primary); font-size: 1.5rem;"></i>
+        <span><strong>&#x1F49A; Ücretsiz kayýt</strong> - Hiçbir ücret ödemeden baþla</span>
+    </li>
+       <li class="mb-3 d-flex align-items-center">
+ <i class="bi bi-check-circle-fill me-2" style="color: var(--theme-primary); font-size: 1.5rem;"></i>
+ <span><strong>&#x267E;&#xFE0F; Sýnýrsýz baþvuru</strong> - Ýstediðin kadar ilana baþvur</span>
+    </li>
+     <li class="mb-3 d-flex align-items-center">
+         <i class="bi bi-check-circle-fill me-2" style="color: var(--theme-primary); font-size: 1.5rem;"></i>
+    <span><strong>&#x1F514; Anýnda bildirimler</strong> - Baþvuru durumunu takip et</span>
+   </li>
+     <li class="mb-3 d-flex align-items-center">
+     <i class="bi bi-check-circle-fill me-2" style="color: var(--theme-primary); font-size: 1.5rem;"></i>
+   <span><strong>&#x1F512; Güvenli platform</strong> - Verilerinin güvenliði garantili</span>
+   </li>
+   </ul>
+    <a href="/account/register" class="btn btn-primary btn-lg px-5 mt-3">
+   &#x1F680; Ücretsiz Baþla
+      </a>
+  </div>
+            <div class="col-md-6 text-center">
+            <div class="p-5">
+        <div style="font-size: 8rem; line-height: 1;">
+  &#x1F393; &#x1F4BC; &#x1F680;
+    </div>
+      </div>
+     </div>
+ </div>
+      </div>
+ </div>
+    </NotAuthorized>
+</AuthorizeView>

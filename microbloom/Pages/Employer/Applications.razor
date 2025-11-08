@@ -5,110 +5,119 @@
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 
-<PageTitle>Baþvurularý Yönet</PageTitle>
+<PageTitle>?? Ýþ Ýlaný Baþvurularý - microbloom</PageTitle>
 
 <div class="container my-5">
-    <div class="row mb-4">
-     <div class="col-md-12">
-      <AuthorizeView>
-     <Authorized>
- <a href="/employer/dashboard" class="btn btn-secondary mb-3">
-  <i class="bi bi-arrow-left"></i> Dashboard'a Dön
-  </a>
-     <h1>
- <i class="bi bi-inbox"></i> Ýþ Ýlaný Baþvurularý
-   </h1>
-        <p class="lead text-muted">Bu ilana gelen baþvurularý yönetin.</p>
-     </Authorized>
-      <NotAuthorized>
-      <div class="alert alert-warning">
- <i class="bi bi-lock"></i> Bu sayfaya eriþmek için giriþ yapmalýsýnýz.
-    </div>
-   </NotAuthorized>
-    </AuthorizeView>
-    </div>
-  </div>
+    <div class="row mb-5">
+        <div class="col-md-12">
+<button class="btn btn-outline-secondary mb-3" @onclick="NavigateBack">
+    <i class="bi bi-arrow-left"></i> Dashboard'a Dön
+        </button>
 
-  <AuthorizeView>
-  <Authorized>
-  <div class="row">
-   <div class="col-md-12">
-    <div class="card">
-   <div class="card-body">
- @if (applications == null)
-   {
-      <p><em>Baþvurular yükleniyor...</em></p>
-        }
-    else if (!applications.Any())
-    {
-     <p class="text-muted">Bu ilana henüz baþvuru yapýlmamýþtýr.</p>
-   }
- else
-      {
-  <table class="table table-hover">
-    <thead>
-  <tr>
-  <th>Adayýn Adý</th>
-     <th>E-posta</th>
-      <th>Baþvuru Tarihi</th>
-    <th>Durum</th>
- </tr>
-        </thead>
-    <tbody>
-         @foreach (var app in applications)
-        {
- <tr>
-  <td><strong>@app.JobTitle</strong></td>
-     <td>@app.AppUserId</td>
-    <td>@app.ApplicationDate.ToShortDateString()</td>
-       <td>
-       @if (app.Status == "Pending")
-    {
-       <span class="badge bg-warning">Beklemede</span>
-            }
-     else if (app.Status == "Accepted")
-       {
-     <span class="badge bg-success">Onaylandý</span>
-   }
-        else
- {
-    <span class="badge bg-danger">Reddedildi</span>
-    }
-        </td>
-         </tr>
-          }
-          </tbody>
-     </table>
-      }
+    <h1 class="display-5 mb-3">
+       ?? Ýþ Ýlaný Baþvurularý
+     </h1>
   </div>
     </div>
-   </div>
-     </div>
-  </Authorized>
-  </AuthorizeView>
+
+    @if (applications == null)
+    {
+<div class="text-center py-5">
+    <div class="spinner-border text-primary mb-3" role="status">
+        <span class="visually-hidden">Yükleniyor...</span>
  </div>
+         <p class="text-muted">? Baþvurular yükleniyor...</p>
+    </div>
+    }
+   else if (!applications.Any())
+     {
+        <div class="card shadow-sm border-0 text-center">
+    <div class="card-body py-5">
+           <div style="font-size: 4rem; margin-bottom: 1.5rem;">??</div>
+ <h3 class="card-title">Henüz Baþvuru Yok</h3>
+         <p class="text-muted mb-4">Bu ilana henüz baþvuru yapýlmamýþ. Ýlanýnýz yayýnda olduðundan emin olun.</p>
+      <button class="btn btn-outline-primary" @onclick="NavigateBack">
+        ?? Dashboard'a Dön
+        </button>
+  </div>
+      </div>
+  }
+    else
+ {
+       <div class="row mb-4">
+ <div class="col-md-6">
+      <h3>
+    <i class="bi bi-card-checklist"></i> ?? Baþvurular
+    <span class="badge bg-primary ms-2">@applications.Count</span>
+       </h3>
+</div>
+            </div>
+
+    <div class="table-responsive">
+ <table class="table table-hover">
+      <thead class="table-light">
+      <tr>
+     <th>?? Aday Adý</th>
+       <th>?? E-posta</th>
+  <th>??? Baþvuru Tarihi</th>
+            <th>? Durum</th>
+    </tr>
+</thead>
+       <tbody>
+  @foreach (var app in applications)
+     {
+      <tr>
+          <td><strong>@app.JobTitle</strong></td>
+      <td>@app.AppUserId</td>
+        <td>@app.ApplicationDate.ToString("dd MMMM yyyy, HH:mm")</td>
+           <td>
+      @if (app.Status == "Pending")
+    {
+ <span class="badge bg-warning">? Beklemede</span>
+}
+        else if (app.Status == "Approved")
+  {
+   <span class="badge bg-success">? Onaylandý</span>
+}
+     else
+    {
+  <span class="badge bg-secondary">@app.Status</span>
+      }
+   </td>
+      </tr>
+     }
+  </tbody>
+      </table>
+       </div>
+  }
+</div>
 
 @code {
- [Parameter]
-    public int JobId { get; set; }
+    [Parameter]
+ public int JobId { get; set; }
 
-  private List<ApplicationDto>? applications;
+    private List<ApplicationDto>? applications;
 
   protected override async Task OnInitializedAsync()
-   {
-      await LoadApplications();
-   }
+    {
+ await LoadApplications();
+  }
 
 private async Task LoadApplications()
   {
- try
-     {
+    try
+    {
    applications = await Http.GetFromJsonAsync<List<ApplicationDto>>($"api/employer/applications/{JobId}");
      }
-    catch (Exception ex)
-     {
-    Console.WriteLine($"Hata: {ex.Message}");
-  applications = new List<ApplicationDto>();
+     catch (Exception ex)
+    {
+      Console.WriteLine($"Hata: {ex.Message}");
+   applications = new List<ApplicationDto>();
+  }
+ }
+
+    private void NavigateBack()
+    {
+  NavigationManager.NavigateTo("/employer/dashboard");
      }
-    }
 }

@@ -1,23 +1,30 @@
 @namespace microbloom
 @using Microsoft.AspNetCore.Components
-@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Routing
 @using microbloom.Shared
 
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
-  <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-        </Found>
+   <Found Context="routeData">
+          <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+          <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+  </Found>
     <NotFound>
-          <PageTitle>Bulunamadý</PageTitle>
+<PageTitle>404 - Sayfa Bulunamadý</PageTitle>
       <LayoutView Layout="@typeof(MainLayout)">
-    <div class="alert alert-warning" role="alert">
-    <h2>Sayfa Bulunamadý</h2>
-    <p>Üzgünüz, aradýðýnýz sayfa burada yok.</p>
+     <div class="container my-5">
+         <div class="card shadow-sm border-0 text-center">
+      <div class="card-body py-5">
+<div style="font-size: 4rem; margin-bottom: 1.5rem;">?</div>
+     <h2 class="card-title mb-3">Sayfa Bulunamadý</h2>
+        <p class="text-muted mb-4">Özür dileriz, aradýðýnýz sayfa bulunamamýþtýr veya taþýnmýþ olabilir.</p>
+   <a href="/" class="btn btn-primary">
+   <i class="bi bi-house"></i> ?? Ana Sayfaya Dön
+     </a>
+       </div>
+       </div>
       </div>
-       </LayoutView>
-        </NotFound>
+   </LayoutView>
+     </NotFound>
     </Router>
 </CascadingAuthenticationState>

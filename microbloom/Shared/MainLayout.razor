@@ -4,65 +4,107 @@
 
 <div class="page">
     <header class="navbar-section">
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <div class="container-fluid">
-   <a class="navbar-brand fw-bold" href="/">
-        <span class="brand-icon">??</span> MicroBloom
-    </a>
-     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-     <span class="navbar-toggler-icon"></span>
-         </button>
- <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="navbar-nav ms-auto">
+ <nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+         <img src="/images/logo.svg?v=9" alt="microbloom" style="height: 45px; width: auto;">
+      </a>
+       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+     aria-controls="navbarNav" aria-expanded="false" aria-label="Menü">
+  <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+         <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item">
+        <a class="nav-link" href="/">&#x1F3E0; Ana Sayfa</a>
+    </li>
  <li class="nav-item">
-  <a class="nav-link" href="/" data-bs-toggle="collapse" data-bs-target="#navbarNav">Anasayfa</a>
-        </li>
-     <li class="nav-item">
-    <a class="nav-link" href="/jobs">Ýlanlar</a>
-   </li>
-      </ul>
-             <div class="auth-links ms-3">
-               <AuthorizeView>
+  <a class="nav-link" href="/jobs">&#x1F4BC; Ýþ Ýlanlarý</a>
+  </li>
+            <AuthorizeView Context="authCtx">
          <Authorized>
-       <span class="text-light me-3">
-    <i class="bi bi-person-circle"></i> @context.User.Identity?.Name
-   </span>
-         <a href="account/logout" class="btn btn-sm btn-danger">
-       <i class="bi bi-box-arrow-right"></i> Çýkýþ
-           </a>
+ @if (authCtx.User.IsInRole("Employer"))
+    {
+        <li class="nav-item">
+        <a class="nav-link" href="/company-dashboard">&#x1F3E2; Þirket Paneli</a>
+        </li>
+    }
+     <li class="nav-item dropdown">
+ <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
+    data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="user-greeting">&#x1F44B; @authCtx.User.Identity?.Name</span>
+    </a>
+       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li>
+ <a class="dropdown-item" href="/applications">
+   <span class="dropdown-icon">&#x1F4C4;</span> Baþvurularým
+          </a>
+      </li>
+   @if (authCtx.User.IsInRole("Employer"))
+ {
+  <li>
+        <a class="dropdown-item" href="/company/create-job">
+      <span class="dropdown-icon">&#x1F680;</span> Yeni Ýlan Oluþtur
+  </a>
+  </li>
+       }
+       <li><hr class="dropdown-divider"></li>
+         <li>
+      <a class="dropdown-item" href="/account/logout">
+   <span class="dropdown-icon">&#x1F6AA;</span> Çýkýþ Yap
+  </a>
+   </li>
+   </ul>
+ </li>
       </Authorized>
- <NotAuthorized>
-     <a href="account/login" class="btn btn-sm btn-outline-light me-2">
-      <i class="bi bi-box-arrow-in-right"></i> Giriþ
+      <NotAuthorized>
+      <li class="nav-item">
+   <a href="/account/login" class="btn btn-outline-primary btn-sm me-2">
+     &#x1F511; Giriþ
+  </a>
+      </li>
+ <li class="nav-item">
+     <a href="/account/register" class="btn btn-primary btn-sm">
+ &#x1F680; Kayýt Ol
        </a>
-   <a href="account/register" class="btn btn-sm btn-light">
-    <i class="bi bi-person-plus"></i> Kayýt
-     </a>
+     </li>
          </NotAuthorized>
-                </AuthorizeView>
-       </div>
-         </div>
+  </AuthorizeView>
+</ul>
+     </div>
     </div>
-        </nav>
+</nav>
     </header>
 
-    <main>
-   <article class="content">
-     @Body
-        </article>
-  </main>
+    <main class="main-content">
+      @Body
+    </main>
 
-    <footer class="footer bg-dark text-light mt-5">
-       <div class="container py-4">
-    <div class="row">
-  <div class="col-md-6">
-    <h5>MicroBloom</h5>
-      <p class="text-muted small">Kariyer yolculuðunda en iyi iþ fýrsatlarýný bulduðun platform.</p>
+    <footer class="footer">
+        <div class="container">
+       <div class="row py-4">
+     <div class="col-md-6 mb-4 mb-md-0">
+   <div class="d-flex align-items-center mb-3">
+  <img src="/images/logo.svg?v=9" alt="microbloom" style="height: 40px; width: auto;">
+     </div>
+   <p class="text-muted mb-0" style="line-height: 1.8;">
+     &#x1F31F; Kariyer yolculuðunda en iyi iþ fýrsatlarýný bulduðun platform.<br>
+     Binlerce þirket ve baþarýlý aday tarafýndan güvenle kullanýlýyor.
+    </p>
+   </div>
+   <div class="col-md-6">
+   <div class="text-md-end">
+   <p class="text-muted small mb-2">
+  <strong>&#x1F4A1; microbloom</strong> - Profesyonel Kariyer Platformu
+    </p>
+   <p class="text-muted small mb-0">
+        &copy; 2025 microbloom. Tüm Haklarý Saklýdýr. | 
+  <a href="#" class="text-decoration-none">Gizlilik</a> | 
+   <a href="#" class="text-decoration-none">Þartlar</a>
+     </p>
       </div>
- <div class="col-md-6 text-md-end">
-           <p class="text-muted small">&copy; 2025 MicroBloom. Tüm Haklarý Saklýdýr.</p>
-     </div>
-     </div>
-    </div>
-    </footer>
+         </div>
+          </div>
+        </div>
+ </footer>
 </div>
