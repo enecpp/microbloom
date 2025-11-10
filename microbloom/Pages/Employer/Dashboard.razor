@@ -1,4 +1,4 @@
-@namespace microbloom.Pages
+ï»¿@namespace microbloom.Pages
 @page "/employer/dashboard"
 @using microbloom.DTOs
 @using Microsoft.AspNetCore.Components.Authorization
@@ -18,11 +18,11 @@
         <i class="bi bi-briefcase"></i> ?? Employer Dashboard
     </h1>
       <p class="lead text-muted">
-      Þirketinizin iþ ilanlarýný ve baþvurularý yönetin
+      ï¿½irketinizin iï¿½ ilanlarï¿½nï¿½ ve baï¿½vurularï¿½ yï¿½netin
           </p>
    </div>
  <button class="btn btn-primary btn-lg" @onclick="ShowCreateJobForm">
-   <i class="bi bi-plus-circle"></i> ?? Yeni Ýlan Oluþtur
+   <i class="bi bi-plus-circle"></i> ?? Yeni ï¿½lan Oluï¿½tur
         </button>
       </div>
         </div>
@@ -35,7 +35,7 @@
         <div class="card shadow-lg border-0">
                <div class="card-body p-4">
      <h5 class="card-title mb-4">
-      <i class="bi bi-plus-circle"></i> Yeni Ýþ Ýlaný Oluþtur
+      <i class="bi bi-plus-circle"></i> Yeni ï¿½ï¿½ ï¿½lanï¿½ Oluï¿½tur
      </h5>
 
        @if (!string.IsNullOrEmpty(successMessage))
@@ -59,20 +59,20 @@
       <ValidationSummary class="alert alert-warning" />
 
               <div class="mb-3">
-    <label for="title" class="form-label fw-bold">?? Ýþ Baþlýðý</label>
-     <InputText id="title" class="form-control" @bind-Value="newJob.Title" placeholder="Örn: Kýdemli .NET Geliþtirici" />
+    <label for="title" class="form-label fw-bold">?? ï¿½ï¿½ Baï¿½lï¿½ï¿½ï¿½</label>
+     <InputText id="title" class="form-control" @bind-Value="newJob.Title" placeholder="ï¿½rn: Kï¿½demli .NET Geliï¿½tirici" />
      <ValidationMessage For="@(() => newJob.Title)" />
          </div>
 
        <div class="mb-3">
-      <label for="description" class="form-label fw-bold">?? Ýþ Tanýmý</label>
- <InputTextArea id="description" class="form-control" rows="6" @bind-Value="newJob.Description" placeholder="Ýþ açýklamasý, gereklilikler, beklentiler..." />
+      <label for="description" class="form-label fw-bold">?? ï¿½ï¿½ Tanï¿½mï¿½</label>
+ <InputTextArea id="description" class="form-control" rows="6" @bind-Value="newJob.Description" placeholder="ï¿½ï¿½ aï¿½ï¿½klamasï¿½, gereklilikler, beklentiler..." />
 <ValidationMessage For="@(() => newJob.Description)" />
             </div>
 
              <div class="mb-4">
         <label for="location" class="form-label fw-bold">?? Lokasyon</label>
-        <InputText id="location" class="form-control" @bind-Value="newJob.Location" placeholder="Örn: Ýstanbul, Türkiye" />
+        <InputText id="location" class="form-control" @bind-Value="newJob.Location" placeholder="ï¿½rn: ï¿½stanbul, Tï¿½rkiye" />
         <ValidationMessage For="@(() => newJob.Location)" />
          </div>
 
@@ -81,14 +81,14 @@
         @if (isSubmitting)
              {
         <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-     <span>Oluþturuluyor...</span>
+     <span>Oluï¿½turuluyor...</span>
 }
              else
              {
-     <span><i class="bi bi-check"></i> Oluþtur</span>
+     <span><i class="bi bi-check"></i> Oluï¿½tur</span>
  }
             </button>
-           <button type="button" class="btn btn-outline-secondary" @onclick="() => showCreateForm = false">Ýptal</button>
+           <button type="button" class="btn btn-outline-secondary" @onclick="() => showCreateForm = false">ï¿½ptal</button>
          </div>
               </EditForm>
             </div>
@@ -103,9 +103,9 @@
        {
         <div class="text-center py-5">
           <div class="spinner-border text-primary mb-3" role="status">
-           <span class="visually-hidden">Yükleniyor...</span>
+           <span class="visually-hidden">Yï¿½kleniyor...</span>
    </div>
-        <p class="text-muted">? Ýlanlarýnýz yükleniyor...</p>
+        <p class="text-muted">? ï¿½lanlarï¿½nï¿½z yï¿½kleniyor...</p>
               </div>
                }
                     else if (!jobPostings.Any())
@@ -113,10 +113,10 @@
        <div class="card shadow-sm border-0 text-center">
       <div class="card-body py-5">
 <div style="font-size: 4rem; margin-bottom: 1.5rem;">??</div>
-                <h3 class="card-title">Henüz Ýlan Yok</h3>
-     <p class="text-muted mb-4">Henüz iþ ilaný oluþturmadýnýz. Nitelikli adaylarý bulmaya baþlayýn!</p>
+                <h3 class="card-title">Henï¿½z ï¿½lan Yok</h3>
+     <p class="text-muted mb-4">Henï¿½z iï¿½ ilanï¿½ oluï¿½turmadï¿½nï¿½z. Nitelikli adaylarï¿½ bulmaya baï¿½layï¿½n!</p>
    <button class="btn btn-primary btn-lg" @onclick="ShowCreateJobForm">
-         <i class="bi bi-plus-circle"></i> ?? Ýlk Ýlanýmý Oluþtur
+         <i class="bi bi-plus-circle"></i> ?? ï¿½lk ï¿½lanï¿½mï¿½ Oluï¿½tur
            </button>
   </div>
        </div>
@@ -126,7 +126,7 @@
        <div class="row mb-4">
                   <div class="col-md-6">
      <h3>
-         <i class="bi bi-card-list"></i> ?? Ýþ Ýlanlarým
+         <i class="bi bi-card-list"></i> ?? ï¿½ï¿½ ï¿½lanlarï¿½m
        <span class="badge bg-primary ms-2">@jobPostings.Count</span>
          </h3>
                  </div>
@@ -136,10 +136,10 @@
       <table class="table table-hover">
   <thead class="table-light">
       <tr>
-   <th>?? Baþlýk</th>
+   <th>?? Baï¿½lï¿½k</th>
   <th>?? Lokasyon</th>
-      <th>??? Yayýn Tarihi</th>
-      <th>?? Ýþlemler</th>
+      <th>??? Yayï¿½n Tarihi</th>
+      <th>?? ï¿½ï¿½lemler</th>
      </tr>
    </thead>
    <tbody>
@@ -151,7 +151,7 @@
         <td>@job.PostedDate.ToShortDateString()</td>
            <td>
 <button class="btn btn-sm btn-outline-primary" @onclick="() => ViewApplications(job.Id)">
-    <i class="bi bi-people"></i> ?? Baþvurularý Gör
+    <i class="bi bi-people"></i> ?? Baï¿½vurularï¿½ Gï¿½r
         </button>
   </td>
       </tr>
@@ -169,9 +169,9 @@
             <div class="card shadow-sm border-0">
                 <div class="card-body text-center py-5">
  <div style="font-size: 3rem; margin-bottom: 1rem;">??</div>
-      <h3 class="card-title">Eriþim Reddedildi</h3>
-    <p class="text-muted mb-4">Bu sayfaya eriþmek için giriþ yapmanýz gerekiyor.</p>
-       <a href="/account/login" class="btn btn-primary">?? Giriþ Yap</a>
+      <h3 class="card-title">Eriï¿½im Reddedildi</h3>
+    <p class="text-muted mb-4">Bu sayfaya eriï¿½mek iï¿½in giriï¿½ yapmanï¿½z gerekiyor.</p>
+       <a href="/account/login" class="btn btn-primary">?? Giriï¿½ Yap</a>
       </div>
             </div>
         </div>
@@ -200,7 +200,7 @@
      }
         catch (Exception ex)
         {
-            errorMessage = $"Ýlanlar yüklenmedi: {ex.Message}";
+            errorMessage = $"ï¿½lanlar yï¿½klenmedi: {ex.Message}";
             jobPostings = new();
     }
     }
@@ -222,7 +222,7 @@ showCreateForm = true;
 
             if (response.IsSuccessStatusCode)
     {
-            successMessage = "Ýþ ilaný baþarýyla oluþturuldu! ??";
+            successMessage = "ï¿½ï¿½ ilanï¿½ baï¿½arï¿½yla oluï¿½turuldu! ??";
    newJob = new CreateJobDto();
     showCreateForm = false;
                 await Task.Delay(1000);

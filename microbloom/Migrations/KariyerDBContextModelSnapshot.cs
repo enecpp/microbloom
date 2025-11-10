@@ -237,7 +237,7 @@ namespace microbloom.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies");
+                    b.ToTable("Companies", (string)null);
 
                     b.HasData(
                         new
@@ -253,6 +253,1922 @@ namespace microbloom.Migrations
                             Description = "Yazılım ve bulut çözümleri.",
                             LogoUrl = "microsoft.png",
                             Name = "Microsoft"
+                        });
+                });
+
+            modelBuilder.Entity("microbloom.Entities.ContentArticle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ContentCategoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Summary")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContentCategoryId");
+
+                    b.ToTable("ContentArticles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Content = "# &#x1F393; Üniversite Seçimi Rehberi\r\n\r\nÜniversite seçimi, hayatınızın en önemli kararlarından biridir. İşte doğru tercih yapmanız için ipuçları:\r\n\r\n## &#x1F4D6; 1. Bölüm Seçimi\r\n- &#x2714; İlgi alanlarınızı ve yeteneklerinizi değerlendirin\r\n- &#x2714; Bölümün kariyer olanaklarını araştırın\r\n- &#x2714; Sektördeki iş imkanlarını inceleyin\r\n\r\n## &#x1F3EB; 2. Üniversite Kriterleri\r\n- &#x1F4DA; Akademik kadro kalitesi\r\n- &#x1F3C6; Kampüs imkanları ve sosyal aktiviteler\r\n- &#x1F30D; Uluslararası değişim programları\r\n- &#x1F4BC; Mezun memnuniyeti ve kariyer desteği\r\n\r\n## &#x1F3D9; 3. Şehir Seçimi\r\n- &#x1F4B5; Yaşam maliyeti\r\n- &#x1F3AD; Kültürel ve sosyal olanaklar\r\n- &#x1F3E2; İş bulma imkanları\r\n- &#x1F3E0; Ailenize uzaklık\r\n\r\n## &#x1F4CA; 4. Taban Puan ve Sıralama\r\n- &#x2705; Gerçekçi hedefler belirleyin\r\n- &#x1F4DD; Yedek tercihlerinizi mutlaka doldurun\r\n- &#x1F4C8; Önceki yılların yerleştirme puanlarını inceleyin",
+                            ContentCategoryId = 1,
+                            Slug = "universite-secimi-rehberi",
+                            Summary = "Üniversite seçerken nelere dikkat etmelisiniz? Şehir, bölüm, taban puan ve kariyer hedeflerinize göre doğru tercih nasıl yapılır?",
+                            Title = "Üniversite Seçimi Rehberi"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Content = "# &#x1F4BB; Mühendislik Bölümleri Rehberi\r\n\r\n## &#x1F5A5; Bilgisayar Mühendisliği\r\nYazılım geliştirme, veri bilimi, yapay zeka gibi alanlarda çalışma fırsatı sunar.\r\n\r\n**Kariyer Alanları:**\r\n- &#x1F4BB; Yazılım Geliştirici\r\n- &#x1F4CA; Veri Analisti / Data Scientist\r\n- &#x1F3D7; Sistem Mimarı\r\n- &#x2699; DevOps Mühendisi\r\n\r\n**Başlangıç Maaşları:** &#x1F4B0; 25.000 - 40.000 TL\r\n\r\n## &#x26A1; Elektrik-Elektronik Mühendisliği\r\nElektronik sistemler, güç sistemleri, telekomünikasyon alanlarında uzmanlaşma.\r\n\r\n**Kariyer Alanları:**\r\n- &#x1F50C; Elektronik Tasarım Mühendisi\r\n- &#x1F4A1; Enerji Sistemleri Uzmanı\r\n- &#x1F4E1; Telekomünikasyon Mühendisi\r\n\r\n## &#x2699; Endüstri Mühendisliği\r\nÜretim süreçlerinin optimizasyonu, lojistik ve proje yönetimi.\r\n\r\n**Kariyer Alanları:**\r\n- &#x1F4C8; Proje Yöneticisi\r\n- &#x1F69A; Lojistik Uzmanı\r\n- &#x1F504; Süreç Geliştirme Mühendisi",
+                            ContentCategoryId = 1,
+                            Slug = "bolum-rehberi-muhendislik",
+                            Summary = "Mühendislik bölümleri hakkında her şey: Hangi bölüm size uygun? Kariyer olanakları neler? Mezuniyet sonrası ne yapabilirsiniz?",
+                            Title = "Bölüm Rehberi: Mühendislik"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Content = "# &#x1F4B0; Burs ve Mali Destek Rehberi\r\n\r\n## &#x1F3DB; Devlet Bursu\r\n- &#x1F393; YÖK bursu\r\n- &#x1F3E0; Kredi Yurtlar Kurumu (KYK)\r\n- &#x1F3C6; Başarı bursu\r\n\r\n## &#x1F3E2; Özel Kuruluş Bursları\r\n- &#x1F4DA; Vakıf üniversiteleri tam burs programları\r\n- &#x1F4BC; Özel sektör şirket bursları (TÜBİTAK, TÜSİAD)\r\n- &#x1F3DB; Belediye bursları\r\n\r\n## &#x1F4DD; Başvuru İpuçları\r\n1. &#x1F4C5; Başvuru tarihlerini takip edin\r\n2. &#x1F4C4; Gereken belgeleri önceden hazırlayın\r\n3. &#x270D; Motivasyon mektubunuza özen gösterin\r\n4. &#x1F4E8; Birden fazla burs programına başvurun\r\n\r\n## &#x1F517; Önemli Linkler\r\n- turkiye.gov.tr/kyk-ogrenci-kredisi\r\n- yok.gov.tr",
+                            ContentCategoryId = 1,
+                            Slug = "burs-mali-destek",
+                            Summary = "Üniversite eğitiminiz için burs ve mali destek alma yolları. Hangi kuruluşlar burs veriyor? Başvuru şartları neler?",
+                            Title = "Burs ve Mali Destek İmkanları"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Content = "# &#x1F4C4; CV Hazırlama Rehberi\r\n\r\n## &#x2705; CV'de Olması Gerekenler\r\n\r\n### 1. &#x1F464; Kişisel Bilgiler\r\n- &#x1F4DD; Ad Soyad\r\n- &#x1F4DE; İletişim Bilgileri (Telefon, E-posta)\r\n- &#x1F517; LinkedIn Profili\r\n- &#x1F4BB; GitHub (yazılımcılar için)\r\n\r\n### 2. &#x1F4AC; Özet\r\n2-3 cümlelik kısa bir özet ile kendinizi tanıtın.\r\n\r\n**Örnek:** \"Bilgisayar Mühendisliği mezunu, 2 yıllık web geliştirme deneyimi. React ve Node.js teknolojilerinde uzman.\"\r\n\r\n### 3. &#x1F393; Eğitim\r\n- &#x1F3DB; Üniversite adı ve bölüm\r\n- &#x1F4C5; Mezuniyet tarihi\r\n- &#x1F4CA; Not ortalaması (3.00 üzerindeyse)\r\n\r\n### 4. &#x1F4BC; İş Deneyimi\r\n- &#x1F3E2; Şirket adı ve pozisyon\r\n- &#x1F4C6; Çalışma tarihleri\r\n- &#x2705; Görev ve başarılarınız\r\n- &#x1F6E0; Kullandığınız teknolojiler\r\n\r\n### 5. &#x1F680; Projeler\r\n- &#x1F4BB; Kişisel veya okul projeleri\r\n- &#x1F310; Açık kaynak katkılarınız\r\n\r\n### 6. &#x2B50; Beceriler\r\n- &#x1F4DA; Programlama dilleri\r\n- &#x1F527; Araçlar ve teknolojiler\r\n- &#x1F30D; Yabancı dil seviyeleri\r\n\r\n## &#x1F4A1; CV Hazırlama İpuçları\r\n- &#x1F4C4; Maksimum 2 sayfa olmalı\r\n- &#x1F3AF; Özgeçmişinizi her pozisyon için özelleştirin\r\n- &#x1F4CA; Somut başarılarınızı sayılarla destekleyin\r\n- &#x2705; Yazım hatalarından kaçının",
+                            ContentCategoryId = 2,
+                            Slug = "cv-hazirlama-rehberi",
+                            Summary = "Profesyonel bir CV nasıl hazırlanır? İşverenin dikkatini çekecek CV örnekleri ve ipuçları.",
+                            Title = "CV Hazırlama Rehberi"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Content = "# &#x1F3AF; İş Görüşmesine Hazırlık\r\n\r\n## &#x1F4C5; Görüşme Öncesi\r\n1. &#x1F50D; Şirket hakkında araştırma yapın\r\n2. &#x1F4DD; Pozisyon tanımını detaylı inceleyin\r\n3. &#x1F4AC; Kendinizi tanıtma pratiği yapın\r\n4. &#x1F454; Şık ve profesyonel giyinin\r\n\r\n## &#x2753; Sık Sorulan Sorular\r\n\r\n### \"Kendinizden bahseder misiniz?\"\r\n- &#x23F1; Kısa ve öz olun\r\n- &#x1F393; Eğitim ve deneyimlerinize değinin\r\n- &#x1F3AF; Neden bu pozisyona uygun olduğunuzu vurgulayın\r\n\r\n### \"Güçlü yönleriniz neler?\"\r\n- &#x1F4AA; Pozisyonla ilgili güçlü yönlerinizi seçin\r\n- &#x1F4A1; Somut örneklerle destekleyin\r\n\r\n### \"Zayıf yönleriniz?\"\r\n- &#x1F91D; Dürüst olun ama kendinizi kötülemeyin\r\n- &#x1F4C8; Nasıl geliştirmeye çalıştığınızı anlatın\r\n\r\n### \"5 yıl sonra kendinizi nerede görüyorsunuz?\"\r\n- &#x1F680; Kariyer hedeflerinizden bahsedin\r\n- &#x1F3E2; Şirketle birlikte büyümek istediğinizi belirtin\r\n\r\n## &#x1F4E7; Görüşme Sonrası\r\n- &#x1F64F; Teşekkür e-postası gönderin\r\n- &#x23F0; Geri dönüş süresini sorun\r\n- &#x1F9D8; Sabırlı olun",
+                            ContentCategoryId = 2,
+                            Slug = "is-gorusmesine-hazirlik",
+                            Summary = "İş görüşmesinde başarılı olmanın püf noktaları. Sık sorulan sorular ve nasıl cevaplanır?",
+                            Title = "İş Görüşmesine Hazırlık"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Content = "# &#x1F680; Staj ve İş Bulma Stratejileri\r\n\r\n## &#x1F310; İş Arama Platformları\r\n1. **LinkedIn** - &#x1F465; Profesyonel networking\r\n2. **Kariyer.net** - &#x1F4BC; İş ilanları\r\n3. **SecretCV** - &#x1F575; Anonim başvuru\r\n4. **GitHub Jobs** - &#x1F4BB; Yazılım pozisyonları\r\n5. **AngelList** - &#x1F680; Startup'lar\r\n\r\n## &#x1F91D; Networking İpuçları\r\n- &#x1F4C8; LinkedIn profilinizi güncel tutun\r\n- &#x1F3AA; Sektör etkinliklerine katılın\r\n- &#x1F393; Üniversite mezunları ağınızı kullanın\r\n- &#x1F468;&#x1F3EB; Mentorluk programlarına başvurun\r\n\r\n## &#x1F4BC; Staj Başvurusu\r\n- **Ne zaman başvurmalı?** \r\n  &#x2600; Yazın staj için 3-4 ay önce başlayın\r\n  \r\n- **Başvuru mektubu yazın**\r\n  &#x270D; Neden o şirkette çalışmak istediğinizi açıklayın\r\n\r\n- **Portföy hazırlayın**\r\n  &#x1F4BB; GitHub projeleri, kişisel web sitesi\r\n\r\n## &#x1F3AF; İlk İş İçin İpuçları\r\n- &#x1F4B0; Maaş beklentinizi araştırın\r\n- &#x1F3E2; Şirket kültürüne dikkat edin\r\n- &#x1F4C8; Gelişim fırsatlarını değerlendirin\r\n- &#x23F3; İlk işinizde 1-2 yıl kalın",
+                            ContentCategoryId = 2,
+                            Slug = "staj-is-bulma",
+                            Summary = "İlk stajınızı veya işinizi nasıl bulursunuz? Hangi platformları kullanmalısınız? Networking nasıl yapılır?",
+                            Title = "Staj ve İş Bulma Stratejileri"
+                        });
+                });
+
+            modelBuilder.Entity("microbloom.Entities.ContentCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ContentCategories", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Slug = "universiteye-hazirlik",
+                            Title = "Üniversiteye Hazırlık"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Slug = "profesyonel-hayat",
+                            Title = "İlk İşim ve Profesyonel Hayat"
+                        });
+                });
+
+            modelBuilder.Entity("microbloom.Entities.CvSample", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FileDownloadUrl")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ThumbnailImageUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CvSamples", (string)null);
+                });
+
+            modelBuilder.Entity("microbloom.Entities.Department", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("LastYearBaseRanking")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("LastYearBaseScore")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ScoreType")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UniversityId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UniversityId");
+
+                    b.ToTable("Departments", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            LastYearBaseRanking = 1850,
+                            LastYearBaseScore = 520.5,
+                            Name = "Hukuk",
+                            ScoreType = "EA",
+                            UniversityId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            LastYearBaseRanking = 850,
+                            LastYearBaseScore = 545.20000000000005,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            LastYearBaseRanking = 3200,
+                            LastYearBaseScore = 495.30000000000001,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            LastYearBaseRanking = 4500,
+                            LastYearBaseScore = 485.69999999999999,
+                            Name = "Psikoloji",
+                            ScoreType = "EA",
+                            UniversityId = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            LastYearBaseRanking = 1250,
+                            LastYearBaseScore = 525.5,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 2
+                        },
+                        new
+                        {
+                            Id = 6,
+                            LastYearBaseRanking = 1580,
+                            LastYearBaseScore = 520.29999999999995,
+                            Name = "Elektrik-Elektronik Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 2
+                        },
+                        new
+                        {
+                            Id = 7,
+                            LastYearBaseRanking = 2100,
+                            LastYearBaseScore = 515.79999999999995,
+                            Name = "Makine Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 2
+                        },
+                        new
+                        {
+                            Id = 8,
+                            LastYearBaseRanking = 2450,
+                            LastYearBaseScore = 512.39999999999998,
+                            Name = "İnşaat Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 2
+                        },
+                        new
+                        {
+                            Id = 9,
+                            LastYearBaseRanking = 980,
+                            LastYearBaseScore = 530.20000000000005,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 3
+                        },
+                        new
+                        {
+                            Id = 10,
+                            LastYearBaseRanking = 3200,
+                            LastYearBaseScore = 495.5,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 3
+                        },
+                        new
+                        {
+                            Id = 11,
+                            LastYearBaseRanking = 4500,
+                            LastYearBaseScore = 485.30000000000001,
+                            Name = "Psikoloji",
+                            ScoreType = "EA",
+                            UniversityId = 3
+                        },
+                        new
+                        {
+                            Id = 12,
+                            LastYearBaseRanking = 3800,
+                            LastYearBaseScore = 490.80000000000001,
+                            Name = "Ekonomi",
+                            ScoreType = "EA",
+                            UniversityId = 3
+                        },
+                        new
+                        {
+                            Id = 13,
+                            LastYearBaseRanking = 2350,
+                            LastYearBaseScore = 510.5,
+                            Name = "Hukuk",
+                            ScoreType = "EA",
+                            UniversityId = 4
+                        },
+                        new
+                        {
+                            Id = 14,
+                            LastYearBaseRanking = 1150,
+                            LastYearBaseScore = 535.79999999999995,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 4
+                        },
+                        new
+                        {
+                            Id = 15,
+                            LastYearBaseRanking = 4200,
+                            LastYearBaseScore = 485.19999999999999,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 4
+                        },
+                        new
+                        {
+                            Id = 16,
+                            LastYearBaseRanking = 5100,
+                            LastYearBaseScore = 475.60000000000002,
+                            Name = "İktisat",
+                            ScoreType = "EA",
+                            UniversityId = 4
+                        },
+                        new
+                        {
+                            Id = 17,
+                            LastYearBaseRanking = 1750,
+                            LastYearBaseScore = 518.39999999999998,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 5
+                        },
+                        new
+                        {
+                            Id = 18,
+                            LastYearBaseRanking = 2850,
+                            LastYearBaseScore = 505.19999999999999,
+                            Name = "İnşaat Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 5
+                        },
+                        new
+                        {
+                            Id = 19,
+                            LastYearBaseRanking = 2650,
+                            LastYearBaseScore = 508.69999999999999,
+                            Name = "Makine Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 5
+                        },
+                        new
+                        {
+                            Id = 20,
+                            LastYearBaseRanking = 2150,
+                            LastYearBaseScore = 515.29999999999995,
+                            Name = "Hukuk",
+                            ScoreType = "EA",
+                            UniversityId = 6
+                        },
+                        new
+                        {
+                            Id = 21,
+                            LastYearBaseRanking = 3450,
+                            LastYearBaseScore = 492.5,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 6
+                        },
+                        new
+                        {
+                            Id = 22,
+                            LastYearBaseRanking = 3900,
+                            LastYearBaseScore = 488.89999999999998,
+                            Name = "Uluslararası İlişkiler",
+                            ScoreType = "EA",
+                            UniversityId = 6
+                        },
+                        new
+                        {
+                            Id = 23,
+                            LastYearBaseRanking = 1650,
+                            LastYearBaseScore = 522.79999999999995,
+                            Name = "Hukuk",
+                            ScoreType = "EA",
+                            UniversityId = 7
+                        },
+                        new
+                        {
+                            Id = 24,
+                            LastYearBaseRanking = 920,
+                            LastYearBaseScore = 542.29999999999995,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 7
+                        },
+                        new
+                        {
+                            Id = 25,
+                            LastYearBaseRanking = 4850,
+                            LastYearBaseScore = 495.69999999999999,
+                            Name = "Veterinerlik",
+                            ScoreType = "SAY",
+                            UniversityId = 7
+                        },
+                        new
+                        {
+                            Id = 26,
+                            LastYearBaseRanking = 3200,
+                            LastYearBaseScore = 510.19999999999999,
+                            Name = "Eczacılık",
+                            ScoreType = "SAY",
+                            UniversityId = 7
+                        },
+                        new
+                        {
+                            Id = 27,
+                            LastYearBaseRanking = 1100,
+                            LastYearBaseScore = 528.70000000000005,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 8
+                        },
+                        new
+                        {
+                            Id = 28,
+                            LastYearBaseRanking = 1850,
+                            LastYearBaseScore = 518.20000000000005,
+                            Name = "Endüstri Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 8
+                        },
+                        new
+                        {
+                            Id = 29,
+                            LastYearBaseRanking = 1450,
+                            LastYearBaseScore = 522.5,
+                            Name = "Elektrik-Elektronik Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 8
+                        },
+                        new
+                        {
+                            Id = 30,
+                            LastYearBaseRanking = 2150,
+                            LastYearBaseScore = 515.29999999999995,
+                            Name = "Makine Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 8
+                        },
+                        new
+                        {
+                            Id = 31,
+                            LastYearBaseRanking = 750,
+                            LastYearBaseScore = 548.5,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 9
+                        },
+                        new
+                        {
+                            Id = 32,
+                            LastYearBaseRanking = 1650,
+                            LastYearBaseScore = 525.29999999999995,
+                            Name = "Diş Hekimliği",
+                            ScoreType = "SAY",
+                            UniversityId = 9
+                        },
+                        new
+                        {
+                            Id = 33,
+                            LastYearBaseRanking = 2250,
+                            LastYearBaseScore = 518.70000000000005,
+                            Name = "Eczacılık",
+                            ScoreType = "SAY",
+                            UniversityId = 9
+                        },
+                        new
+                        {
+                            Id = 34,
+                            LastYearBaseRanking = 3550,
+                            LastYearBaseScore = 492.39999999999998,
+                            Name = "Psikoloji",
+                            ScoreType = "EA",
+                            UniversityId = 9
+                        },
+                        new
+                        {
+                            Id = 35,
+                            LastYearBaseRanking = 1250,
+                            LastYearBaseScore = 535.20000000000005,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 10
+                        },
+                        new
+                        {
+                            Id = 36,
+                            LastYearBaseRanking = 2650,
+                            LastYearBaseScore = 505.80000000000001,
+                            Name = "Hukuk",
+                            ScoreType = "EA",
+                            UniversityId = 10
+                        },
+                        new
+                        {
+                            Id = 37,
+                            LastYearBaseRanking = 2850,
+                            LastYearBaseScore = 508.39999999999998,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 10
+                        },
+                        new
+                        {
+                            Id = 38,
+                            LastYearBaseRanking = 4850,
+                            LastYearBaseScore = 478.30000000000001,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 10
+                        },
+                        new
+                        {
+                            Id = 39,
+                            LastYearBaseRanking = 1050,
+                            LastYearBaseScore = 538.70000000000005,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 12
+                        },
+                        new
+                        {
+                            Id = 40,
+                            LastYearBaseRanking = 1850,
+                            LastYearBaseScore = 520.5,
+                            Name = "Diş Hekimliği",
+                            ScoreType = "SAY",
+                            UniversityId = 12
+                        },
+                        new
+                        {
+                            Id = 41,
+                            LastYearBaseRanking = 2450,
+                            LastYearBaseScore = 512.79999999999995,
+                            Name = "Eczacılık",
+                            ScoreType = "SAY",
+                            UniversityId = 12
+                        },
+                        new
+                        {
+                            Id = 42,
+                            LastYearBaseRanking = 4350,
+                            LastYearBaseScore = 482.5,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 12
+                        },
+                        new
+                        {
+                            Id = 43,
+                            LastYearBaseRanking = 1350,
+                            LastYearBaseScore = 532.39999999999998,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 13
+                        },
+                        new
+                        {
+                            Id = 44,
+                            LastYearBaseRanking = 2850,
+                            LastYearBaseScore = 502.69999999999999,
+                            Name = "Hukuk",
+                            ScoreType = "EA",
+                            UniversityId = 13
+                        },
+                        new
+                        {
+                            Id = 45,
+                            LastYearBaseRanking = 2950,
+                            LastYearBaseScore = 505.80000000000001,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 13
+                        },
+                        new
+                        {
+                            Id = 46,
+                            LastYearBaseRanking = 5150,
+                            LastYearBaseScore = 475.39999999999998,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 13
+                        },
+                        new
+                        {
+                            Id = 47,
+                            LastYearBaseRanking = 2050,
+                            LastYearBaseScore = 515.70000000000005,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 14
+                        },
+                        new
+                        {
+                            Id = 48,
+                            LastYearBaseRanking = 2750,
+                            LastYearBaseScore = 508.30000000000001,
+                            Name = "Elektrik-Elektronik Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 14
+                        },
+                        new
+                        {
+                            Id = 49,
+                            LastYearBaseRanking = 3150,
+                            LastYearBaseScore = 502.60000000000002,
+                            Name = "Makine Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 14
+                        },
+                        new
+                        {
+                            Id = 50,
+                            LastYearBaseRanking = 1450,
+                            LastYearBaseScore = 528.5,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 16
+                        },
+                        new
+                        {
+                            Id = 51,
+                            LastYearBaseRanking = 2550,
+                            LastYearBaseScore = 512.29999999999995,
+                            Name = "Diş Hekimliği",
+                            ScoreType = "SAY",
+                            UniversityId = 16
+                        },
+                        new
+                        {
+                            Id = 52,
+                            LastYearBaseRanking = 3350,
+                            LastYearBaseScore = 495.80000000000001,
+                            Name = "Hukuk",
+                            ScoreType = "EA",
+                            UniversityId = 16
+                        },
+                        new
+                        {
+                            Id = 53,
+                            LastYearBaseRanking = 5450,
+                            LastYearBaseScore = 472.39999999999998,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 16
+                        },
+                        new
+                        {
+                            Id = 54,
+                            LastYearBaseRanking = 1550,
+                            LastYearBaseScore = 525.70000000000005,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 17
+                        },
+                        new
+                        {
+                            Id = 55,
+                            LastYearBaseRanking = 3550,
+                            LastYearBaseScore = 492.5,
+                            Name = "Hukuk",
+                            ScoreType = "EA",
+                            UniversityId = 17
+                        },
+                        new
+                        {
+                            Id = 56,
+                            LastYearBaseRanking = 4250,
+                            LastYearBaseScore = 488.30000000000001,
+                            Name = "Veterinerlik",
+                            ScoreType = "SAY",
+                            UniversityId = 17
+                        },
+                        new
+                        {
+                            Id = 57,
+                            LastYearBaseRanking = 5850,
+                            LastYearBaseScore = 468.89999999999998,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 17
+                        },
+                        new
+                        {
+                            Id = 58,
+                            LastYearBaseRanking = 1320,
+                            LastYearBaseScore = 524.79999999999995,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 31
+                        },
+                        new
+                        {
+                            Id = 59,
+                            LastYearBaseRanking = 3800,
+                            LastYearBaseScore = 490.19999999999999,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 31
+                        },
+                        new
+                        {
+                            Id = 60,
+                            LastYearBaseRanking = 2550,
+                            LastYearBaseScore = 508.5,
+                            Name = "Hukuk",
+                            ScoreType = "EA",
+                            UniversityId = 31
+                        },
+                        new
+                        {
+                            Id = 61,
+                            LastYearBaseRanking = 3250,
+                            LastYearBaseScore = 495.69999999999999,
+                            Name = "Ekonomi",
+                            ScoreType = "EA",
+                            UniversityId = 31
+                        },
+                        new
+                        {
+                            Id = 62,
+                            LastYearBaseRanking = 1450,
+                            LastYearBaseScore = 522.5,
+                            Name = "Bilgisayar Bilimi ve Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 32
+                        },
+                        new
+                        {
+                            Id = 63,
+                            LastYearBaseRanking = 2350,
+                            LastYearBaseScore = 512.29999999999995,
+                            Name = "Endüstri Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 32
+                        },
+                        new
+                        {
+                            Id = 64,
+                            LastYearBaseRanking = 3950,
+                            LastYearBaseScore = 488.60000000000002,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 32
+                        },
+                        new
+                        {
+                            Id = 65,
+                            LastYearBaseRanking = 3600,
+                            LastYearBaseScore = 492.30000000000001,
+                            Name = "Ekonomi",
+                            ScoreType = "EA",
+                            UniversityId = 32
+                        },
+                        new
+                        {
+                            Id = 66,
+                            LastYearBaseRanking = 2950,
+                            LastYearBaseScore = 505.39999999999998,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 33
+                        },
+                        new
+                        {
+                            Id = 67,
+                            LastYearBaseRanking = 5050,
+                            LastYearBaseScore = 475.80000000000001,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 33
+                        },
+                        new
+                        {
+                            Id = 68,
+                            LastYearBaseRanking = 3950,
+                            LastYearBaseScore = 488.5,
+                            Name = "Hukuk",
+                            ScoreType = "EA",
+                            UniversityId = 33
+                        },
+                        new
+                        {
+                            Id = 69,
+                            LastYearBaseRanking = 3850,
+                            LastYearBaseScore = 495.19999999999999,
+                            Name = "Mimarlık",
+                            ScoreType = "SAY",
+                            UniversityId = 33
+                        },
+                        new
+                        {
+                            Id = 70,
+                            LastYearBaseRanking = 1280,
+                            LastYearBaseScore = 526.5,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 41
+                        },
+                        new
+                        {
+                            Id = 71,
+                            LastYearBaseRanking = 3250,
+                            LastYearBaseScore = 495.80000000000001,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 41
+                        },
+                        new
+                        {
+                            Id = 72,
+                            LastYearBaseRanking = 2450,
+                            LastYearBaseScore = 510.39999999999998,
+                            Name = "Hukuk",
+                            ScoreType = "EA",
+                            UniversityId = 41
+                        },
+                        new
+                        {
+                            Id = 73,
+                            LastYearBaseRanking = 2850,
+                            LastYearBaseScore = 502.69999999999999,
+                            Name = "Uluslararası İlişkiler",
+                            ScoreType = "EA",
+                            UniversityId = 41
+                        },
+                        new
+                        {
+                            Id = 74,
+                            LastYearBaseRanking = 1380,
+                            LastYearBaseScore = 530.5,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 20
+                        },
+                        new
+                        {
+                            Id = 75,
+                            LastYearBaseRanking = 2150,
+                            LastYearBaseScore = 515.79999999999995,
+                            Name = "Diş Hekimliği",
+                            ScoreType = "SAY",
+                            UniversityId = 20
+                        },
+                        new
+                        {
+                            Id = 76,
+                            LastYearBaseRanking = 3350,
+                            LastYearBaseScore = 495.39999999999998,
+                            Name = "Hukuk",
+                            ScoreType = "EA",
+                            UniversityId = 20
+                        },
+                        new
+                        {
+                            Id = 77,
+                            LastYearBaseRanking = 5150,
+                            LastYearBaseScore = 475.19999999999999,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 20
+                        },
+                        new
+                        {
+                            Id = 78,
+                            LastYearBaseRanking = 1450,
+                            LastYearBaseScore = 528.29999999999995,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 19
+                        },
+                        new
+                        {
+                            Id = 79,
+                            LastYearBaseRanking = 2550,
+                            LastYearBaseScore = 512.5,
+                            Name = "Diş Hekimliği",
+                            ScoreType = "SAY",
+                            UniversityId = 19
+                        },
+                        new
+                        {
+                            Id = 80,
+                            LastYearBaseRanking = 3850,
+                            LastYearBaseScore = 492.69999999999999,
+                            Name = "Veterinerlik",
+                            ScoreType = "SAY",
+                            UniversityId = 19
+                        },
+                        new
+                        {
+                            Id = 81,
+                            LastYearBaseRanking = 6250,
+                            LastYearBaseScore = 468.5,
+                            Name = "Ziraat Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 19
+                        },
+                        new
+                        {
+                            Id = 82,
+                            LastYearBaseRanking = 1480,
+                            LastYearBaseScore = 526.79999999999995,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 21
+                        },
+                        new
+                        {
+                            Id = 83,
+                            LastYearBaseRanking = 2650,
+                            LastYearBaseScore = 510.5,
+                            Name = "Diş Hekimliği",
+                            ScoreType = "SAY",
+                            UniversityId = 21
+                        },
+                        new
+                        {
+                            Id = 84,
+                            LastYearBaseRanking = 3950,
+                            LastYearBaseScore = 490.30000000000001,
+                            Name = "Veterinerlik",
+                            ScoreType = "SAY",
+                            UniversityId = 21
+                        },
+                        new
+                        {
+                            Id = 85,
+                            LastYearBaseRanking = 6050,
+                            LastYearBaseScore = 470.19999999999999,
+                            Name = "Ziraat Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 21
+                        },
+                        new
+                        {
+                            Id = 86,
+                            LastYearBaseRanking = 1420,
+                            LastYearBaseScore = 528.5,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 22
+                        },
+                        new
+                        {
+                            Id = 87,
+                            LastYearBaseRanking = 3050,
+                            LastYearBaseScore = 502.80000000000001,
+                            Name = "İnşaat Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 22
+                        },
+                        new
+                        {
+                            Id = 88,
+                            LastYearBaseRanking = 2950,
+                            LastYearBaseScore = 505.39999999999998,
+                            Name = "Elektrik-Elektronik Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 22
+                        },
+                        new
+                        {
+                            Id = 89,
+                            LastYearBaseRanking = 3250,
+                            LastYearBaseScore = 500.60000000000002,
+                            Name = "Makine Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 22
+                        },
+                        new
+                        {
+                            Id = 90,
+                            LastYearBaseRanking = 1350,
+                            LastYearBaseScore = 530.20000000000005,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 23
+                        },
+                        new
+                        {
+                            Id = 91,
+                            LastYearBaseRanking = 2450,
+                            LastYearBaseScore = 512.70000000000005,
+                            Name = "Diş Hekimliği",
+                            ScoreType = "SAY",
+                            UniversityId = 23
+                        },
+                        new
+                        {
+                            Id = 92,
+                            LastYearBaseRanking = 3750,
+                            LastYearBaseScore = 492.5,
+                            Name = "Veterinerlik",
+                            ScoreType = "SAY",
+                            UniversityId = 23
+                        },
+                        new
+                        {
+                            Id = 93,
+                            LastYearBaseRanking = 4950,
+                            LastYearBaseScore = 476.80000000000001,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 23
+                        },
+                        new
+                        {
+                            Id = 94,
+                            LastYearBaseRanking = 1450,
+                            LastYearBaseScore = 527.5,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 24
+                        },
+                        new
+                        {
+                            Id = 95,
+                            LastYearBaseRanking = 2750,
+                            LastYearBaseScore = 508.39999999999998,
+                            Name = "Eczacılık",
+                            ScoreType = "SAY",
+                            UniversityId = 24
+                        },
+                        new
+                        {
+                            Id = 96,
+                            LastYearBaseRanking = 4750,
+                            LastYearBaseScore = 478.5,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 24
+                        },
+                        new
+                        {
+                            Id = 97,
+                            LastYearBaseRanking = 5350,
+                            LastYearBaseScore = 472.30000000000001,
+                            Name = "İktisat",
+                            ScoreType = "EA",
+                            UniversityId = 24
+                        },
+                        new
+                        {
+                            Id = 98,
+                            LastYearBaseRanking = 1550,
+                            LastYearBaseScore = 525.79999999999995,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 25
+                        },
+                        new
+                        {
+                            Id = 99,
+                            LastYearBaseRanking = 2750,
+                            LastYearBaseScore = 508.5,
+                            Name = "Diş Hekimliği",
+                            ScoreType = "SAY",
+                            UniversityId = 25
+                        },
+                        new
+                        {
+                            Id = 100,
+                            LastYearBaseRanking = 3650,
+                            LastYearBaseScore = 495.69999999999999,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 25
+                        },
+                        new
+                        {
+                            Id = 101,
+                            LastYearBaseRanking = 5550,
+                            LastYearBaseScore = 470.5,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 25
+                        },
+                        new
+                        {
+                            Id = 102,
+                            LastYearBaseRanking = 1750,
+                            LastYearBaseScore = 522.5,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 26
+                        },
+                        new
+                        {
+                            Id = 103,
+                            LastYearBaseRanking = 2950,
+                            LastYearBaseScore = 505.80000000000001,
+                            Name = "Diş Hekimliği",
+                            ScoreType = "SAY",
+                            UniversityId = 26
+                        },
+                        new
+                        {
+                            Id = 104,
+                            LastYearBaseRanking = 4350,
+                            LastYearBaseScore = 485.39999999999998,
+                            Name = "Veterinerlik",
+                            ScoreType = "SAY",
+                            UniversityId = 26
+                        },
+                        new
+                        {
+                            Id = 105,
+                            LastYearBaseRanking = 3950,
+                            LastYearBaseScore = 488.5,
+                            Name = "Hukuk",
+                            ScoreType = "EA",
+                            UniversityId = 26
+                        },
+                        new
+                        {
+                            Id = 106,
+                            LastYearBaseRanking = 1520,
+                            LastYearBaseScore = 526.29999999999995,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 27
+                        },
+                        new
+                        {
+                            Id = 107,
+                            LastYearBaseRanking = 2650,
+                            LastYearBaseScore = 510.19999999999999,
+                            Name = "Diş Hekimliği",
+                            ScoreType = "SAY",
+                            UniversityId = 27
+                        },
+                        new
+                        {
+                            Id = 108,
+                            LastYearBaseRanking = 3650,
+                            LastYearBaseScore = 495.80000000000001,
+                            Name = "Mimarlık",
+                            ScoreType = "SAY",
+                            UniversityId = 27
+                        },
+                        new
+                        {
+                            Id = 109,
+                            LastYearBaseRanking = 5350,
+                            LastYearBaseScore = 472.69999999999999,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 27
+                        },
+                        new
+                        {
+                            Id = 110,
+                            LastYearBaseRanking = 1650,
+                            LastYearBaseScore = 524.5,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 28
+                        },
+                        new
+                        {
+                            Id = 111,
+                            LastYearBaseRanking = 2750,
+                            LastYearBaseScore = 508.69999999999999,
+                            Name = "Diş Hekimliği",
+                            ScoreType = "SAY",
+                            UniversityId = 28
+                        },
+                        new
+                        {
+                            Id = 112,
+                            LastYearBaseRanking = 3750,
+                            LastYearBaseScore = 490.5,
+                            Name = "Hukuk",
+                            ScoreType = "EA",
+                            UniversityId = 28
+                        },
+                        new
+                        {
+                            Id = 113,
+                            LastYearBaseRanking = 5750,
+                            LastYearBaseScore = 468.80000000000001,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 28
+                        },
+                        new
+                        {
+                            Id = 114,
+                            LastYearBaseRanking = 1480,
+                            LastYearBaseScore = 526.79999999999995,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 29
+                        },
+                        new
+                        {
+                            Id = 115,
+                            LastYearBaseRanking = 2650,
+                            LastYearBaseScore = 510.5,
+                            Name = "Diş Hekimliği",
+                            ScoreType = "SAY",
+                            UniversityId = 29
+                        },
+                        new
+                        {
+                            Id = 116,
+                            LastYearBaseRanking = 3150,
+                            LastYearBaseScore = 502.39999999999998,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 29
+                        },
+                        new
+                        {
+                            Id = 117,
+                            LastYearBaseRanking = 5050,
+                            LastYearBaseScore = 475.30000000000001,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 29
+                        },
+                        new
+                        {
+                            Id = 118,
+                            LastYearBaseRanking = 1420,
+                            LastYearBaseScore = 528.20000000000005,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 30
+                        },
+                        new
+                        {
+                            Id = 119,
+                            LastYearBaseRanking = 2450,
+                            LastYearBaseScore = 512.5,
+                            Name = "Diş Hekimliği",
+                            ScoreType = "SAY",
+                            UniversityId = 30
+                        },
+                        new
+                        {
+                            Id = 120,
+                            LastYearBaseRanking = 2950,
+                            LastYearBaseScore = 505.80000000000001,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 30
+                        },
+                        new
+                        {
+                            Id = 121,
+                            LastYearBaseRanking = 4950,
+                            LastYearBaseScore = 476.5,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 30
+                        },
+                        new
+                        {
+                            Id = 122,
+                            LastYearBaseRanking = 2850,
+                            LastYearBaseScore = 502.5,
+                            Name = "Hukuk",
+                            ScoreType = "EA",
+                            UniversityId = 34
+                        },
+                        new
+                        {
+                            Id = 123,
+                            LastYearBaseRanking = 4150,
+                            LastYearBaseScore = 485.80000000000001,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 34
+                        },
+                        new
+                        {
+                            Id = 124,
+                            LastYearBaseRanking = 4450,
+                            LastYearBaseScore = 482.5,
+                            Name = "Psikoloji",
+                            ScoreType = "EA",
+                            UniversityId = 34
+                        },
+                        new
+                        {
+                            Id = 125,
+                            LastYearBaseRanking = 3850,
+                            LastYearBaseScore = 488.69999999999999,
+                            Name = "Uluslararası İlişkiler",
+                            ScoreType = "EA",
+                            UniversityId = 34
+                        },
+                        new
+                        {
+                            Id = 126,
+                            LastYearBaseRanking = 2050,
+                            LastYearBaseScore = 515.79999999999995,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 35
+                        },
+                        new
+                        {
+                            Id = 127,
+                            LastYearBaseRanking = 2750,
+                            LastYearBaseScore = 508.5,
+                            Name = "Endüstri Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 35
+                        },
+                        new
+                        {
+                            Id = 128,
+                            LastYearBaseRanking = 4250,
+                            LastYearBaseScore = 485.39999999999998,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 35
+                        },
+                        new
+                        {
+                            Id = 129,
+                            LastYearBaseRanking = 3350,
+                            LastYearBaseScore = 495.80000000000001,
+                            Name = "Hukuk",
+                            ScoreType = "EA",
+                            UniversityId = 35
+                        },
+                        new
+                        {
+                            Id = 130,
+                            LastYearBaseRanking = 3350,
+                            LastYearBaseScore = 495.5,
+                            Name = "Hukuk",
+                            ScoreType = "EA",
+                            UniversityId = 36
+                        },
+                        new
+                        {
+                            Id = 131,
+                            LastYearBaseRanking = 4750,
+                            LastYearBaseScore = 478.80000000000001,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 36
+                        },
+                        new
+                        {
+                            Id = 132,
+                            LastYearBaseRanking = 3150,
+                            LastYearBaseScore = 502.5,
+                            Name = "Endüstri Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 36
+                        },
+                        new
+                        {
+                            Id = 133,
+                            LastYearBaseRanking = 2950,
+                            LastYearBaseScore = 505.80000000000001,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 36
+                        },
+                        new
+                        {
+                            Id = 134,
+                            LastYearBaseRanking = 1150,
+                            LastYearBaseScore = 535.5,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 37
+                        },
+                        new
+                        {
+                            Id = 135,
+                            LastYearBaseRanking = 1950,
+                            LastYearBaseScore = 518.79999999999995,
+                            Name = "Diş Hekimliği",
+                            ScoreType = "SAY",
+                            UniversityId = 37
+                        },
+                        new
+                        {
+                            Id = 136,
+                            LastYearBaseRanking = 3150,
+                            LastYearBaseScore = 498.5,
+                            Name = "Hukuk",
+                            ScoreType = "EA",
+                            UniversityId = 37
+                        },
+                        new
+                        {
+                            Id = 137,
+                            LastYearBaseRanking = 4450,
+                            LastYearBaseScore = 482.69999999999999,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 37
+                        },
+                        new
+                        {
+                            Id = 138,
+                            LastYearBaseRanking = 5050,
+                            LastYearBaseScore = 475.5,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 38
+                        },
+                        new
+                        {
+                            Id = 139,
+                            LastYearBaseRanking = 5350,
+                            LastYearBaseScore = 472.80000000000001,
+                            Name = "Uluslararası Ticaret",
+                            ScoreType = "EA",
+                            UniversityId = 38
+                        },
+                        new
+                        {
+                            Id = 140,
+                            LastYearBaseRanking = 5750,
+                            LastYearBaseScore = 468.5,
+                            Name = "İktisat",
+                            ScoreType = "EA",
+                            UniversityId = 38
+                        },
+                        new
+                        {
+                            Id = 141,
+                            LastYearBaseRanking = 3750,
+                            LastYearBaseScore = 495.39999999999998,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 38
+                        },
+                        new
+                        {
+                            Id = 142,
+                            LastYearBaseRanking = 4250,
+                            LastYearBaseScore = 485.5,
+                            Name = "Hukuk",
+                            ScoreType = "EA",
+                            UniversityId = 39
+                        },
+                        new
+                        {
+                            Id = 143,
+                            LastYearBaseRanking = 5350,
+                            LastYearBaseScore = 472.80000000000001,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 39
+                        },
+                        new
+                        {
+                            Id = 144,
+                            LastYearBaseRanking = 4150,
+                            LastYearBaseScore = 488.5,
+                            Name = "Mimarlık",
+                            ScoreType = "SAY",
+                            UniversityId = 39
+                        },
+                        new
+                        {
+                            Id = 145,
+                            LastYearBaseRanking = 3850,
+                            LastYearBaseScore = 492.69999999999999,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 39
+                        },
+                        new
+                        {
+                            Id = 146,
+                            LastYearBaseRanking = 4750,
+                            LastYearBaseScore = 478.5,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 40
+                        },
+                        new
+                        {
+                            Id = 147,
+                            LastYearBaseRanking = 3450,
+                            LastYearBaseScore = 498.80000000000001,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 40
+                        },
+                        new
+                        {
+                            Id = 148,
+                            LastYearBaseRanking = 3650,
+                            LastYearBaseScore = 495.5,
+                            Name = "Endüstri Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 40
+                        },
+                        new
+                        {
+                            Id = 149,
+                            LastYearBaseRanking = 5350,
+                            LastYearBaseScore = 472.5,
+                            Name = "İktisat",
+                            ScoreType = "EA",
+                            UniversityId = 40
+                        },
+                        new
+                        {
+                            Id = 150,
+                            LastYearBaseRanking = 2950,
+                            LastYearBaseScore = 505.80000000000001,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 42
+                        },
+                        new
+                        {
+                            Id = 151,
+                            LastYearBaseRanking = 3450,
+                            LastYearBaseScore = 498.5,
+                            Name = "Endüstri Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 42
+                        },
+                        new
+                        {
+                            Id = 152,
+                            LastYearBaseRanking = 5050,
+                            LastYearBaseScore = 475.80000000000001,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 42
+                        },
+                        new
+                        {
+                            Id = 153,
+                            LastYearBaseRanking = 3950,
+                            LastYearBaseScore = 488.5,
+                            Name = "Hukuk",
+                            ScoreType = "EA",
+                            UniversityId = 42
+                        },
+                        new
+                        {
+                            Id = 154,
+                            LastYearBaseRanking = 1280,
+                            LastYearBaseScore = 532.5,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 43
+                        },
+                        new
+                        {
+                            Id = 155,
+                            LastYearBaseRanking = 2150,
+                            LastYearBaseScore = 515.79999999999995,
+                            Name = "Diş Hekimliği",
+                            ScoreType = "SAY",
+                            UniversityId = 43
+                        },
+                        new
+                        {
+                            Id = 156,
+                            LastYearBaseRanking = 3650,
+                            LastYearBaseScore = 492.5,
+                            Name = "Hukuk",
+                            ScoreType = "EA",
+                            UniversityId = 43
+                        },
+                        new
+                        {
+                            Id = 157,
+                            LastYearBaseRanking = 4750,
+                            LastYearBaseScore = 478.80000000000001,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 43
+                        },
+                        new
+                        {
+                            Id = 158,
+                            LastYearBaseRanking = 3150,
+                            LastYearBaseScore = 502.5,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 44
+                        },
+                        new
+                        {
+                            Id = 159,
+                            LastYearBaseRanking = 3650,
+                            LastYearBaseScore = 495.80000000000001,
+                            Name = "Endüstri Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 44
+                        },
+                        new
+                        {
+                            Id = 160,
+                            LastYearBaseRanking = 5350,
+                            LastYearBaseScore = 472.5,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 44
+                        },
+                        new
+                        {
+                            Id = 161,
+                            LastYearBaseRanking = 4050,
+                            LastYearBaseScore = 488.69999999999999,
+                            Name = "Mimarlık",
+                            ScoreType = "SAY",
+                            UniversityId = 44
+                        },
+                        new
+                        {
+                            Id = 162,
+                            LastYearBaseRanking = 2450,
+                            LastYearBaseScore = 512.5,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 45
+                        },
+                        new
+                        {
+                            Id = 163,
+                            LastYearBaseRanking = 2950,
+                            LastYearBaseScore = 505.80000000000001,
+                            Name = "Endüstri Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 45
+                        },
+                        new
+                        {
+                            Id = 164,
+                            LastYearBaseRanking = 4250,
+                            LastYearBaseScore = 485.5,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 45
+                        },
+                        new
+                        {
+                            Id = 165,
+                            LastYearBaseRanking = 4450,
+                            LastYearBaseScore = 482.80000000000001,
+                            Name = "Ekonomi",
+                            ScoreType = "EA",
+                            UniversityId = 45
+                        },
+                        new
+                        {
+                            Id = 166,
+                            LastYearBaseRanking = 4450,
+                            LastYearBaseScore = 482.5,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 46
+                        },
+                        new
+                        {
+                            Id = 167,
+                            LastYearBaseRanking = 4750,
+                            LastYearBaseScore = 478.80000000000001,
+                            Name = "Uluslararası İlişkiler",
+                            ScoreType = "EA",
+                            UniversityId = 46
+                        },
+                        new
+                        {
+                            Id = 168,
+                            LastYearBaseRanking = 3450,
+                            LastYearBaseScore = 498.5,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 46
+                        },
+                        new
+                        {
+                            Id = 169,
+                            LastYearBaseRanking = 3850,
+                            LastYearBaseScore = 492.69999999999999,
+                            Name = "Mimarlık",
+                            ScoreType = "SAY",
+                            UniversityId = 46
+                        },
+                        new
+                        {
+                            Id = 170,
+                            LastYearBaseRanking = 5050,
+                            LastYearBaseScore = 475.80000000000001,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 47
+                        },
+                        new
+                        {
+                            Id = 171,
+                            LastYearBaseRanking = 3650,
+                            LastYearBaseScore = 495.5,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 47
+                        },
+                        new
+                        {
+                            Id = 172,
+                            LastYearBaseRanking = 3850,
+                            LastYearBaseScore = 492.80000000000001,
+                            Name = "Endüstri Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 47
+                        },
+                        new
+                        {
+                            Id = 173,
+                            LastYearBaseRanking = 4050,
+                            LastYearBaseScore = 488.5,
+                            Name = "Mimarlık",
+                            ScoreType = "SAY",
+                            UniversityId = 47
+                        },
+                        new
+                        {
+                            Id = 174,
+                            LastYearBaseRanking = 2750,
+                            LastYearBaseScore = 508.5,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 49
+                        },
+                        new
+                        {
+                            Id = 175,
+                            LastYearBaseRanking = 3150,
+                            LastYearBaseScore = 502.80000000000001,
+                            Name = "Endüstri Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 49
+                        },
+                        new
+                        {
+                            Id = 176,
+                            LastYearBaseRanking = 4750,
+                            LastYearBaseScore = 478.5,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 49
+                        },
+                        new
+                        {
+                            Id = 177,
+                            LastYearBaseRanking = 5050,
+                            LastYearBaseScore = 475.80000000000001,
+                            Name = "Psikoloji",
+                            ScoreType = "EA",
+                            UniversityId = 49
+                        },
+                        new
+                        {
+                            Id = 178,
+                            LastYearBaseRanking = 3150,
+                            LastYearBaseScore = 502.5,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 50
+                        },
+                        new
+                        {
+                            Id = 179,
+                            LastYearBaseRanking = 3650,
+                            LastYearBaseScore = 495.80000000000001,
+                            Name = "Endüstri Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 50
+                        },
+                        new
+                        {
+                            Id = 180,
+                            LastYearBaseRanking = 5050,
+                            LastYearBaseScore = 475.5,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 50
+                        },
+                        new
+                        {
+                            Id = 181,
+                            LastYearBaseRanking = 5350,
+                            LastYearBaseScore = 472.80000000000001,
+                            Name = "Ekonomi",
+                            ScoreType = "EA",
+                            UniversityId = 50
+                        },
+                        new
+                        {
+                            Id = 182,
+                            LastYearBaseRanking = 1280,
+                            LastYearBaseScore = 532.5,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 11
+                        },
+                        new
+                        {
+                            Id = 183,
+                            LastYearBaseRanking = 2850,
+                            LastYearBaseScore = 502.80000000000001,
+                            Name = "Hukuk",
+                            ScoreType = "EA",
+                            UniversityId = 11
+                        },
+                        new
+                        {
+                            Id = 184,
+                            LastYearBaseRanking = 4750,
+                            LastYearBaseScore = 478.5,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 11
+                        },
+                        new
+                        {
+                            Id = 185,
+                            LastYearBaseRanking = 2950,
+                            LastYearBaseScore = 505.80000000000001,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 11
+                        },
+                        new
+                        {
+                            Id = 186,
+                            LastYearBaseRanking = 1550,
+                            LastYearBaseScore = 525.79999999999995,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 15
+                        },
+                        new
+                        {
+                            Id = 187,
+                            LastYearBaseRanking = 2750,
+                            LastYearBaseScore = 508.5,
+                            Name = "Diş Hekimliği",
+                            ScoreType = "SAY",
+                            UniversityId = 15
+                        },
+                        new
+                        {
+                            Id = 188,
+                            LastYearBaseRanking = 5350,
+                            LastYearBaseScore = 472.5,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 15
+                        },
+                        new
+                        {
+                            Id = 189,
+                            LastYearBaseRanking = 4050,
+                            LastYearBaseScore = 488.69999999999999,
+                            Name = "Mimarlık",
+                            ScoreType = "SAY",
+                            UniversityId = 15
+                        },
+                        new
+                        {
+                            Id = 190,
+                            LastYearBaseRanking = 1420,
+                            LastYearBaseScore = 528.5,
+                            Name = "Tıp",
+                            ScoreType = "SAY",
+                            UniversityId = 18
+                        },
+                        new
+                        {
+                            Id = 191,
+                            LastYearBaseRanking = 2650,
+                            LastYearBaseScore = 510.80000000000001,
+                            Name = "Diş Hekimliği",
+                            ScoreType = "SAY",
+                            UniversityId = 18
+                        },
+                        new
+                        {
+                            Id = 192,
+                            LastYearBaseRanking = 3950,
+                            LastYearBaseScore = 490.5,
+                            Name = "Veterinerlik",
+                            ScoreType = "SAY",
+                            UniversityId = 18
+                        },
+                        new
+                        {
+                            Id = 193,
+                            LastYearBaseRanking = 2750,
+                            LastYearBaseScore = 508.69999999999999,
+                            Name = "Eczacılık",
+                            ScoreType = "SAY",
+                            UniversityId = 18
                         });
                 });
 
@@ -280,7 +2196,7 @@ namespace microbloom.Migrations
 
                     b.HasIndex("JobPostingId");
 
-                    b.ToTable("JobApplications");
+                    b.ToTable("JobApplications", (string)null);
                 });
 
             modelBuilder.Entity("microbloom.Entities.JobPosting", b =>
@@ -311,7 +2227,7 @@ namespace microbloom.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("JobPostings");
+                    b.ToTable("JobPostings", (string)null);
 
                     b.HasData(
                         new
@@ -321,7 +2237,7 @@ namespace microbloom.Migrations
                             Description = "ASP.NET Core ve Azure konusunda deneyimli...",
                             IsActive = true,
                             Location = "İstanbul",
-                            PostedDate = new DateTime(2025, 11, 4, 17, 11, 39, 413, DateTimeKind.Utc).AddTicks(5995),
+                            PostedDate = new DateTime(2025, 11, 9, 17, 12, 31, 240, DateTimeKind.Utc).AddTicks(5867),
                             Title = "Kıdemli .NET Geliştiricisi"
                         },
                         new
@@ -331,7 +2247,7 @@ namespace microbloom.Migrations
                             Description = "React ve TypeScript bilen...",
                             IsActive = true,
                             Location = "Ankara",
-                            PostedDate = new DateTime(2025, 11, 4, 17, 11, 39, 413, DateTimeKind.Utc).AddTicks(5999),
+                            PostedDate = new DateTime(2025, 11, 9, 17, 12, 31, 240, DateTimeKind.Utc).AddTicks(5871),
                             Title = "Frontend Geliştirici (React)"
                         },
                         new
@@ -341,8 +2257,438 @@ namespace microbloom.Migrations
                             Description = "CI/CD süreçlerine hakim...",
                             IsActive = true,
                             Location = "İstanbul",
-                            PostedDate = new DateTime(2025, 11, 4, 17, 11, 39, 413, DateTimeKind.Utc).AddTicks(6000),
+                            PostedDate = new DateTime(2025, 11, 9, 17, 12, 31, 240, DateTimeKind.Utc).AddTicks(5872),
                             Title = "DevOps Mühendisi"
+                        });
+                });
+
+            modelBuilder.Entity("microbloom.Entities.University", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsStateUniversity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("LogoUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("WebSite")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Universities", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            City = "İstanbul",
+                            IsStateUniversity = true,
+                            Name = "İstanbul Üniversitesi",
+                            WebSite = "https://istanbul.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            City = "İstanbul",
+                            IsStateUniversity = true,
+                            Name = "İstanbul Teknik Üniversitesi",
+                            WebSite = "https://itu.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            City = "İstanbul",
+                            IsStateUniversity = true,
+                            Name = "Boğaziçi Üniversitesi",
+                            WebSite = "https://boun.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            City = "İstanbul",
+                            IsStateUniversity = true,
+                            Name = "Marmara Üniversitesi",
+                            WebSite = "https://marmara.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            City = "İstanbul",
+                            IsStateUniversity = true,
+                            Name = "Yıldız Teknik Üniversitesi",
+                            WebSite = "https://yildiz.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            City = "İstanbul",
+                            IsStateUniversity = true,
+                            Name = "Galatasaray Üniversitesi",
+                            WebSite = "https://gsu.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            City = "Ankara",
+                            IsStateUniversity = true,
+                            Name = "Ankara Üniversitesi",
+                            WebSite = "https://ankara.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            City = "Ankara",
+                            IsStateUniversity = true,
+                            Name = "Orta Doğu Teknik Üniversitesi",
+                            WebSite = "https://metu.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            City = "Ankara",
+                            IsStateUniversity = true,
+                            Name = "Hacettepe Üniversitesi",
+                            WebSite = "https://hacettepe.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            City = "Ankara",
+                            IsStateUniversity = true,
+                            Name = "Gazi Üniversitesi",
+                            WebSite = "https://gazi.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            City = "Ankara",
+                            IsStateUniversity = true,
+                            Name = "Ankara Yıldırım Beyazıt Üniversitesi",
+                            WebSite = "https://ybu.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            City = "İzmir",
+                            IsStateUniversity = true,
+                            Name = "Ege Üniversitesi",
+                            WebSite = "https://ege.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            City = "İzmir",
+                            IsStateUniversity = true,
+                            Name = "Dokuz Eylül Üniversitesi",
+                            WebSite = "https://deu.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            City = "İzmir",
+                            IsStateUniversity = true,
+                            Name = "İzmir Yüksek Teknoloji Enstitüsü",
+                            WebSite = "https://iyte.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            City = "İzmir",
+                            IsStateUniversity = true,
+                            Name = "İzmir Katip Çelebi Üniversitesi",
+                            WebSite = "https://ikc.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            City = "Kayseri",
+                            IsStateUniversity = true,
+                            Name = "Erciyes Üniversitesi",
+                            WebSite = "https://erciyes.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            City = "Konya",
+                            IsStateUniversity = true,
+                            Name = "Selçuk Üniversitesi",
+                            WebSite = "https://selcuk.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            City = "Erzurum",
+                            IsStateUniversity = true,
+                            Name = "Atatürk Üniversitesi",
+                            WebSite = "https://atauni.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            City = "Adana",
+                            IsStateUniversity = true,
+                            Name = "Çukurova Üniversitesi",
+                            WebSite = "https://cu.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            City = "Antalya",
+                            IsStateUniversity = true,
+                            Name = "Akdeniz Üniversitesi",
+                            WebSite = "https://akdeniz.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            City = "Samsun",
+                            IsStateUniversity = true,
+                            Name = "Ondokuz Mayıs Üniversitesi",
+                            WebSite = "https://omu.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            City = "Trabzon",
+                            IsStateUniversity = true,
+                            Name = "Karadeniz Teknik Üniversitesi",
+                            WebSite = "https://ktu.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 23,
+                            City = "Bursa",
+                            IsStateUniversity = true,
+                            Name = "Uludağ Üniversitesi",
+                            WebSite = "https://uludag.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 24,
+                            City = "Eskişehir",
+                            IsStateUniversity = true,
+                            Name = "Anadolu Üniversitesi",
+                            WebSite = "https://anadolu.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 25,
+                            City = "Denizli",
+                            IsStateUniversity = true,
+                            Name = "Pamukkale Üniversitesi",
+                            WebSite = "https://pau.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 26,
+                            City = "Elazığ",
+                            IsStateUniversity = true,
+                            Name = "Fırat Üniversitesi",
+                            WebSite = "https://firat.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 27,
+                            City = "Isparta",
+                            IsStateUniversity = true,
+                            Name = "Süleyman Demirel Üniversitesi",
+                            WebSite = "https://sdu.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 28,
+                            City = "Gaziantep",
+                            IsStateUniversity = true,
+                            Name = "Gaziantep Üniversitesi",
+                            WebSite = "https://gantep.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 29,
+                            City = "Sakarya",
+                            IsStateUniversity = true,
+                            Name = "Sakarya Üniversitesi",
+                            WebSite = "https://sakarya.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 30,
+                            City = "Kocaeli",
+                            IsStateUniversity = true,
+                            Name = "Kocaeli Üniversitesi",
+                            WebSite = "https://kocaeli.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 31,
+                            City = "İstanbul",
+                            IsStateUniversity = false,
+                            Name = "Koç Üniversitesi",
+                            WebSite = "https://ku.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 32,
+                            City = "İstanbul",
+                            IsStateUniversity = false,
+                            Name = "Sabancı Üniversitesi",
+                            WebSite = "https://sabanciuniv.edu"
+                        },
+                        new
+                        {
+                            Id = 33,
+                            City = "İstanbul",
+                            IsStateUniversity = false,
+                            Name = "Bahçeşehir Üniversitesi",
+                            WebSite = "https://bahcesehir.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 34,
+                            City = "İstanbul",
+                            IsStateUniversity = false,
+                            Name = "İstanbul Bilgi Üniversitesi",
+                            WebSite = "https://bilgi.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 35,
+                            City = "İstanbul",
+                            IsStateUniversity = false,
+                            Name = "Özyeğin Üniversitesi",
+                            WebSite = "https://ozyegin.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 36,
+                            City = "İstanbul",
+                            IsStateUniversity = false,
+                            Name = "Kadir Has Üniversitesi",
+                            WebSite = "https://khas.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 37,
+                            City = "İstanbul",
+                            IsStateUniversity = false,
+                            Name = "Yeditepe Üniversitesi",
+                            WebSite = "https://yeditepe.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 38,
+                            City = "İstanbul",
+                            IsStateUniversity = false,
+                            Name = "İstanbul Ticaret Üniversitesi",
+                            WebSite = "https://ticaret.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 39,
+                            City = "İstanbul",
+                            IsStateUniversity = false,
+                            Name = "İstanbul Kültür Üniversitesi",
+                            WebSite = "https://iku.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 40,
+                            City = "İstanbul",
+                            IsStateUniversity = false,
+                            Name = "Işık Üniversitesi",
+                            WebSite = "https://isikun.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 41,
+                            City = "Ankara",
+                            IsStateUniversity = false,
+                            Name = "Bilkent Üniversitesi",
+                            WebSite = "https://bilkent.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 42,
+                            City = "Ankara",
+                            IsStateUniversity = false,
+                            Name = "Atılım Üniversitesi",
+                            WebSite = "https://atilim.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 43,
+                            City = "Ankara",
+                            IsStateUniversity = false,
+                            Name = "Başkent Üniversitesi",
+                            WebSite = "https://baskent.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 44,
+                            City = "Ankara",
+                            IsStateUniversity = false,
+                            Name = "Çankaya Üniversitesi",
+                            WebSite = "https://cankaya.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 45,
+                            City = "Ankara",
+                            IsStateUniversity = false,
+                            Name = "TOBB Ekonomi ve Teknoloji Üniversitesi",
+                            WebSite = "https://etu.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 46,
+                            City = "İzmir",
+                            IsStateUniversity = false,
+                            Name = "İzmir Ekonomi Üniversitesi",
+                            WebSite = "https://ieu.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 47,
+                            City = "İzmir",
+                            IsStateUniversity = false,
+                            Name = "Yaşar Üniversitesi",
+                            WebSite = "https://yasar.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 48,
+                            City = "İstanbul",
+                            IsStateUniversity = false,
+                            Name = "Özyeğin Üniversitesi",
+                            WebSite = "https://ozyegin.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 49,
+                            City = "Ankara",
+                            IsStateUniversity = false,
+                            Name = "TED Üniversitesi",
+                            WebSite = "https://tedu.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 50,
+                            City = "İstanbul",
+                            IsStateUniversity = false,
+                            Name = "MEF Üniversitesi",
+                            WebSite = "https://mef.edu.tr"
                         });
                 });
 
@@ -407,6 +2753,28 @@ namespace microbloom.Migrations
                     b.Navigation("Company");
                 });
 
+            modelBuilder.Entity("microbloom.Entities.ContentArticle", b =>
+                {
+                    b.HasOne("microbloom.Entities.ContentCategory", "ContentCategory")
+                        .WithMany("Articles")
+                        .HasForeignKey("ContentCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ContentCategory");
+                });
+
+            modelBuilder.Entity("microbloom.Entities.Department", b =>
+                {
+                    b.HasOne("microbloom.Entities.University", "University")
+                        .WithMany("Departments")
+                        .HasForeignKey("UniversityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("University");
+                });
+
             modelBuilder.Entity("microbloom.Entities.JobApplication", b =>
                 {
                     b.HasOne("microbloom.Entities.AppUser", "AppUser")
@@ -445,6 +2813,16 @@ namespace microbloom.Migrations
                     b.Navigation("Employees");
 
                     b.Navigation("JobPostings");
+                });
+
+            modelBuilder.Entity("microbloom.Entities.ContentCategory", b =>
+                {
+                    b.Navigation("Articles");
+                });
+
+            modelBuilder.Entity("microbloom.Entities.University", b =>
+                {
+                    b.Navigation("Departments");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,112 +1,83 @@
+ï»¿@page "/account/login"
 @namespace microbloom.Pages
-@page "/account/login"
-@using microbloom.Services.Interfaces
-@using microbloom.DTOs
-@inject IAuthService AuthService
 @inject NavigationManager NavigationManager
 
-<PageTitle>&#x1F511; Giriþ Yap - microbloom</PageTitle>
+<PageTitle>ðŸ”‘ GiriÅŸ Yap - microbloom</PageTitle>
 
 <div class="container mt-5 mb-5">
     <div class="row justify-content-center">
         <div class="col-md-5">
-         <div class="card shadow-lg border-0">
-   <div class="card-body p-5">
-        <div class="text-center mb-4">
-     <div style="font-size: 4rem; margin-bottom: 1rem;">&#x1F511;</div>
-     <h2 class="mb-2" style="font-weight: 800; color: var(--theme-primary);">Giriþ Yap</h2>
-          <p class="text-muted">Hesabýna giriþ yaparak iþ fýrsatlarýný keþfet</p>
-               </div>
+      <div class="card shadow-lg border-0">
+        <div class="card-body p-5">
+           <div class="text-center mb-4">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">ðŸ”‘</div>
+          <h2 class="mb-2" style="font-weight: 800; color: var(--theme-primary);">GiriÅŸ Yap</h2>
+           <p class="text-muted">HesabÄ±na giriÅŸ yaparak iÅŸ fÄ±rsatlarÄ±nÄ± keÅŸfet</p>
+                    </div>
 
-        @if (!string.IsNullOrEmpty(errorMessage))
-   {
-        <div class="alert alert-danger d-flex align-items-start" role="alert">
-     <i class="bi bi-exclamation-circle me-2" style="font-size: 1.5rem;"></i>
-     <div>@errorMessage</div>
+      @if (!string.IsNullOrEmpty(errorMessage))
+      {
+        <div class="alert alert-danger" role="alert">
+          @errorMessage
         </div>
-                  }
-
-       <EditForm Model="loginDto" OnValidSubmit="HandleLogin">
-  <DataAnnotationsValidator />
-   <ValidationSummary class="alert alert-warning" />
-
-       <div class="mb-4">
-                  <label for="email" class="form-label fw-bold">&#x1F4E7; E-posta Adresi</label>
-        <InputText id="email" 
-class="form-control" 
-      placeholder="ornek@example.com" 
-      autocomplete="username"
-   @bind-Value="loginDto.Email" />
-  <ValidationMessage For="@(() => loginDto.Email)" class="text-danger small" />
-   </div>
-
-         <div class="mb-4">
-      <label for="password" class="form-label fw-bold">&#x1F512; Þifre</label>
-     <InputText id="password" 
-  type="password" 
-     class="form-control" 
-   placeholder="Þifrenizi girin"
-      autocomplete="current-password" 
-  @bind-Value="loginDto.Password" />
-  <ValidationMessage For="@(() => loginDto.Password)" class="text-danger small" />
-      </div>
-
-       <button type="submit" class="btn btn-primary w-100 btn-lg mb-3" disabled="@isSubmitting">
-     @if (isSubmitting)
-        {
-        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-         <span>Giriþ yapýlýyor...</span>
       }
-      else
-        {
-       <span>&#x1F511; Giriþ Yap</span>
-       }
-       </button>
 
-      <div class="text-center mt-4 pt-3" style="border-top: 1px solid var(--theme-border);">
-        <p class="text-muted mb-0">
-      Hesabýn yok mu?
-    <a href="/account/register" class="text-decoration-none fw-bold" style="color: var(--theme-primary);">
-       &#x1F680; Hemen Kayýt Ol
-     </a>
-          </p>
-     </div>
-             </EditForm>
-       </div>
-            </div>
+       <form action="/account/login" method="post">
+        <input type="hidden" name="ReturnUrl" value="@returnUrl" />
+                <div class="mb-4">
+         <label for="email" class="form-label fw-bold">ðŸ“§ E-posta Adresi</label>
+  <input id="email" name="Email" class="form-control" placeholder="ornek@example.com" autocomplete="username" required />
+             </div>
+
+    <div class="mb-4">
+          <label for="password" class="form-label fw-bold">ðŸ”’ Åžifre</label>
+       <input id="password" name="Password" type="password" class="form-control" placeholder="Åžifrenizi girin" autocomplete="current-password" required />
    </div>
+
+           <button type="submit" class="btn btn-primary w-100 btn-lg mb-3">
+   <span>ðŸ”‘ GiriÅŸ Yap</span>
+     </button>
+
+        <div class="text-center mt-4 pt-3" style="border-top: 1px solid var(--theme-border);">
+      <p class="text-muted mb-0">
+            HesabÄ±n yok mu?
+            <a href="/account/register" class="text-decoration-none fw-bold" style="color: var(--theme-primary);">
+             ðŸš€ Hemen KayÄ±t Ol
+              </a>
+     </p>
+           </div>
+   </form>
+         </div>
+            </div>
+        </div>
     </div>
 </div>
 
 @code {
-    private LoginDto loginDto = new();
-    private string errorMessage = string.Empty;
-    private bool isSubmitting = false;
+  private string returnUrl = "/";
+  private string? errorMessage;
 
-    private async Task HandleLogin()
-    {
-        try
-   {
-       isSubmitting = true;
-        errorMessage = string.Empty;
-
-         var result = await AuthService.LoginAsync(loginDto);
-      if (result.Successful)
+  protected override void OnInitialized()
   {
-   NavigationManager.NavigateTo("/", forceLoad: true);
-  }
-         else
-            {
-       errorMessage = result.Error ?? "Giriþ sýrasýnda bir hata oluþtu.";
-       }
-        }
-catch (Exception ex)
-   {
-            errorMessage = $"Hata: {ex.Message}";
- }
-     finally
-        {
-            isSubmitting = false;
-        }
+    var uri = new Uri(NavigationManager.Uri);
+    var query = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query);
+
+    if (query.TryGetValue("ReturnUrl", out var returnParam) || query.TryGetValue("returnUrl", out returnParam))
+    {
+      var decoded = Uri.UnescapeDataString(returnParam.ToString());
+      if (!string.IsNullOrWhiteSpace(decoded))
+      {
+        returnUrl = decoded.StartsWith('/') ? decoded : $"/{decoded}";
+      }
     }
+
+    if (query.TryGetValue("ErrorMessage", out var errorParam))
+    {
+      var decodedError = Uri.UnescapeDataString(errorParam.ToString());
+      if (!string.IsNullOrWhiteSpace(decodedError))
+      {
+        errorMessage = decodedError;
+      }
+    }
+  }
 }

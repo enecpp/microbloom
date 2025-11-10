@@ -1,102 +1,273 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using microbloom.DTOs;
+using microbloom.Entities;
 using microbloom.Services.Interfaces;
 using System.Security.Claims;
 
 namespace microbloom.Controllers
 {
     [Route("api/company")]
-  [ApiController]
+    [ApiController]
     [Authorize(Roles = "Employer")]
     public class CompanyController : ControllerBase
     {
-  private readonly ICompanyService _companyService;
-       private readonly IUserService _userService;
-     private readonly UserManager<AppUser> _userManager;
+        private readonly ICompanyService _companyService;
+        private readonly IUserService _userService;
+        private readonly UserManager<AppUser> _userManager;
 
-    public CompanyController(
-  ICompanyService companyService, 
+        public CompanyController(
+            ICompanyService companyService, 
       IUserService userService,
             UserManager<AppUser> userManager)
         {
-      _companyService = companyService;
-        _userService = userService;
- _userManager = userManager;
-      }
+ _companyService = companyService;
+            _userService = userService;
+     _userManager = userManager;
+        }
 
-      // POST: /api/company/jobs (Yeni iþ ilaný oluþturma)
-       [HttpPost("jobs")]
-   public async Task<IActionResult> CreateJob([FromBody] CreateJobDto createJobDto)
-    {
-     try
-       {
-   if (!ModelState.IsValid)
-       return BadRequest(ModelState);
-
- var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
- if (userId == null)
-       return Unauthorized("Kullanýcý kimliði bulunamadý.");
-
-  var user = await _userService.GetUserByIdAsync(userId);
- if (user == null || user.CompanyId == null)
-          return Unauthorized("Bu iþlemi yapmak için bir þirkete baðlý olmalýsýnýz.");
-
-       var newJobPosting = await _companyService.CreateJobPostingAsync(createJobDto, user.CompanyId.Value);
-
-  return CreatedAtAction("GetJobById", "JobPostings", 
- new { id = newJobPosting.Id }, newJobPosting);
-   }
- catch (Exception ex)
-           {
-          return BadRequest(new { Message = $"Hata: {ex.Message}" });
-       }
-   }
-
-    // GET: /api/company/jobs/{jobId:int}/applications (Bir ilana gelen baþvurularý görme)
-       [HttpGet("jobs/{jobId:int}/applications")]
-    public async Task<ActionResult<List<ApplicationDto>>> GetJobApplications(int jobId)
-      {
-        try
+        // POST: /api/company/jobs (Yeni iï¿½ ilanï¿½ oluï¿½turma)
+        [HttpPost("jobs")]
+        public async Task<IActionResult> CreateJob([FromBody] CreateJobDto createJobDto)
         {
-    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-      if (userId == null)
- return Unauthorized("Kullanýcý kimliði bulunamadý.");
-
-         var user = await _userService.GetUserByIdAsync(userId);
-              if (user == null || user.CompanyId == null)
-        return Unauthorized("Bir þirkete baðlý deðilsiniz.");
-
- var applications = await _companyService.GetApplicationsForJobAsync(jobId);
-  return Ok(applications);
-    }
-    catch (Exception ex)
+ try
   {
-  return BadRequest(new { Message = $"Hata: {ex.Message}" });
-       }
-  }
+    if (!ModelState.IsValid)
+        return BadRequest(ModelState);
 
-// GET: /api/company/jobs (Þirketin kendi ilanlarýný görmesi)
-  [HttpGet("jobs")]
-     public async Task<ActionResult<List<JobPostingDto>>> GetMyCompanyJobs()
-       {
+      var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (userId == null)
+    return Unauthorized("Kullanï¿½cï¿½ kimliï¿½i bulunamadï¿½.");
+
+                var user = await _userService.GetUserByIdAsync(userId);
+                if (user == null || user.CompanyId == null)
+         return Unauthorized("Bu iï¿½lemi yapmak iï¿½in bir ï¿½irkete baï¿½lï¿½ olmalï¿½sï¿½nï¿½z.");
+
+          var newJobPosting = await _companyService.CreateJobPostingAsync(createJobDto, user.CompanyId.Value);
+
+          return CreatedAtAction("GetJobById", "JobPostings", 
+     new { id = newJobPosting.Id }, newJobPosting);
+            }
+  catch (Exception ex)
+      {
+    return BadRequest(new { Message = $"Hata: {ex.Message}" });
+        }
+        }
+
+        // GET: /api/company/jobs/{jobId:int}/applications (Bir ilana gelen baï¿½vurularï¿½ gï¿½rme)
+        [HttpGet("jobs/{jobId:int}/applications")]
+        public async Task<ActionResult<List<ApplicationDto>>> GetJobApplications(int jobId)
+        {
   try
-     {
- var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
- if (userId == null)
- return Unauthorized("Kullanýcý kimliði bulunamadý.");
+            {
+      var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    if (userId == null)
+       return Unauthorized("Kullanï¿½cï¿½ kimliï¿½i bulunamadï¿½.");
 
-     var user = await _userService.GetUserByIdAsync(userId);
-  if (user == null || user.CompanyId == null)
-return Unauthorized("Bir þirkete baðlý deðilsiniz.");
+var user = await _userService.GetUserByIdAsync(userId);
+     if (user == null || user.CompanyId == null)
+  return Unauthorized("Bir ï¿½irkete baï¿½lï¿½ deï¿½ilsiniz.");
 
-  var jobs = await _companyService.GetJobsByCompanyAsync(user.CompanyId.Value);
+            var applications = await _companyService.GetApplicationsForJobAsync(jobId);
+              return Ok(applications);
+       }
+            catch (Exception ex)
+        {
+          return BadRequest(new { Message = $"Hata: {ex.Message}" });
+   }
+    }
+
+        // GET: /api/company/jobs (ï¿½irketin kendi ilanlarï¿½nï¿½ gï¿½rmesi)
+  [HttpGet("jobs")]
+    public async Task<ActionResult<List<JobPostingDto>>> GetMyCompanyJobs()
+        {
+  try
+        {
+          var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    if (userId == null)
+          return Unauthorized("Kullanï¿½cï¿½ kimliï¿½i bulunamadï¿½.");
+
+        var user = await _userService.GetUserByIdAsync(userId);
+                if (user == null || user.CompanyId == null)
+          return Unauthorized("Bir ï¿½irkete baï¿½lï¿½ deï¿½ilsiniz.");
+
+         var jobs = await _companyService.GetJobsByCompanyAsync(user.CompanyId.Value);
       return Ok(jobs);
-  }
-     catch (Exception ex)
-  {
-      return BadRequest(new { Message = $"Hata: {ex.Message}" });
+            }
+  catch (Exception ex)
+     {
+         return BadRequest(new { Message = $"Hata: {ex.Message}" });
+            }
       }
+
+    // ? YENï¿½: POST: /api/company/applications/{applicationId}/approve (Baï¿½vuruyu onayla)
+        [HttpPost("applications/{applicationId}/approve")]
+        public async Task<IActionResult> ApproveApplication(int applicationId)
+        {
+      try
+    {
+           var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (userId == null)
+            return Unauthorized("Kullanï¿½cï¿½ kimliï¿½i bulunamadï¿½.");
+
+    var user = await _userService.GetUserByIdAsync(userId);
+      if (user == null || user.CompanyId == null)
+   return Unauthorized("Bir ï¿½irkete baï¿½lï¿½ deï¿½ilsiniz.");
+
+   await _companyService.UpdateApplicationStatusAsync(applicationId, "Approved", user.CompanyId.Value);
+     return Ok(new { Message = "Baï¿½vuru onaylandï¿½!" });
    }
+catch (UnauthorizedAccessException ex)
+            {
+    return Unauthorized(ex.Message);
    }
+            catch (Exception ex)
+            {
+       return BadRequest(new { Message = $"Hata: {ex.Message}" });
+         }
+        }
+
+        // ? YENï¿½: POST: /api/company/applications/{applicationId}/reject (Baï¿½vuruyu reddet)
+        [HttpPost("applications/{applicationId}/reject")]
+        public async Task<IActionResult> RejectApplication(int applicationId)
+   {
+ try
+            {
+     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+       if (userId == null)
+    return Unauthorized("Kullanï¿½cï¿½ kimliï¿½i bulunamadï¿½.");
+
+    var user = await _userService.GetUserByIdAsync(userId);
+      if (user == null || user.CompanyId == null)
+      return Unauthorized("Bir ï¿½irkete baï¿½lï¿½ deï¿½ilsiniz.");
+
+    await _companyService.UpdateApplicationStatusAsync(applicationId, "Rejected", user.CompanyId.Value);
+              return Ok(new { Message = "Baï¿½vuru reddedildi." });
+      }
+            catch (UnauthorizedAccessException ex)
+    {
+        return Unauthorized(ex.Message);
+   }
+            catch (Exception ex)
+      {
+   return BadRequest(new { Message = $"Hata: {ex.Message}" });
+       }
+    }
+
+        // ? YENï¿½: DELETE: /api/company/jobs/{jobId} (ï¿½lanï¿½ sil)
+        [HttpDelete("jobs/{jobId}")]
+        public async Task<IActionResult> DeleteJob(int jobId)
+     {
+      try
+    {
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+     if (userId == null)
+         return Unauthorized("Kullanï¿½cï¿½ kimliï¿½i bulunamadï¿½.");
+
+    var user = await _userService.GetUserByIdAsync(userId);
+      if (user == null || user.CompanyId == null)
+   return Unauthorized("Bir ï¿½irkete baï¿½lï¿½ deï¿½ilsiniz.");
+
+         await _companyService.DeleteJobPostingAsync(jobId, user.CompanyId.Value);
+     return Ok(new { Message = "ï¿½lan baï¿½arï¿½yla silindi." });
+            }
+   catch (UnauthorizedAccessException ex)
+         {
+return Unauthorized(ex.Message);
+       }
+            catch (Exception ex)
+      {
+         return BadRequest(new { Message = $"Hata: {ex.Message}" });
+            }
+    }
+
+        // ? YENï¿½: PUT: /api/company/jobs/{jobId}/deactivate (ï¿½lanï¿½ pasif yap)
+        [HttpPut("jobs/{jobId}/deactivate")]
+        public async Task<IActionResult> DeactivateJob(int jobId)
+        {
+      try
+         {
+       var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+           if (userId == null)
+      return Unauthorized("Kullanï¿½cï¿½ kimliï¿½i bulunamadï¿½.");
+
+   var user = await _userService.GetUserByIdAsync(userId);
+      if (user == null || user.CompanyId == null)
+           return Unauthorized("Bir ï¿½irkete baï¿½lï¿½ deï¿½ilsiniz.");
+
+     await _companyService.ToggleJobStatusAsync(jobId, false, user.CompanyId.Value);
+             return Ok(new { Message = "ï¿½lan pasif hale getirildi." });
+     }
+            catch (UnauthorizedAccessException ex)
+       {
+     return Unauthorized(ex.Message);
+      }
+         catch (Exception ex)
+            {
+           return BadRequest(new { Message = $"Hata: {ex.Message}" });
+  }
+
+    }
+
+  [HttpGet("profile")]
+    public async Task<ActionResult<CompanyProfileDto>> GetCompanyProfile()
+    {
+      try
+      {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null)
+          return Unauthorized("KullanÄ±cÄ± kimliÄŸi bulunamadÄ±.");
+
+        var user = await _userService.GetUserByIdAsync(userId);
+        if (user == null || user.CompanyId == null)
+          return Unauthorized("Bir ÅŸirkete baÄŸlÄ± deÄŸilsiniz.");
+
+        var profile = await _companyService.GetCompanyProfileAsync(user.CompanyId.Value);
+        if (profile == null)
+          return NotFound("Åžirket profili bulunamadÄ±.");
+
+        return Ok(profile);
+      }
+      catch (Exception ex)
+      {
+        return BadRequest(new { Message = $"Hata: {ex.Message}" });
+      }
+    }
+
+    [HttpPut("profile")]
+    public async Task<IActionResult> UpdateCompanyProfile([FromBody] CompanyProfileDto profileDto)
+    {
+      if (!ModelState.IsValid)
+        return BadRequest(ModelState);
+
+      try
+      {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null)
+          return Unauthorized("KullanÄ±cÄ± kimliÄŸi bulunamadÄ±.");
+
+        var user = await _userService.GetUserByIdAsync(userId);
+        if (user == null || user.CompanyId == null)
+          return Unauthorized("Bir ÅŸirkete baÄŸlÄ± deÄŸilsiniz.");
+
+        await _companyService.UpdateCompanyProfileAsync(user.CompanyId.Value, profileDto);
+
+        return NoContent();
+      }
+      catch (KeyNotFoundException ex)
+      {
+        return NotFound(new { Message = ex.Message });
+      }
+      catch (UnauthorizedAccessException ex)
+      {
+        return Unauthorized(new { Message = ex.Message });
+      }
+      catch (Exception ex)
+      {
+        return BadRequest(new { Message = $"Hata: {ex.Message}" });
+      }
+    }
 }
+}
+

@@ -1,0 +1,309 @@
+@page "/guide"
+@namespace microbloom.Pages
+@using microbloom.DTOs
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<PageTitle>&#x1F3EB; Üniversite Rehberi - microbloom</PageTitle>
+
+<style>
+    /* Modern Tasarým Stilleri */
+    .guide-hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 3rem 2rem;
+  border-radius: 20px;
+        margin-bottom: 3rem;
+     color: white;
+        text-align: center;
+      box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+    }
+
+    .guide-hero h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+   margin-bottom: 1rem;
+     text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+
+  .guide-hero p {
+  font-size: 1.1rem;
+        opacity: 0.95;
+        margin-bottom: 0;
+    }
+
+    .category-section {
+ margin-bottom: 4rem;
+    }
+
+    .category-header {
+        display: flex;
+      align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 3px solid;
+    }
+
+    .category-university .category-header {
+   border-image: linear-gradient(90deg, #667eea, #764ba2) 1;
+    }
+
+    .category-header h2 {
+        font-size: 1.8rem;
+     font-weight: 700;
+        margin: 0;
+   background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .category-icon {
+   font-size: 2rem;
+   margin-right: 1rem;
+     filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+    }
+
+ /* Grid Düzeni */
+    .article-grid {
+      display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.5rem;
+    }
+
+    /* Kart Stilleri */
+    .article-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+     position: relative;
+     border: 2px solid transparent;
+height: 100%;
+   display: flex;
+  flex-direction: column;
+    }
+
+    .article-card:hover {
+        transform: translateY(-8px);
+     box-shadow: 0 15px 40px rgba(102, 126, 234, 0.25);
+   border-color: #667eea;
+    }
+
+    .card-gradient-bg {
+   position: absolute;
+        top: 0;
+ left: 0;
+      right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+    }
+
+    .card-content {
+        padding: 1.75rem;
+  flex: 1;
+ display: flex;
+        flex-direction: column;
+  }
+
+    .card-icon {
+        font-size: 2.5rem;
+ margin-bottom: 1rem;
+        display: inline-block;
+        transition: transform 0.3s ease;
+    }
+
+    .article-card:hover .card-icon {
+ transform: scale(1.15) rotate(5deg);
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+   font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 0.75rem;
+     line-height: 1.4;
+  }
+
+    .card-summary {
+     color: #718096;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 1.25rem;
+   flex: 1;
+    }
+
+ .card-badge {
+display: inline-flex;
+        align-items: center;
+  padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border-radius: 20px;
+     font-size: 0.85rem;
+      font-weight: 600;
+   transition: all 0.3s ease;
+   align-self: flex-start;
+    }
+
+    .article-card:hover .card-badge {
+   transform: translateX(5px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    /* Yükleniyor Animasyonu */
+    .loading-container {
+  text-align: center;
+  padding: 4rem 2rem;
+    }
+
+ .loading-spinner {
+width: 50px;
+        height: 50px;
+        border: 4px solid #f3f4f6;
+        border-top-color: #667eea;
+        border-radius: 50%;
+ animation: spin 1s linear infinite;
+    margin: 0 auto 1.5rem;
+}
+
+    @@keyframes spin {
+        to { transform: rotate(360deg); }
+  }
+
+    /* Boþ Ýçerik */
+    .empty-state {
+   text-align: center;
+        padding: 4rem 2rem;
+     background: linear-gradient(135deg, #f6f8fb 0%, #e9ecef 100%);
+  border-radius: 20px;
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+     margin-bottom: 1.5rem;
+        opacity: 0.5;
+    }
+
+    /* Hata Mesajý */
+    .error-alert {
+        background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+        color: white;
+        padding: 2rem;
+    border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+    }
+
+ /* Responsive */
+    @@media (max-width: 768px) {
+  .guide-hero h1 {
+    font-size: 2rem;
+     }
+
+        .guide-hero p {
+          font-size: 1rem;
+      }
+
+   .category-header h2 {
+   font-size: 1.5rem;
+        }
+
+        .article-grid {
+          grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="container my-5">
+    <!-- Hero Section -->
+    <div class="guide-hero">
+        <h1>&#x1F3EB; Üniversite Rehberi</h1>
+        <p>Üniversiteye hazýrlýk sürecinde ihtiyacýnýz olan tüm bilgiler burada</p>
+    </div>
+
+    @if (isLoading)
+    {
+      <div class="loading-container">
+       <div class="loading-spinner"></div>
+ <h3 style="color: #718096;">Rehber yükleniyor...</h3>
+   <p style="color: #a0aec0;">Lütfen bekleyin</p>
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(errorMessage))
+    {
+    <div class="error-alert">
+   <h3>&#x26A0; Bir Hata Oluþtu</h3>
+   <p>@errorMessage</p>
+        </div>
+  }
+    else if (universityCategory != null && universityCategory.Articles.Any())
+    {
+   <div class="category-section category-university">
+        <div class="category-header">
+      <span class="category-icon">&#x1F3EB;</span>
+    <h2>@universityCategory.Title</h2>
+     </div>
+
+  <div class="article-grid">
+    @foreach (var article in universityCategory.Articles)
+        {
+           var articleIcon = article.Slug switch {
+        "universite-secimi-rehberi" => "&#x1F4DA;",
+        "bolum-rehberi-muhendislik" => "&#x1F4D8;",
+    "burs-mali-destek" => "&#x1F4B0;",
+       _ => "&#x1F4C4;"
+    };
+
+<div class="article-card" @onclick="() => NavigateToArticle(universityCategory.Slug, article.Slug)">
+      <div class="card-gradient-bg"></div>
+  <div class="card-content">
+     <div class="card-icon">@((MarkupString)articleIcon)</div>
+           <h3 class="card-title">@article.Title</h3>
+ <p class="card-summary">@article.Summary</p>
+    <span class="card-badge">
+   Devamýný Oku &#x2192;
+     </span>
+      </div>
+      </div>
+     }
+   </div>
+ </div>
+    }
+    else
+    {
+        <div class="empty-state">
+       <div class="empty-icon">&#x1F4ED;</div>
+   <h3 style="color: #4a5568;">Henüz Ýçerik Yok</h3>
+     <p style="color: #718096;">Yakýnda rehber içerikleri eklenecek!</p>
+        </div>
+    }
+</div>
+
+@code {
+    private ContentCategoryDto? universityCategory;
+    private bool isLoading = true;
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+ try
+        {
+   var categories = await Http.GetFromJsonAsync<List<ContentCategoryDto>>("api/content/all");
+  // Sadece "Üniversiteye Hazýrlýk" kategorisini al
+            universityCategory = categories?.FirstOrDefault(c => c.Slug == "universiteye-hazirlik");
+  }
+   catch (Exception ex)
+        {
+errorMessage = ex.Message;
+    }
+        finally
+{
+     isLoading = false;
+        }
+}
+
+private void NavigateToArticle(string categorySlug, string articleSlug)
+    {
+        NavigationManager.NavigateTo($"/guide/{categorySlug}/{articleSlug}");
+    }
+}

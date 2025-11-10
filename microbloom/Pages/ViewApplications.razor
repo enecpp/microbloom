@@ -10,144 +10,267 @@
 
 <div class="container my-5">
     <div class="row mb-5">
-<div class="col-md-12">
-   <button class="btn btn-outline-secondary mb-3" @onclick="NavigateBack">
- <i class="bi bi-arrow-left"></i> Panele Dön
-           </button>
+   <div class="col-md-12">
+        <button class="btn btn-outline-secondary mb-3" @onclick="NavigateBack">
+      <i class="bi bi-arrow-left"></i> Panele Dön
+      </button>
 
-    <h1 class="display-5 mb-3">
-      👥 İlan Başvuruları
-     </h1>
-  @if (!string.IsNullOrEmpty(JobTitle))
-      {
-       <p class="lead text-muted">
-   📌 "<strong>@JobTitle</strong>" ilanına gelen başvurular
- </p>
-     }
-    </div>
-    </div>
-
-   @if (applications == null)
-    {
-        <div class="text-center py-5">
-    <div class="spinner-border text-primary mb-3" role="status">
-       <span class="visually-hidden">Yükleniyor...</span>
+       <h1 class="display-5 mb-3">
+  👥 İlan Başvuruları
+ </h1>
+        @if (!string.IsNullOrEmpty(JobTitle))
+       {
+            <p class="lead text-muted">
+    📌 "<strong>@JobTitle</strong>" ilanına gelen başvurular
+    </p>
+       }
      </div>
-      <p class="text-muted">⏳ Başvurular yükleniyor...</p>
-       </div>
-}
+    </div>
+
+@if (applications == null)
+    {
+   <div class="text-center py-5">
+      <div class="spinner-border text-primary mb-3" role="status">
+         <span class="visually-hidden">Yükleniyor...</span>
+     </div>
+        <p class="text-muted">⏳ Başvurular yükleniyor...</p>
+   </div>
+    }
     else if (!applications.Any())
-     {
-      <div class="card shadow-sm border-0 text-center">
-     <div class="card-body py-5">
-         <div style="font-size: 4rem; margin-bottom: 1.5rem;">📭</div>
-  <h3 class="card-title">Henüz Başvuru Yok</h3>
-     <p class="text-muted mb-4">Bu ilana henüz başvuru yapılmamış. İlanınızın yayında olduğundan emin olun.</p>
-      <button class="btn btn-outline-primary" @onclick="NavigateBack">
-        🔄 Panele Dön
- </button>
-      </div>
-       </div>
-     }
+    {
+     <div class="card shadow-sm border-0 text-center">
+        <div class="card-body py-5">
+        <div style="font-size: 4rem; margin-bottom: 1.5rem;">📭</div>
+          <h3 class="card-title">Henüz Başvuru Yok</h3>
+  <p class="text-muted mb-4">Bu ilana henüz başvuru yapılmamış. İlanınızın yayında olduğundan emin olun.</p>
+           <button class="btn btn-outline-primary" @onclick="NavigateBack">
+         🔄 Panele Dön
+        </button>
+     </div>
+        </div>
+    }
     else
     {
    <div class="row mb-4 align-items-center">
-    <div class="col-md-6">
-   <h3 class="mb-0">
-       <i class="bi bi-card-checklist"></i> 📋 Başvurular
-        <span class="badge bg-primary ms-2">@applications.Count</span>
-     </h3>
+ <div class="col-md-6">
+     <h3 class="mb-0">
+        <i class="bi bi-card-checklist"></i> 📋 Başvurular
+         <span class="badge bg-primary ms-2">@applications.Count</span>
+   </h3>
      </div>
-     <div class="col-md-6 text-md-end">
-  <small class="text-muted">
-   💡 Toplam @applications.Count başvuran olmuştur
-        </small>
-     </div>
-  </div>
+          <div class="col-md-6 text-md-end">
+      <small class="text-muted">
+  💡 Toplam @applications.Count başvuran olmuştur
+      </small>
+       </div>
+      </div>
 
-      <div class="row g-4">
-     @foreach (var app in applications)
-       {
+     <div class="row g-4">
+   @foreach (var app in applications)
+      {
            <div class="col-md-6 col-lg-4">
-         <div class="card shadow-sm h-100">
-       <div class="card-body">
-      <div class="d-flex justify-content-between align-items-start mb-3">
- <div>
-   <h5 class="card-title mb-1">
-          👤 Başvuran
-     </h5>
-            </div>
-  @if (app.Status == "Pending")
-  {
-    <span class="badge bg-warning">⏳ Beklemede</span>
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+     <div>
+         <h5 class="card-title mb-1">
+  👤 @app.UserFullName
+      </h5>
+    <p class="text-muted small mb-0">@app.UserEmail</p>
+         </div>
+    @if (app.Status == "Pending")
+    {
+  <span class="badge bg-warning">⏳ Beklemede</span>
    }
      else if (app.Status == "Approved")
+   {
+        <span class="badge bg-success">✅ Onaylandı</span>
+ }
+       else if (app.Status == "Rejected")
+        {
+      <span class="badge bg-danger">❌ Reddedildi</span>
+      }
+      else
+      {
+  <span class="badge bg-secondary">@app.Status</span>
+   }
+  </div>
+
+   <p class="card-text small mb-3">
+        <i class="bi bi-calendar-event text-primary"></i>
+  <strong>📅 Başvuru Tarihi:</strong><br />
+ @app.ApplicationDate.ToString("dd MMMM yyyy, HH:mm")
+        </p>
+
+        @if (!string.IsNullOrEmpty(app.JobTitle))
+    {
+     <p class="card-text small text-muted mb-0">
+        <i class="bi bi-briefcase"></i> 💼 @app.JobTitle
+  </p>
+ }
+        </div>
+
+        <div class="card-footer bg-light border-top">
+  @if (app.Status == "Pending")
      {
-    <span class="badge bg-success">✅ Onaylandı</span>
-  }
- else
- {
-   <span class="badge bg-secondary">@app.Status</span>
-     }
-         </div>
-
-      <p class="card-text small mb-2">
-      <i class="bi bi-person"></i> <strong>ID:</strong> @app.AppUserId
-       </p>
-
-  <p class="card-text small mb-3">
- <i class="bi bi-calendar-event text-primary"></i>
-   <strong>📅 Başvuru Tarihi:</strong><br />
-        @app.ApplicationDate.ToString("dd MMMM yyyy, HH:mm")
-      </p>
-
-   @if (!string.IsNullOrEmpty(app.JobTitle))
-            {
-    <p class="card-text small text-muted mb-0">
- <i class="bi bi-briefcase"></i> 💼 @app.JobTitle
-     </p>
-           }
-    </div>
-
-      <div class="card-footer bg-light border-top">
-     <button class="btn btn-sm btn-outline-primary w-100" disabled>
-  <i class="bi bi-eye"></i> Profili Görüntüle
+       <div class="d-grid gap-2">
+  <button class="btn btn-success btn-sm" 
+      @onclick="() => ApproveApplication(app.Id)" 
+    disabled="@isProcessing">
+   @if (isProcessing && processingId == app.Id)
+      {
+       <span class="spinner-border spinner-border-sm me-1"></span>
+   }
+ <i class="bi bi-check-circle"></i> ✅ Onayla
+  </button>
+   <button class="btn btn-danger btn-sm" 
+@onclick="() => RejectApplication(app.Id)" 
+          disabled="@isProcessing">
+    @if (isProcessing && processingId == app.Id)
+  {
+      <span class="spinner-border spinner-border-sm me-1"></span>
+       }
+       <i class="bi bi-x-circle"></i> ❌ Reddet
     </button>
+  </div>
+     }
+          else if (app.Status == "Approved")
+     {
+                <button class="btn btn-sm btn-outline-success w-100" disabled>
+<i class="bi bi-check-circle-fill"></i> Onaylandı
+  </button>
+      }
+          else if (app.Status == "Rejected")
+    {
+<button class="btn btn-sm btn-outline-danger w-100" disabled>
+     <i class="bi bi-x-circle-fill"></i> Reddedildi
+  </button>
+       }
       </div>
-      </div>
+        </div>
      </div>
-         }
-   </div>
-  }
+    }
+        </div>
+
+     @if (!string.IsNullOrEmpty(statusMessage))
+  {
+      <div class="alert @(isSuccess ? "alert-success" : "alert-danger") alert-dismissible fade show mt-4" role="alert">
+    @statusMessage
+       <button type="button" class="btn-close" @onclick="() => statusMessage = string.Empty"></button>
+       </div>
+   }
+    }
 </div>
 
 @code {
-    [Parameter]
-   public int JobId { get; set; }
+ [Parameter]
+    public int JobId { get; set; }
 
     private List<ApplicationDto>? applications;
- private string? JobTitle;
+    private string? JobTitle;
+  private bool isProcessing = false;
+  private int? processingId = null;
+    private string statusMessage = string.Empty;
+    private bool isSuccess = false;
 
-    protected override async Task OnInitializedAsync()
+protected override async Task OnInitializedAsync()
     {
- try
-        {
-   applications = await Http.GetFromJsonAsync<List<ApplicationDto>>($"api/company/jobs/{JobId}/applications");
-
-       if (applications != null && applications.Any())
- {
-         JobTitle = applications.First().JobTitle;
- }
-        }
-catch (Exception ex)
+        try
    {
-    Console.WriteLine($"Başvurular çekilirken hata: {ex.Message}");
-      applications = new List<ApplicationDto>();
-      }
+            applications = await Http.GetFromJsonAsync<List<ApplicationDto>>($"api/company/jobs/{JobId}/applications");
+
+        if (applications != null && applications.Any())
+      {
+  JobTitle = applications.First().JobTitle;
+   }
+  }
+        catch (Exception ex)
+  {
+     Console.WriteLine($"Başvurular çekilirken hata: {ex.Message}");
+     applications = new List<ApplicationDto>();
+  }
     }
+
+private async Task ApproveApplication(int applicationId)
+  {
+  try
+  {
+       isProcessing = true;
+ processingId = applicationId;
+      statusMessage = string.Empty;
+  StateHasChanged();
+
+  var response = await Http.PostAsync($"api/company/applications/{applicationId}/approve", null);
+
+      if (response.IsSuccessStatusCode)
+       {
+     isSuccess = true;
+   statusMessage = "✅ Başvuru onaylandı!";
+   
+       // Listeyi güncelle
+        await OnInitializedAsync();
+  }
+   else
+      {
+     var error = await response.Content.ReadAsStringAsync();
+        isSuccess = false;
+    statusMessage = $"❌ Hata: {error}";
+            }
+      }
+        catch (Exception ex)
+     {
+ isSuccess = false;
+  statusMessage = $"❌ Hata: {ex.Message}";
+        }
+        finally
+      {
+ isProcessing = false;
+        processingId = null;
+            StateHasChanged();
+        }
+ }
+
+    private async Task RejectApplication(int applicationId)
+    {
+        try
+     {
+      isProcessing = true;
+       processingId = applicationId;
+   statusMessage = string.Empty;
+  StateHasChanged();
+
+var response = await Http.PostAsync($"api/company/applications/{applicationId}/reject", null);
+
+      if (response.IsSuccessStatusCode)
+     {
+     isSuccess = true;
+      statusMessage = "❌ Başvuru reddedildi.";
+    
+      // Listeyi güncelle
+  await OnInitializedAsync();
+     }
+ else
+   {
+    var error = await response.Content.ReadAsStringAsync();
+     isSuccess = false;
+       statusMessage = $"❌ Hata: {error}";
+   }
+        }
+        catch (Exception ex)
+{
+     isSuccess = false;
+        statusMessage = $"❌ Hata: {ex.Message}";
+ }
+        finally
+  {
+isProcessing = false;
+      processingId = null;
+    StateHasChanged();
+        }
+}
 
     private void NavigateBack()
     {
-     NavigationManager.NavigateTo("/company-dashboard");
-   }
+        NavigationManager.NavigateTo("/company-dashboard");
+    }
 }

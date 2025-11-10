@@ -6,167 +6,167 @@
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 
-<PageTitle>💼 İş İlanı Detayı - microbloom</PageTitle>
+<PageTitle>İş İlanı Detayı - microbloom</PageTitle>
 
 @if (jobDetail == null)
 {
     <div class="container my-5">
-        <div class="text-center py-5">
+   <div class="text-center py-5">
     <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
-      <span class="visually-hidden">Yükleniyor...</span>
-            </div>
-         <p class="text-muted">⏳ İlan detayı yükleniyor...</p>
- </div>
-</div>
+          <span class="visually-hidden">Yükleniyor...</span>
+        </div>
+  <p class="text-muted">İlan detayı yükleniyor...</p>
+  </div>
+    </div>
 }
 else
 {
     <div class="container my-5">
         <!-- Geri Dön Butonu -->
-      <div class="row mb-4">
-      <div class="col-md-8">
- <a href="/jobs" class="btn btn-outline-primary btn-sm">
-      <i class="bi bi-arrow-left"></i> ← Geri Dön
+  <div class="row mb-4">
+ <div class="col-md-8">
+                <a href="/jobs" class="btn btn-outline-primary btn-sm">
+          <i class="bi bi-arrow-left"></i> ← Geri Dön
        </a>
- </div>
+     </div>
         </div>
 
-     <div class="row">
-    <!-- Sol Taraf - İlan Detayları -->
-       <div class="col-md-8">
-  <!-- Başlık & Şirket Bilgisi -->
- <div class="card mb-4 border-0 shadow-sm">
-        <div class="card-body p-4">
- <h1 class="mb-3" style="font-size: 2.5rem; font-weight: 800; color: var(--theme-primary); line-height: 1.2;">
-       💼 @jobDetail.Title
-            </h1>
-  <h3 class="text-primary mb-3" style="font-weight: 600;">
-    🏢 @jobDetail.CompanyName
-  </h3>
-      <div class="d-flex flex-wrap gap-4 text-muted">
-       <span style="font-size: 1.05rem;">
-   <i class="bi bi-geo-alt"></i> 📍 <strong>@jobDetail.Location</strong>
+        <div class="row">
+       <!-- Sol Taraf - İlan Detayları -->
+         <div class="col-md-8">
+       <!-- Başlık & Şirket Bilgisi -->
+      <div class="card mb-4 border-0 shadow-sm">
+         <div class="card-body p-4">
+      <h1 class="mb-3" style="font-size: 2.5rem; font-weight: 800; color: var(--theme-primary); line-height: 1.2;">
+  💼 @jobDetail.Title
+       </h1>
+ <h3 class="text-primary mb-3" style="font-weight: 600;">
+  🏢 @jobDetail.CompanyName
+     </h3>
+     <div class="d-flex flex-wrap gap-4 text-muted">
+           <span style="font-size: 1.05rem;">
+           <i class="bi bi-geo-alt"></i> 📍 <strong>@jobDetail.Location</strong>
+  </span>
+          <span style="font-size: 1.05rem;">
+       <i class="bi bi-calendar3"></i> 🗓️ @jobDetail.PostedDate.ToLongDateString()
          </span>
-      <span style="font-size: 1.05rem;">
-    <i class="bi bi-calendar3"></i> 🗓️ @jobDetail.PostedDate.ToLongDateString()
-           </span>
-     <span class="badge bg-success" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
-     ✅ Aktif İlan
-           </span>
-      </div>
-  </div>
-          </div>
-
-    <!-- İş Tanımı -->
-          <div class="card mb-4 border-0 shadow-sm">
-    <div class="card-header bg-light">
-   <h5 class="mb-0" style="color: var(--theme-primary); font-weight: 700;">
-      📝 İş Tanımı
-     </h5>
+<span class="badge bg-success" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+        ✅ Aktif İlan
+        </span>
      </div>
-  <div class="card-body p-4">
-        <p style="white-space: pre-wrap; line-height: 1.9; color: var(--theme-text-primary); font-size: 1.05rem;">
+              </div>
+    </div>
+
+  <!-- İş Tanımı -->
+     <div class="card mb-4 border-0 shadow-sm">
+         <div class="card-header bg-light">
+         <h5 class="mb-0" style="color: var(--theme-primary); font-weight: 700;">
+       📝 İş Tanımı
+         </h5>
+                  </div>
+         <div class="card-body p-4">
+            <p style="white-space: pre-wrap; line-height: 1.9; color: var(--theme-text-primary); font-size: 1.05rem;">
       @jobDetail.JobDescription
-     </p>
-       </div>
+    </p>
+              </div>
       </div>
 
-  <!-- Şirket Hakkında -->
-     <div class="card border-0 shadow-sm">
-    <div class="card-header bg-light">
-      <h5 class="mb-0" style="color: var(--theme-primary); font-weight: 700;">
-ℹ️ Şirket Hakkında
-      </h5>
-     </div>
-      <div class="card-body p-4">
-         <p style="line-height: 1.9; color: var(--theme-text-primary); font-size: 1.05rem;">
- @jobDetail.CompanyDescription
-      </p>
-    </div>
-    </div>
+        <!-- Şirket Hakkında -->
+       <div class="card border-0 shadow-sm">
+  <div class="card-header bg-light">
+         <h5 class="mb-0" style="color: var(--theme-primary); font-weight: 700;">
+             ℹ️ Şirket Hakkında
+</h5>
         </div>
-
-   <!-- Sağ Taraf - Başvuru Kutusu (Sticky) -->
-            <div class="col-md-4">
-        <AuthorizeView Context="authContext">
-      <Authorized>
-      <div class="card sticky-top border-0 shadow-lg" style="top: 100px;">
-       <div class="card-body p-4">
-    @if (hasApplied)
-       {
-   <div class="alert alert-success d-flex align-items-start" role="alert">
-       <div style="font-size: 2rem; margin-right: 1rem;">✅</div>
-       <div>
-     <h5 class="alert-heading mb-2">Başvurunuz Alındı!</h5>
-     <p class="mb-0 small">Bu ilana başarıyla başvurdunuz. İşveren en kısa sürede sizinle iletişime geçecektir.</p>
-     </div>
-           </div>
-   }
-      else
-{
-         <div class="text-center mb-4">
-     <div style="font-size: 3rem; margin-bottom: 1rem;">🚀</div>
-   <h5 class="mb-2" style="font-weight: 700; color: var(--theme-primary);">Başvuruya Hazır!</h5>
-      <p class="text-muted small">
-    Merhaba, <strong>@authContext.User.Identity?.Name</strong> 👋
-          </p>
-    </div>
-
-        @if (!string.IsNullOrEmpty(successMessage))
-     {
-  <div class="alert alert-success d-flex align-items-center" role="alert">
-      ✅ <span class="ms-2">@successMessage</span>
-          </div>
-    }
-
-  @if (!string.IsNullOrEmpty(errorMessage))
-       {
-  <div class="alert alert-danger d-flex align-items-center" role="alert">
-     ⚠️ <span class="ms-2">@errorMessage</span>
+        <div class="card-body p-4">
+       <p style="line-height: 1.9; color: var(--theme-text-primary); font-size: 1.05rem;">
+     @jobDetail.CompanyDescription
+           </p>
        </div>
-          }
-
-  <button class="btn btn-primary w-100 btn-lg" 
-           @onclick="ApplyToJob" 
-           disabled="@isApplying"
-       style="font-size: 1.1rem; padding: 1rem;">
- @if (isApplying)
-     {
-            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-         <span>Başvuru yapılıyor...</span>
-        }
-     else
-    {
-        <span>🚀 Hemen Başvur</span>
-      }
-      </button>
-
-  <div class="mt-3 p-3 bg-light rounded text-center">
-             <p class="small text-muted mb-0">
-     ℹ️ Başvurunuz doğrudan işverene iletilecek ve sizinle iletişime geçilecektir.
-      </p>
-       </div>
-          }
-      </div>
    </div>
-   </Authorized>
- <NotAuthorized>
-           <div class="card sticky-top border-0 shadow-lg" style="top: 100px;">
-        <div class="card-body p-4 text-center">
-    <div style="font-size: 4rem; margin-bottom: 1.5rem;">🔒</div>
-   <h5 class="mb-3" style="font-weight: 700;">Başvuru İçin Giriş Yapın</h5>
-   <p class="text-muted mb-4">Bu ilana başvurmak için üye girişi yapmanız gerekmektedir.</p>
-       <a href="/account/login" class="btn btn-primary w-100 mb-2 btn-lg">
-     🔑 Giriş Yap
-  </a>
-     <a href="/account/register" class="btn btn-outline-primary w-100">
-     🚀 Hemen Kayıt Ol
-         </a>
+     </div>
+
+            <!-- Sağ Taraf - Başvuru Kutusu (Sticky) -->
+            <div class="col-md-4">
+     <AuthorizeView Context="authContext">
+  <Authorized>
+    <div class="card sticky-top border-0 shadow-lg" style="top: 100px;">
+           <div class="card-body p-4">
+                @if (hasApplied)
+         {
+    <div class="alert alert-success d-flex align-items-start" role="alert">
+     <div style="font-size: 2rem; margin-right: 1rem;">✅</div>
+<div>
+        <h5 class="alert-heading mb-2">Başvurunuz Alındı!</h5>
+   <p class="mb-0 small">Bu ilana başarıyla başvurdunuz. İşveren en kısa sürede sizinle iletişime geçecektir.</p>
+          </div>
+             </div>
+    }
+       else
+      {
+                  <div class="text-center mb-4">
+  <div style="font-size: 3rem; margin-bottom: 1rem;">🚀</div>
+      <h5 class="mb-2" style="font-weight: 700; color: var(--theme-primary);">Başvuruya Hazır!</h5>
+     <p class="text-muted small">
+      Merhaba, <strong>@authContext.User.Identity?.Name</strong> 👋
+         </p>
+         </div>
+
+          @if (!string.IsNullOrEmpty(successMessage))
+               {
+     <div class="alert alert-success d-flex align-items-center" role="alert">
+          ✅ <span class="ms-2">@successMessage</span>
+   </div>
+       }
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+       {
+          <div class="alert alert-danger d-flex align-items-center" role="alert">
+    ⚠️ <span class="ms-2">@errorMessage</span>
       </div>
-    </div>
-         </NotAuthorized>
-        </AuthorizeView>
+   }
+
+          <button class="btn btn-primary w-100 btn-lg" 
+          @onclick="ApplyToJob" 
+      disabled="@isApplying"
+        style="font-size: 1.1rem; padding: 1rem;">
+       @if (isApplying)
+           {
+       <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+           <span>Başvuru yapılıyor...</span>
+        }
+    else
+    {
+             <span>🚀 Hemen Başvur</span>
+ }
+        </button>
+
+         <div class="mt-3 p-3 bg-light rounded text-center">
+   <p class="small text-muted mb-0">
+    ℹ️ Başvurunuz doğrudan işverene iletilecek ve sizinle iletişime geçilecektir.
+  </p>
+       </div>
+         }
+  </div>
+         </div>
+               </Authorized>
+   <NotAuthorized>
+        <div class="card sticky-top border-0 shadow-lg" style="top: 100px;">
+ <div class="card-body p-4 text-center">
+                <div style="font-size: 4rem; margin-bottom: 1.5rem;">🔒</div>
+    <h5 class="mb-3" style="font-weight: 700;">Başvuru İçin Giriş Yapın</h5>
+          <p class="text-muted mb-4">Bu ilana başvurmak için üye girişi yapmanız gerekmektedir.</p>
+            <a href="/account/login" class="btn btn-primary w-100 mb-2 btn-lg">
+    🔑 Giriş Yap
+    </a>
+     <a href="/account/register" class="btn btn-outline-primary w-100">
+              🚀 Hemen Kayıt Ol
+    </a>
+          </div>
             </div>
+    </NotAuthorized>
+     </AuthorizeView>
+        </div>
         </div>
     </div>
 }
@@ -175,7 +175,7 @@ else
     [Parameter]
     public int JobId { get; set; }
 
-  private JobPostingDetailDto? jobDetail;
+    private JobPostingDetailDto? jobDetail;
     private string errorMessage = string.Empty;
     private string successMessage = string.Empty;
     private bool isApplying = false;
@@ -184,64 +184,64 @@ else
     protected override async Task OnInitializedAsync()
     {
         try
-    {
-     jobDetail = await Http.GetFromJsonAsync<JobPostingDetailDto>($"api/jobpostings/{JobId}");
-        }
-    catch (Exception ex)
+     {
+ jobDetail = await Http.GetFromJsonAsync<JobPostingDetailDto>($"api/jobpostings/{JobId}");
+     }
+        catch (Exception ex)
         {
-         errorMessage = $"İlan detayı çekerken hata oluştu: {ex.Message}";
-   Console.WriteLine(errorMessage);
-        }
+        errorMessage = $"İlan detayı çekerken hata oluştu: {ex.Message}";
+            Console.WriteLine(errorMessage);
+ }
     }
 
     private async Task ApplyToJob()
     {
-try
-{
-  isApplying = true;
-      errorMessage = string.Empty;
-          successMessage = string.Empty;
-
-          var response = await Http.PostAsync($"api/jobpostings/{JobId}/apply", null);
-
-          if (response.IsSuccessStatusCode)
+        try
         {
- successMessage = "Başvurunuz başarıyla kaydedildi! 🎉";
-          hasApplied = true;
-       await Task.Delay(2000);
-  }
-        else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-   {
-    errorMessage = "Başvuru yapmak için giriş yapmanız gerekiyor.";
-   await Task.Delay(1500);
-          NavigationManager.NavigateTo("/account/login");
-            }
-         else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-   {
-         var errorContent = await response.Content.ReadAsStringAsync();
-    if (errorContent.Contains("zaten başvuru", StringComparison.OrdinalIgnoreCase))
-          {
-          hasApplied = true;
-    successMessage = "Bu ilana zaten başvurdunuz. ✅";
- }
-         else
-             {
-   errorMessage = $"Başvuru yapılamadı: {errorContent}";
+        isApplying = true;
+ errorMessage = string.Empty;
+     successMessage = string.Empty;
+
+            var response = await Http.PostAsync($"api/jobpostings/{JobId}/apply", null);
+
+       if (response.IsSuccessStatusCode)
+            {
+      successMessage = "Başvurunuz başarıyla kaydedildi! 🎉";
+   hasApplied = true;
+      await Task.Delay(2000);
+        }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        {
+       errorMessage = "Başvuru yapmak için giriş yapmanız gerekiyor.";
+    await Task.Delay(1500);
+      NavigationManager.NavigateTo("/account/login");
      }
-       }
-    else
-  {
+         else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+         {
          var errorContent = await response.Content.ReadAsStringAsync();
- errorMessage = $"Başvuru yapılamadı: {errorContent}";
-   }
-}
- catch (Exception ex)
-   {
-       errorMessage = $"Hata: {ex.Message}";
-        }
-        finally
-   {
-    isApplying = false;
-        }
+     if (errorContent.Contains("zaten başvuru", StringComparison.OrdinalIgnoreCase))
+                {
+              hasApplied = true;
+                 successMessage = "Bu ilana zaten başvurdunuz. ✅";
+       }
+                else
+       {
+errorMessage = $"Başvuru yapılamadı: {errorContent}";
+                }
+         }
+      else
+            {
+     var errorContent = await response.Content.ReadAsStringAsync();
+                errorMessage = $"Başvuru yapılamadı: {errorContent}";
+            }
     }
+        catch (Exception ex)
+  {
+            errorMessage = $"Hata: {ex.Message}";
+     }
+ finally
+  {
+       isApplying = false;
+        }
+ }
 }

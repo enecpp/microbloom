@@ -1,0 +1,174 @@
+@page "/cv-samples"
+@namespace microbloom.Pages
+@using microbloom.DTOs
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<PageTitle>&#x1F4C4; CV Örnekleri - microbloom</PageTitle>
+
+<style>
+    .cv-hero {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+   padding: 3rem 2rem;
+   border-radius: 20px;
+        margin-bottom: 3rem;
+   color: white;
+  text-align: center;
+   box-shadow: 0 10px 40px rgba(240, 147, 251, 0.3);
+    }
+
+    .cv-grid {
+ display: grid;
+     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+   gap: 2rem;
+    }
+
+ .cv-card {
+  background: white;
+   border-radius: 15px;
+       overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+transition: all 0.3s ease;
+        border: 2px solid transparent;
+ height: 100%;
+   display: flex;
+   flex-direction: column;
+    }
+
+    .cv-card:hover {
+    transform: translateY(-8px);
+      box-shadow: 0 15px 40px rgba(240, 147, 251, 0.25);
+        border-color: #f093fb;
+    }
+
+    .cv-icon-container {
+ background: linear-gradient(135deg, #f093fb, #f5576c);
+     padding: 2rem;
+ text-align: center;
+    }
+
+ .cv-icon {
+        font-size: 4rem;
+    margin-bottom: 0.5rem;
+    }
+
+    .cv-content {
+     padding: 1.5rem;
+  flex: 1;
+        display: flex;
+ flex-direction: column;
+    }
+
+    .cv-title {
+        font-size: 1.25rem;
+   font-weight: 700;
+ color: #2d3748;
+margin-bottom: 1rem;
+        line-height: 1.4;
+  }
+
+    .cv-description {
+  color: #718096;
+   font-size: 0.9rem;
+        line-height: 1.6;
+ margin-bottom: 1.5rem;
+ flex: 1;
+    }
+
+    .download-btn {
+     background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: white;
+   border: none;
+ padding: 0.75rem 1.5rem;
+        border-radius: 25px;
+    font-weight: 600;
+     cursor: pointer;
+    transition: all 0.3s ease;
+    }
+
+    .download-btn:hover {
+ transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(240, 147, 251, 0.4);
+    }
+</style>
+
+<div class="container my-5">
+    <div class="cv-hero">
+   <h1>&#x1F4C4; CV Örnekleri</h1>
+   <p>Profesyonel CV þablonlarýný indirin ve özelleþtirin</p>
+    </div>
+
+    @if (isLoading)
+    {
+   <div class="text-center py-5">
+     <div class="spinner-border" style="color: #f093fb;" role="status"></div>
+            <p class="mt-3 text-muted">CV örnekleri yükleniyor...</p>
+        </div>
+    }
+    else if (cvSamples != null && cvSamples.Any())
+    {
+     <div class="cv-grid">
+       @foreach (var cv in cvSamples)
+     {
+<div class="cv-card">
+      <div class="cv-icon-container">
+         <div class="cv-icon">&#x1F4C4;</div>
+ </div>
+<div class="cv-content">
+   <h3 class="cv-title">@cv.Title</h3>
+      <p class="cv-description">@cv.Description</p>
+     <button class="download-btn w-100" @onclick="() => DownloadCV(cv)">
+         &#x2B07; CV'yi Ýndir
+  </button>
+        </div>
+ </div>
+       }
+        </div>
+
+        <div class="alert alert-info mt-4" style="border-left: 4px solid #f093fb;">
+   <h5>&#x1F4A1; Ýpucu</h5>
+            <p style="margin: 0;">
+     CV'leri Microsoft Word veya Google Docs ile açýp kendi bilgilerinizle özelleþtirebilirsiniz. 
+     Her pozisyon için CV'nizi güncelleyip baþvurunuzu güçlendirin!
+     </p>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+      <div style="font-size: 4rem; margin-bottom: 1rem;">&#x1F4ED;</div>
+            <h3>Henüz CV Örneði Yok</h3>
+   <p class="text-muted">Yakýnda profesyonel CV örnekleri eklenecek!</p>
+        </div>
+    }
+</div>
+
+@code {
+  private List<CvSampleDto>? cvSamples;
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+ {
+     cvSamples = await Http.GetFromJsonAsync<List<CvSampleDto>>("api/cvsample");
+        }
+        catch (Exception ex)
+        {
+    Console.WriteLine($"Hata: {ex.Message}");
+       cvSamples = new List<CvSampleDto>();
+    }
+finally
+     {
+   isLoading = false;
+    }
+    }
+
+    private void DownloadCV(CvSampleDto cv)
+    {
+   // Not: Gerçek uygulamada dosya indirme iþlemi yapýlacak
+        // Þimdilik kullanýcýya bilgi mesajý gösterelim
+        Console.WriteLine($"CV Ýndiriliyor: {cv.Title}");
+ // TODO: Gerçek dosya indirme implementasyonu
+    }
+}

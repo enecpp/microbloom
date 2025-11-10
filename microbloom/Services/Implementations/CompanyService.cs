@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using microbloom.Data;
 using microbloom.DTOs;
 using microbloom.Services.Interfaces;
@@ -26,11 +27,7 @@ namespace microbloom.Services.Implementations
                 CompanyId = companyId
             };
 
-            var postings = _context.JobPostings;
-            if (postings == null)
-                throw new InvalidOperationException("Database baðlantýsýnda hata.");
-
-            postings.Add(jobPosting);
+            _context.JobPostings.Add(jobPosting);
             await _context.SaveChangesAsync();
 
             return jobPosting;
@@ -38,34 +35,26 @@ namespace microbloom.Services.Implementations
 
         public async Task<List<JobPostingDto>> GetJobsByCompanyAsync(int companyId)
         {
-            var postings = _context.JobPostings;
-            if (postings == null)
-                return new();
-
-            return await postings
+            return await _context.JobPostings
                 .Include(jp => jp.Company)
                 .Where(jp => jp.CompanyId == companyId && jp.IsActive)
                 .OrderByDescending(jp => jp.PostedDate)
                 .Select(jp => new JobPostingDto
                 {
                     Id = jp.Id,
-                    Title = jp.Title,
-                    Description = jp.Description,
-                    Location = jp.Location,
+                    Title = jp.Title ?? string.Empty,
+                    Description = jp.Description ?? string.Empty,
+                    Location = jp.Location ?? string.Empty,
                     PostedDate = jp.PostedDate,
                     IsActive = jp.IsActive,
-                    CompanyName = jp.Company == null ? "" : jp.Company.Name
+                    CompanyName = jp.Company != null ? jp.Company.Name ?? string.Empty : string.Empty
                 })
                 .ToListAsync();
         }
 
         public async Task<List<ApplicationDto>> GetApplicationsForJobAsync(int jobId)
         {
-            var applications = _context.JobApplications;
-            if (applications == null)
-                return new();
-
-            return await applications
+            return await _context.JobApplications
                 .Include(ja => ja.AppUser)
                 .Include(ja => ja.JobPosting)
                 .Where(ja => ja.JobPostingId == jobId)
@@ -74,12 +63,104 @@ namespace microbloom.Services.Implementations
                 {
                     Id = ja.Id,
                     JobPostingId = ja.JobPostingId,
-                    JobTitle = ja.JobPosting == null ? "" : ja.JobPosting.Title,
-                    AppUserId = ja.AppUserId,
+                    JobTitle = ja.JobPosting != null ? ja.JobPosting.Title ?? string.Empty : string.Empty,
+                    AppUserId = ja.AppUserId ?? string.Empty,
+                    UserFirstName = ja.AppUser != null ? ja.AppUser.FirstName ?? string.Empty : string.Empty,
+                    UserLastName = ja.AppUser != null ? ja.AppUser.LastName ?? string.Empty : string.Empty,
+                    UserEmail = ja.AppUser != null ? ja.AppUser.Email ?? string.Empty : string.Empty,
                     ApplicationDate = ja.ApplicationDate,
-                    Status = ja.Status
+                    Status = ja.Status ?? "Pending"
                 })
                 .ToListAsync();
+        }
+
+        public async Task UpdateApplicationStatusAsync(int applicationId, string status, int companyId)
+        {
+            var application = await _context.JobApplications
+                .Include(ja => ja.JobPosting)
+                .FirstOrDefaultAsync(ja => ja.Id == applicationId);
+
+            if (application == null)
+                throw new KeyNotFoundException("Baï¿½vuru bulunamadï¿½.");
+
+            if (application.JobPosting?.CompanyId != companyId)
+                throw new UnauthorizedAccessException("Bu baï¿½vuruyu yï¿½netme yetkiniz yok.");
+
+            application.Status = status;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteJobPostingAsync(int jobId, int companyId)
+        {
+            var jobPosting = await _context.JobPostings
+                .FirstOrDefaultAsync(jp => jp.Id == jobId);
+
+            if (jobPosting == null)
+                throw new KeyNotFoundException("ï¿½lan bulunamadï¿½.");
+
+            if (jobPosting.CompanyId != companyId)
+                throw new UnauthorizedAccessException("Bu ilanï¿½ silme yetkiniz yok.");
+
+            _context.JobPostings.Remove(jobPosting);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task ToggleJobStatusAsync(int jobId, bool isActive, int companyId)
+        {
+            var jobPosting = await _context.JobPostings
+                .FirstOrDefaultAsync(jp => jp.Id == jobId);
+
+            if (jobPosting == null)
+                throw new KeyNotFoundException("ï¿½lan bulunamadï¿½.");
+
+            if (jobPosting.CompanyId != companyId)
+                throw new UnauthorizedAccessException("Bu ilanï¿½ dï¿½zenleme yetkiniz yok.");
+
+            jobPosting.IsActive = isActive;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<CompanyProfileDto?> GetCompanyProfileAsync(int companyId)
+        {
+            var company = await _context.Companies
+                .Include(c => c.Employees)
+                .Include(c => c.JobPostings)
+                .FirstOrDefaultAsync(c => c.Id == companyId);
+
+            if (company == null)
+            {
+                return null;
+            }
+
+            return new CompanyProfileDto
+            {
+                Id = company.Id,
+                Name = company.Name,
+                Description = company.Description,
+                LogoUrl = company.LogoUrl,
+                EmployeeCount = company.Employees?.Count ?? 0,
+                ActiveJobCount = company.JobPostings?.Count(j => j.IsActive) ?? 0
+            };
+        }
+
+        public async Task UpdateCompanyProfileAsync(int companyId, CompanyProfileDto profile)
+        {
+            var company = await _context.Companies.FirstOrDefaultAsync(c => c.Id == companyId);
+
+            if (company == null)
+            {
+                throw new KeyNotFoundException("Åžirket bulunamadÄ±.");
+            }
+
+            company.Name = profile.Name?.Trim();
+            company.Description = string.IsNullOrWhiteSpace(profile.Description)
+                ? null
+                : profile.Description.Trim();
+            company.LogoUrl = string.IsNullOrWhiteSpace(profile.LogoUrl)
+                ? null
+                : profile.LogoUrl.Trim();
+
+            await _context.SaveChangesAsync();
         }
     }
 }

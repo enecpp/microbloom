@@ -1,30 +1,52 @@
-@namespace microbloom
+ï»¿@namespace microbloom
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Routing
 @using microbloom.Shared
 
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
-   <Found Context="routeData">
-          <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-          <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-  </Found>
-    <NotFound>
-<PageTitle>404 - Sayfa Bulunamadı</PageTitle>
-      <LayoutView Layout="@typeof(MainLayout)">
-     <div class="container my-5">
-         <div class="card shadow-sm border-0 text-center">
-      <div class="card-body py-5">
-<div style="font-size: 4rem; margin-bottom: 1.5rem;">?</div>
-     <h2 class="card-title mb-3">Sayfa Bulunamadı</h2>
-        <p class="text-muted mb-4">Özür dileriz, aradığınız sayfa bulunamamıştır veya taşınmış olabilir.</p>
-   <a href="/" class="btn btn-primary">
-   <i class="bi bi-house"></i> ?? Ana Sayfaya Dön
-     </a>
-       </div>
-       </div>
-      </div>
-   </LayoutView>
-     </NotFound>
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <NotAuthorized>
+                    @if (context.User.Identity?.IsAuthenticated != true)
+                    {
+                        <RedirectToLogin />
+                    }
+                    else
+                    {
+                        <div class="container my-5">
+                            <div class="card shadow-sm border-0 text-center">
+                                <div class="card-body py-5">
+                                    <div style="font-size: 4rem; margin-bottom: 1.5rem;">ğŸ”’</div>
+                                    <h2 class="card-title mb-3">EriÅŸim Reddedildi</h2>
+                                    <p class="text-muted mb-4">Bu sayfayÄ± gÃ¶rÃ¼ntÃ¼lemek iÃ§in yetkiniz bulunmuyor.</p>
+                                    <a href="/" class="btn btn-primary">
+                                        <i class="bi bi-house"></i> Ana Sayfaya DÃ¶n
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </NotAuthorized>
+            </AuthorizeRouteView>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>404 - Sayfa BulunamadÄ±</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <div class="container my-5">
+                    <div class="card shadow-sm border-0 text-center">
+                        <div class="card-body py-5">
+                            <div style="font-size: 4rem; margin-bottom: 1.5rem;">â“</div>
+                            <h2 class="card-title mb-3">Sayfa BulunamadÄ±</h2>
+                            <p class="text-muted mb-4">Ã–zÃ¼r dileriz, aradÄ±ÄŸÄ±nÄ±z sayfa bulunamadÄ± veya taÅŸÄ±nmÄ±ÅŸ olabilir.</p>
+                            <a href="/" class="btn btn-primary">
+                                <i class="bi bi-house"></i> Ana Sayfaya DÃ¶n
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </LayoutView>
+        </NotFound>
     </Router>
 </CascadingAuthenticationState>

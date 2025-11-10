@@ -1,4 +1,4 @@
-@namespace microbloom.Pages
+ï»¿@namespace microbloom.Pages
 @page "/company/create-job"
 @attribute [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Employer")]
 
@@ -6,7 +6,7 @@
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 
-<PageTitle>?? Yeni Ýlan Oluþtur - microbloom</PageTitle>
+<PageTitle>?? Yeni ï¿½lan Oluï¿½tur - microbloom</PageTitle>
 
 <div class="container my-5">
     <div class="row justify-content-center">
@@ -16,8 +16,8 @@
       <div class="d-flex align-items-center mb-4 pb-3" style="border-bottom: 2px solid var(--theme-border);">
  <div style="font-size: 3rem; margin-right: 1rem;">??</div>
     <div>
- <h2 class="mb-1" style="font-weight: 800; color: var(--theme-primary);">Yeni Ýþ Ýlaný Oluþtur</h2>
-     <p class="text-muted small mb-0">Nitelikli adaylarý bul ve ekibini güçlendir</p>
+ <h2 class="mb-1" style="font-weight: 800; color: var(--theme-primary);">Yeni ï¿½ï¿½ ï¿½lanï¿½ Oluï¿½tur</h2>
+     <p class="text-muted small mb-0">Nitelikli adaylarï¿½ bul ve ekibini gï¿½ï¿½lendir</p>
      </div>
   </div>
 
@@ -43,15 +43,15 @@
 
   <div class="mb-4">
     <label for="title" class="form-label fw-bold">
- ?? Ýlan Baþlýðý
+ ?? ï¿½lan Baï¿½lï¿½ï¿½ï¿½
        </label>
         <InputText id="title"
    class="form-control"
-        placeholder="Örn: Kýdemli .NET Geliþtirici, Proje Yöneticisi, UX Tasarýmcý"
+        placeholder="ï¿½rn: Kï¿½demli .NET Geliï¿½tirici, Proje Yï¿½neticisi, UX Tasarï¿½mcï¿½"
     @bind-Value="createJobDto.Title" />
    <ValidationMessage For="@(() => createJobDto.Title)" class="text-danger small" />
   <small class="form-text text-muted d-block mt-1">
-     ?? Açýk ve ilgi çekici bir baþlýk kullanýn
+     ?? Aï¿½ï¿½k ve ilgi ï¿½ekici bir baï¿½lï¿½k kullanï¿½n
    </small>
      </div>
 
@@ -61,40 +61,40 @@
   </label>
       <InputText id="location"
   class="form-control"
-  placeholder="Örn: Ýstanbul, Türkiye | Uzaktan | Hibrit"
+  placeholder="ï¿½rn: ï¿½stanbul, Tï¿½rkiye | Uzaktan | Hibrit"
        @bind-Value="createJobDto.Location" />
    <ValidationMessage For="@(() => createJobDto.Location)" class="text-danger small" />
     </div>
 
          <div class="mb-4">
      <label for="description" class="form-label fw-bold">
-  ?? Ýþ Tanýmý
+  ?? ï¿½ï¿½ Tanï¿½mï¿½
         </label>
       <InputTextArea id="description"
  class="form-control"
 rows="12"
-    placeholder="Pozisyon gereksinimleri, beklentiler, þirket kültürü ve kariyer geliþim fýrsatlarý hakkýnda detaylý bilgi verin..."
+    placeholder="Pozisyon gereksinimleri, beklentiler, ï¿½irket kï¿½ltï¿½rï¿½ ve kariyer geliï¿½im fï¿½rsatlarï¿½ hakkï¿½nda detaylï¿½ bilgi verin..."
  style="line-height: 1.8;"
      @bind-Value="createJobDto.Description" />
      <ValidationMessage For="@(() => createJobDto.Description)" class="text-danger small" />
       <small class="form-text text-muted d-block mt-1">
- ?? Ne kadar detaylý olursanýz, o kadar nitelikli adaylarý çekersiniz
+ ?? Ne kadar detaylï¿½ olursanï¿½z, o kadar nitelikli adaylarï¿½ ï¿½ekersiniz
     </small>
   </div>
 
       <div class="d-grid gap-3 d-md-flex justify-content-md-between mt-5 pt-3" style="border-top: 2px solid var(--theme-border);">
     <button type="button" class="btn btn-outline-secondary" @onclick="NavigateBack">
-      <i class="bi bi-arrow-left"></i> Geri Dön
+      <i class="bi bi-arrow-left"></i> Geri Dï¿½n
  </button>
       <button type="submit" class="btn btn-primary btn-lg px-5" disabled="@isSubmitting">
    @if (isSubmitting)
    {
       <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-    <span>Ýlan yayýnlanýyor...</span>
+    <span>ï¿½lan yayï¿½nlanï¿½yor...</span>
   }
            else
   {
-      <span>?? Ýlaný Yayýnla</span>
+      <span>?? ï¿½lanï¿½ Yayï¿½nla</span>
  }
   </button>
    </div>
@@ -123,14 +123,14 @@ rows="12"
 
        if (response.IsSuccessStatusCode)
 {
-     successMessage = "Ýlan baþarýyla oluþturuldu! ?? Yönlendiriliyorsunuz...";
+     successMessage = "ï¿½lan baï¿½arï¿½yla oluï¿½turuldu! ?? Yï¿½nlendiriliyorsunuz...";
     await Task.Delay(1500);
      NavigationManager.NavigateTo("/company-dashboard");
       }
    else
   {
    var error = await response.Content.ReadAsStringAsync();
-     errorMessage = $"Ýlan oluþturulamadý: {error}";
+     errorMessage = $"ï¿½lan oluï¿½turulamadï¿½: {error}";
  }
   }
  catch (Exception ex)

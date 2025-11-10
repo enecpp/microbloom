@@ -1,110 +1,165 @@
-@namespace microbloom.Shared
+ï»¿@namespace microbloom.Shared
 @inherits LayoutComponentBase
 @using Microsoft.AspNetCore.Components.Authorization
 
+<head>
+ <meta charset="utf-8">
+</head>
+
 <div class="page">
-    <header class="navbar-section">
+ <header class="navbar-section">
  <nav class="navbar navbar-expand-lg">
-    <div class="container">
-        <a class="navbar-brand" href="/">
-         <img src="/images/logo.svg?v=9" alt="microbloom" style="height: 45px; width: auto;">
-      </a>
-       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
-     aria-controls="navbarNav" aria-expanded="false" aria-label="Menü">
-  <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-         <ul class="navbar-nav ms-auto align-items-center">
-        <li class="nav-item">
-        <a class="nav-link" href="/">&#x1F3E0; Ana Sayfa</a>
-    </li>
+ <div class="container">
+ <a class="navbar-brand" href="/">
+ <img src="/images/logo.svg?v=9" alt="microbloom" style="height:45px; width: auto;">
+ </a>
+ <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+ aria-controls="navbarNav" aria-expanded="false" aria-label="MenÃ¼">
+ <span class="navbar-toggler-icon"></span>
+ </button>
+ <div class="collapse navbar-collapse" id="navbarNav">
+ <ul class="navbar-nav ms-auto align-items-center">
  <li class="nav-item">
-  <a class="nav-link" href="/jobs">&#x1F4BC; İş İlanları</a>
-  </li>
-            <AuthorizeView Context="authCtx">
-         <Authorized>
- @if (authCtx.User.IsInRole("Employer"))
-    {
-        <li class="nav-item">
-        <a class="nav-link" href="/company-dashboard">&#x1F3E2; Şirket Paneli</a>
-        </li>
-    }
-     <li class="nav-item dropdown">
- <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
-    data-bs-toggle="dropdown" aria-expanded="false">
-              <span class="user-greeting">&#x1F44B; @authCtx.User.Identity?.Name</span>
-    </a>
-       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-            <li>
- <a class="dropdown-item" href="/applications">
-   <span class="dropdown-icon">&#x1F4C4;</span> Başvurularım
-          </a>
-      </li>
-   @if (authCtx.User.IsInRole("Employer"))
- {
-  <li>
-        <a class="dropdown-item" href="/company/create-job">
-      <span class="dropdown-icon">&#x1F680;</span> Yeni İlan Oluştur
-  </a>
-  </li>
-       }
-       <li><hr class="dropdown-divider"></li>
-         <li>
-      <a class="dropdown-item" href="/account/logout">
-   <span class="dropdown-icon">&#x1F6AA;</span> Çıkış Yap
-  </a>
-   </li>
-   </ul>
+ <a class="nav-link" href="/">Ana Sayfa</a>
  </li>
-      </Authorized>
-      <NotAuthorized>
-      <li class="nav-item">
-   <a href="/account/login" class="btn btn-outline-primary btn-sm me-2">
-     &#x1F511; Giriş
+ <li class="nav-item">
+ <a class="nav-link" href="/jobs">Ä°ÅŸ Ä°lanlarÄ±</a>
+ </li>
+ 
+ <!-- Kariyer PlanlamasÄ± Dropdown -->
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="careerDropdown" role="button" 
+    data-bs-toggle="dropdown" aria-expanded="false">
+  Kariyer PlanlamasÄ±
+         </a>
+     <ul class="dropdown-menu mega-dropdown" aria-labelledby="careerDropdown">
+      <li class="dropdown-section-header">
+       <strong>&#x1F3EB; ÃœNÄ°VERSÄ°TEYE HAZIRLIK</strong>
+        </li>
+    <li>
+      <a class="dropdown-item" href="/guide">
+ &#x1F4DA; Ãœniversite Rehberi
+       </a>
+    </li>
+ <li>
+    <a class="dropdown-item" href="/universities">
+ &#x1F3EB; Ãœniversiteler
   </a>
       </li>
- <li class="nav-item">
-     <a href="/account/register" class="btn btn-primary btn-sm">
- &#x1F680; Kayıt Ol
-       </a>
+  <li><hr class="dropdown-divider"></li>
+  <li class="dropdown-section-header">
+      <strong>&#x1F4BC; Ä°LK Ä°ÅÄ°M VE PROFESYONEL HAYAT</strong>
+      </li>
+    <li>
+  <a class="dropdown-item" href="/career-guide">
+     &#x1F4BC; Ä°ÅŸ HayatÄ± Rehberi
+  </a>
+</li>
+     <li>
+          <a class="dropdown-item" href="/cv-samples">
+&#x1F4C4; CV Ã–rnekleri
+          </a>
+    </li>
+    </ul>
      </li>
-         </NotAuthorized>
-  </AuthorizeView>
-</ul>
-     </div>
-    </div>
-</nav>
-    </header>
+ <AuthorizeView Context="authCtx">
+ <Authorized>
+ @if (authCtx.User.IsInRole("Employer"))
+ {
+ <li class="nav-item">
+ <a class="nav-link" href="/company-dashboard">ğŸ¢ Åirket Paneli</a>
+ </li>
+ }
+   else if (authCtx.User.IsInRole("JobSeeker"))
+  {
+     <li class="nav-item">
+   <a class="nav-link" href="/my-applications">ğŸ“„ BaÅŸvurularÄ±m</a>
+        </li>
+ }
+   <li class="nav-item dropdown">
+ <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
+ data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="user-greeting">ğŸ‘¤ @authCtx.User.Identity?.Name</span>
+ </a>
+ <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+  @if (authCtx.User.IsInRole("JobSeeker"))
+  {
+ <li>
+ <a class="dropdown-item" href="/my-applications">
+      ğŸ“„ BaÅŸvurularÄ±m
+ </a>
+ </li>
+  }
+      @if (authCtx.User.IsInRole("Employer"))
+    {
+ <li>
+ <a class="dropdown-item" href="/company-dashboard">
+    ğŸ¢ Åirket Paneli
+ </a>
+ </li>
+ <li>
+ <a class="dropdown-item" href="/company/create-job">
+    ğŸš€ Yeni Ä°lan OluÅŸtur
+ </a>
+ </li>
+ }
+ <li><hr class="dropdown-divider"></li>
+ <li>
+ <a class="dropdown-item" href="/account/logout">
+ ğŸšª Ã‡Ä±kÄ±ÅŸ Yap
+ </a>
+ </li>
+ </ul>
+ </li>
+ </Authorized>
+ <NotAuthorized>
+ <li class="nav-item">
+ <a href="/account/login" class="btn btn-outline-primary btn-sm me-2">
+  ğŸ”‘ GiriÅŸ
+ </a>
+ </li>
+ <li class="nav-item">
+ <a href="/account/register" class="btn btn-primary btn-sm">
+ğŸš€ KayÄ±t Ol
+ </a>
+ </li>
+ </NotAuthorized>
+ </AuthorizeView>
+ </ul>
+ </div>
+ </div>
+ </nav>
+ </header>
 
-    <main class="main-content">
-      @Body
-    </main>
+ <main class="main-content">
+ @Body
+ </main>
 
-    <footer class="footer">
-        <div class="container">
-       <div class="row py-4">
-     <div class="col-md-6 mb-4 mb-md-0">
-   <div class="d-flex align-items-center mb-3">
-  <img src="/images/logo.svg?v=9" alt="microbloom" style="height: 40px; width: auto;">
-     </div>
-   <p class="text-muted mb-0" style="line-height: 1.8;">
-     &#x1F31F; Kariyer yolculuğunda en iyi iş fırsatlarını bulduğun platform.<br>
-     Binlerce şirket ve başarılı aday tarafından güvenle kullanılıyor.
-    </p>
-   </div>
-   <div class="col-md-6">
-   <div class="text-md-end">
-   <p class="text-muted small mb-2">
-  <strong>&#x1F4A1; microbloom</strong> - Profesyonel Kariyer Platformu
-    </p>
-   <p class="text-muted small mb-0">
-        &copy; 2025 microbloom. Tüm Hakları Saklıdır. | 
-  <a href="#" class="text-decoration-none">Gizlilik</a> | 
-   <a href="#" class="text-decoration-none">Şartlar</a>
-     </p>
-      </div>
-         </div>
-          </div>
-        </div>
+ <footer class="footer">
+ <div class="container">
+ <div class="row py-4">
+ <div class="col-md-6 mb-4 mb-md-0">
+ <div class="d-flex align-items-center mb-3">
+ <img src="/images/logo.svg?v=9" alt="microbloom" style="height:40px; width: auto;">
+ </div>
+ <p class="text-muted mb-0" style="line-height:1.8;">
+ Kariyer yolculuÄŸunda en iyi iÅŸ fÄ±rsatlarÄ±nÄ± bulduÄŸun platform.<br>
+ Binlerce ÅŸirket ve baÅŸarÄ±lÄ± aday tarafÄ±ndan gÃ¼venle kullanÄ±lÄ±yor.
+ </p>
+ </div>
+ <div class="col-md-6">
+ <div class="text-md-end">
+ <p class="text-muted small mb-2">
+ <strong>microbloom</strong> - Profesyonel Kariyer Platformu
+ </p>
+ <p class="text-muted small mb-0">
+ &copy;2025 microbloom. TÃ¼m HaklarÄ± SaklÄ±dÄ±r. | 
+ <a href="#" class="text-decoration-none">Gizlilik</a> | 
+ <a href="#" class="text-decoration-none">Åartlar</a>
+ </p>
+ </div>
+ </div>
+ </div>
+ </div>
  </footer>
 </div>

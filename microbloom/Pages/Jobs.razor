@@ -1,5 +1,4 @@
-@namespace microbloom.Pages
-@page "/"
+ï»¿@namespace microbloom.Pages
 @page "/jobs"
 
 @using microbloom.DTOs
@@ -7,16 +6,16 @@
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 
-<PageTitle>?? Ýþ Ýlanlarý - microbloom</PageTitle>
+<PageTitle>?? ï¿½ï¿½ ï¿½lanlarï¿½ - microbloom</PageTitle>
 
 <div class="container my-5">
-    <!-- ?? Arama Bölümü - Yuvarlak ve Modern -->
+    <!-- ?? Arama Bï¿½lï¿½mï¿½ - Yuvarlak ve Modern -->
     <div class="row mb-5">
         <div class="col-md-12">
      <div class="card shadow border-0">
       <div class="card-body p-4">
            <h2 class="mb-4 text-center">
-      <span style="font-size: 2rem;">??</span> Ýþ Fýrsatlarýný Keþfet
+      <span style="font-size: 2rem;">??</span> ï¿½ï¿½ Fï¿½rsatlarï¿½nï¿½ Keï¿½fet
    </h2>
          
 <div class="row g-3 align-items-end">
@@ -30,7 +29,7 @@
             </span>
 <input type="text" 
          class="form-control border-0" 
-    placeholder="Geliþtirici, Tasarýmcý, Yönetici..." 
+    placeholder="Geliï¿½tirici, Tasarï¿½mcï¿½, Yï¿½netici..." 
                style="padding: 0.75rem 1.25rem;"
 @bind="searchKeyword" 
            @onkeyup="HandleKeyPress" />
@@ -47,7 +46,7 @@
     </span>
         <input type="text" 
    class="form-control border-0" 
-   placeholder="Ýstanbul, Ankara, Uzaktan..." 
+   placeholder="ï¿½stanbul, Ankara, Uzaktan..." 
         style="padding: 0.75rem 1.25rem;"
 @bind="searchLocation" 
          @onkeyup="HandleKeyPress" />
@@ -65,7 +64,7 @@
         {
       <div class="mt-3 text-center">
              <button class="btn btn-outline-primary btn-sm" @onclick="ResetSearch">
-             <i class="bi bi-arrow-counterclockwise"></i> Sýfýrla
+             <i class="bi bi-arrow-counterclockwise"></i> Sï¿½fï¿½rla
      </button>
     </div>
       }
@@ -74,16 +73,16 @@
         </div>
     </div>
 
-    <!-- ?? Ýlanlar Listeleme -->
+    <!-- ?? ï¿½lanlar Listeleme -->
   <div class="row">
         <div class="col-md-12">
 @if (jobList == null)
             {
            <div class="text-center py-5">
    <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
-    <span class="visually-hidden">Yükleniyor...</span>
+    <span class="visually-hidden">Yï¿½kleniyor...</span>
         </div>
-        <p class="text-muted">? Ýlanlar yükleniyor...</p>
+        <p class="text-muted">? ï¿½lanlar yï¿½kleniyor...</p>
    </div>
          }
  else if (!jobList.Any())
@@ -91,10 +90,10 @@
            <div class="card shadow-sm text-center border-0">
        <div class="card-body py-5">
                  <div style="font-size: 5rem; margin-bottom: 1.5rem;">??</div>
-       <h3 class="mb-3">Aradýðýnýz Kriterlere Uygun Ýlan Bulunamadý</h3>
- <p class="text-muted mb-4">Arama kriterlerinizi deðiþtirerek tekrar deneyin veya tüm ilanlarý görüntüleyin.</p>
+       <h3 class="mb-3">Aradï¿½ï¿½ï¿½nï¿½z Kriterlere Uygun ï¿½lan Bulunamadï¿½</h3>
+ <p class="text-muted mb-4">Arama kriterlerinizi deï¿½iï¿½tirerek tekrar deneyin veya tï¿½m ilanlarï¿½ gï¿½rï¿½ntï¿½leyin.</p>
             <button class="btn btn-primary btn-lg" @onclick="ResetSearch">
-          ?? Tüm Ýlanlarý Göster
+          ?? Tï¿½m ï¿½lanlarï¿½ Gï¿½ster
      </button>
         </div>
      </div>
@@ -104,13 +103,13 @@
   <div class="row mb-4 align-items-center">
        <div class="col-md-6">
      <h3 class="mb-0">
-      ?? Aktif Ýþ Ýlanlarý
+      ?? Aktif ï¿½ï¿½ ï¿½lanlarï¿½
             <span class="badge bg-primary ms-2">@jobList.Count</span>
       </h3>
    </div>
          <div class="col-md-6 text-md-end">
     <small class="text-muted">
-            ?? @jobList.Count adet aktif iþ ilaný bulundu
+            ?? @jobList.Count adet aktif iï¿½ ilanï¿½ bulundu
     </small>
      </div>
        </div>
@@ -145,7 +144,7 @@
            </div>
             <div class="card-footer bg-white border-top-0">
        <a href="/job/@job.Id" class="btn btn-primary w-100">
-         <i class="bi bi-eye"></i> Detaylarý Gör
+         <i class="bi bi-eye"></i> Detaylarï¿½ Gï¿½r
               </a>
              </div>
       </div>
@@ -175,7 +174,7 @@
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Ýlanlarý çekerken hata oluþtu: {ex.Message}");
+            Console.WriteLine($"ï¿½lanlarï¿½ ï¿½ekerken hata oluï¿½tu: {ex.Message}");
 jobList = new List<JobPostingDto>();
         }
     }
@@ -197,7 +196,7 @@ jobList = new List<JobPostingDto>();
         }
         catch (Exception ex)
         {
-       Console.WriteLine($"Arama sýrasýnda hata oluþtu: {ex.Message}");
+       Console.WriteLine($"Arama sï¿½rasï¿½nda hata oluï¿½tu: {ex.Message}");
          jobList = new List<JobPostingDto>();
  }
     }

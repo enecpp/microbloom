@@ -7,129 +7,139 @@ using microbloom.Services.Interfaces;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using microbloom;
 using System.Text;
-using Microsoft.AspNetCore.Http;
 
-// UTF-8 Encoding Support for Emojis
+// UTF-8 Encoding
 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 Console.OutputEncoding = Encoding.UTF8;
 Console.InputEncoding = Encoding.UTF8;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Database
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
 builder.Services.AddDbContext<KariyerDBContext>(options =>
- options.UseSqlite(connectionString));
+    options.UseSqlite(connectionString));
 
-builder.Services.AddIdentity<AppUser, IdentityRole>()
- .AddEntityFrameworkStores<KariyerDBContext>()
- .AddDefaultTokenProviders();
+// Identity
+builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+{
+  options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireLowercase = true;
+})
+.AddEntityFrameworkStores<KariyerDBContext>()
+.AddDefaultTokenProviders();
 
-// Identity cookie güvenliği
+// Identity Cookie
 builder.Services.ConfigureApplicationCookie(options =>
 {
- options.Cookie.HttpOnly = true;
- options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
- options.Cookie.SameSite = SameSiteMode.Lax;
- options.SlidingExpiration = true;
-});
-
-// Antiforgery cookie güvenliği (varsa)
-builder.Services.AddAntiforgery(options =>
-{
- options.Cookie.HttpOnly = true;
- options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
- options.Cookie.SameSite = SameSiteMode.Lax;
-});
-
-// HTTPS yönlendirme ayarları
-builder.Services.AddHttpsRedirection(options =>
-{
- options.RedirectStatusCode = StatusCodes.Status308PermanentRedirect;
-});
-
-// Blazor Authentication
-builder.Services.AddScoped<AuthenticationStateProvider, PersistentAuthenticationStateProvider>();
-builder.Services.AddCascadingAuthenticationState();
-
-// HttpClient konfigürasyonu
-builder.Services.AddScoped(sp => 
-{
- var httpContextAccessor = sp.GetRequiredService<IHttpContextAccessor>();
- var httpContext = httpContextAccessor.HttpContext;
- var baseAddress = $"{httpContext?.Request.Scheme}://{httpContext?.Request.Host}";
- return new HttpClient { BaseAddress = new Uri(baseAddress) };
+    options.Cookie.Name = ".AspNetCore.Identity.Application";
+    options.Cookie.HttpOnly = true;
+ options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+  options.Cookie.SameSite = SameSiteMode.Lax;
+    options.SlidingExpiration = true;
+    options.ExpireTimeSpan = TimeSpan.FromDays(7);
+    options.LoginPath = "/account/login";
+    options.LogoutPath = "/account/logout";
+    options.AccessDeniedPath = "/access-denied";
+    options.Cookie.IsEssential = true;
 });
 
 // HttpContextAccessor
 builder.Services.AddHttpContextAccessor();
 
-// Auth Service
-builder.Services.AddScoped<IAuthService, AuthService>();
+// ✅ BASİT: Sadece ServerAuthenticationStateProvider
+builder.Services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
+builder.Services.AddCascadingAuthenticationState();
 
-// User Service
+// HttpClient
+builder.Services.AddScoped(sp => 
+{
+    var httpContextAccessor = sp.GetRequiredService<IHttpContextAccessor>();
+    var httpContext = httpContextAccessor.HttpContext;
+    string baseAddress = "https://localhost:5001";
+
+    if (httpContext != null)
+    {
+        try
+    {
+     baseAddress = $"{httpContext.Request.Scheme}://{httpContext.Request.Host.Value}";
+        }
+        catch { }
+    }
+
+    return new HttpClient { BaseAddress = new Uri(baseAddress) };
+});
+
+// Services
+builder.Services.AddScoped<IAuthService, ServerAuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
-
-// Blazor Components
-builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
-
-// Controllers ve Services
-builder.Services.AddControllers();
+builder.Services.AddScoped<IUniversityService, UniversityService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<ICvSampleService, CvSampleService>();
+builder.Services.AddScoped<IContentService, ContentService>();
 builder.Services.AddScoped<IJobService, JobService>();
 builder.Services.AddScoped<ICompanyService, CompanyService>();
 
-// Swagger
+// Blazor
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor(options =>
+{
+    options.DetailedErrors = builder.Environment.IsDevelopment();
+    options.DisconnectedCircuitMaxRetained = 100;
+    options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(3);
+});
+
+// Controllers & Swagger
+builder.Services.AddControllers();
+
+// Anti-forgery'yi devre dışı bırak (basit form POST için)
+builder.Services.AddAntiforgery(options =>
+{
+    options.SuppressXFrameOptionsHeader = true;
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Rolleri Seed Et
+// Seed Database
 using (var scope = app.Services.CreateScope())
 {
- var services = scope.ServiceProvider;
- try
- {
- var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
- await SeedRolesAsync(roleManager);
- 
- await DbSeeder.SeedRolesAndAdminAsync(services);
- }
- catch (Exception ex)
- {
- var logger = services.GetRequiredService<ILogger<Program>>();
- logger.LogError(ex, "Veritabanını tohumlarken bir hata oluştu.");
- }
+    var services = scope.ServiceProvider;
+    try
+    {
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    await SeedRolesAsync(roleManager);
+        await DbSeeder.SeedRolesAndAdminAsync(services);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+     logger.LogError(ex, "Database seeding error");
+    }
 }
 
+// Middleware
 if (app.Environment.IsDevelopment())
 {
- app.UseSwagger();
+    app.UseSwagger();
  app.UseSwaggerUI();
- app.UseDeveloperExceptionPage();
+    app.UseDeveloperExceptionPage();
 }
 else
 {
- app.UseExceptionHandler("/Error");
- app.UseHsts();
+    app.UseExceptionHandler("/Error");
+  app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
-// Cookie Policy - kimlik doğrulamadan önce olmalı
-app.UseCookiePolicy(new CookiePolicyOptions
-{
- MinimumSameSitePolicy = SameSiteMode.Lax,
- Secure = CookieSecurePolicy.Always
-});
-
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -139,18 +149,15 @@ app.MapFallbackToPage("/_Host");
 
 app.Run();
 
-// Rol Seed Fonksiyonu
-async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
+// Helper Methods
+static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
 {
- string[] roleNames = { "JobSeeker", "Employer", "Admin" };
-
- foreach (var roleName in roleNames)
- {
- var roleExist = await roleManager.RoleExistsAsync(roleName);
- if (!roleExist)
- {
- await roleManager.CreateAsync(new IdentityRole(roleName));
- Console.WriteLine($"✅ Rol oluşturuldu: {roleName}");
- }
- }
+    string[] roleNames = { "JobSeeker", "Employer", "Admin" };
+    foreach (var roleName in roleNames)
+    {
+    if (!await roleManager.RoleExistsAsync(roleName))
+        {
+            await roleManager.CreateAsync(new IdentityRole(roleName));
+        }
+}
 }

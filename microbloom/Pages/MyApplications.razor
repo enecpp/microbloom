@@ -1,0 +1,190 @@
+@page "/my-applications"
+@namespace microbloom.Pages
+@attribute [Microsoft.AspNetCore.Authorization.Authorize(Roles = "JobSeeker")]
+
+@using microbloom.DTOs
+@using Microsoft.AspNetCore.Components.Authorization
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<PageTitle>📄 Başvurularım - microbloom</PageTitle>
+
+<div class="container my-5">
+    <div class="row mb-5">
+  <div class="col-md-12">
+            <h1 class="display-5 mb-3">
+        📄 Başvurularım
+      </h1>
+    <p class="lead text-muted">
+       Yaptığınız başvuruları buradan takip edebilirsiniz
+ </p>
+   </div>
+ </div>
+
+    @if (myApplications == null)
+  {
+    <div class="text-center py-5">
+  <div class="spinner-border text-primary mb-3" role="status">
+      <span class="visually-hidden">Yükleniyor...</span>
+  </div>
+ <p class="text-muted">⌛ Başvurularınız yükleniyor...</p>
+   </div>
+  }
+    else if (!myApplications.Any())
+    {
+   <div class="card shadow-sm border-0 text-center">
+   <div class="card-body py-5">
+   <div style="font-size: 4rem; margin-bottom: 1.5rem;">📝</div>
+  <h3 class="card-title">Henüz Başvuru Yok</h3>
+      <p class="text-muted mb-4">Henüz hiç iş ilanına başvurmadınız. İlk başvurunuzu yapın!</p>
+ <a href="/jobs" class="btn btn-primary btn-lg">
+ 🔍 İş İlanlarına Göz At
+     </a>
+   </div>
+ </div>
+    }
+    else
+{
+        <div class="row mb-4 align-items-center">
+   <div class="col-md-6">
+      <h3 class="mb-0">
+     <i class="bi bi-card-list"></i> 📚 Başvuru Geçmişi
+          <span class="badge bg-primary ms-2">@myApplications.Count</span>
+    </h3>
+        </div>
+   <div class="col-md-6 text-md-end">
+  <small class="text-muted">
+       📊 Toplam @myApplications.Count başvuru yaptınız
+ </small>
+   </div>
+ </div>
+
+   <div class="row g-4">
+ @foreach (var app in myApplications)
+    {
+     <div class="col-md-6 col-lg-4">
+    <div class="card shadow-sm h-100 hover-lift">
+ <div class="card-body">
+ <div class="d-flex justify-content-between align-items-start mb-3">
+<div class="flex-grow-1">
+  <h5 class="card-title mb-1">
+    💼 @app.JobTitle
+  </h5>
+  </div>
+  @if (app.Status == "Pending")
+   {
+   <span class="badge bg-warning">⏳ İnceleniyor</span>
+ }
+        else if (app.Status == "Approved")
+    {
+  <span class="badge bg-success">✅ Onaylandı</span>
+ }
+    else if (app.Status == "Rejected")
+   {
+    <span class="badge bg-danger">❌ Reddedildi</span>
+  }
+   else
+  {
+      <span class="badge bg-secondary">@app.Status</span>
+   }
+  </div>
+
+ <p class="card-text small mb-3">
+   <i class="bi bi-calendar-event text-primary"></i>
+        <strong>🗓️ Başvuru Tarihi:</strong><br />
+  @app.ApplicationDate.ToString("dd MMMM yyyy, HH:mm")
+     </p>
+
+      @if (app.Status == "Pending")
+   {
+  <div class="alert alert-info small mb-0">
+     <i class="bi bi-info-circle"></i>
+   Başvurunuz işveren tarafından inceleniyor. Sonuç için lütfen bekleyin.
+       </div>
+ }
+ else if (app.Status == "Approved")
+    {
+ <div class="alert alert-success small mb-0">
+        <i class="bi bi-check-circle"></i>
+Tebrikler! Başvurunuz onaylandı. İşveren en kısa sürede sizinle iletişime geçecektir.
+   </div>
+   }
+     else if (app.Status == "Rejected")
+ {
+  <div class="alert alert-danger small mb-0">
+<i class="bi bi-x-circle"></i>
+    Maalesef başvurunuz reddedildi. Diğer ilanları incelemeye devam edebilirsiniz.
+  </div>
+   }
+   </div>
+
+<div class="card-footer bg-light border-top">
+    <a href="/job/@app.JobPostingId" class="btn btn-sm btn-outline-primary w-100">
+  <i class="bi bi-eye"></i> İlanı Görüntüle
+   </a>
+   </div>
+     </div>
+      </div>
+   }
+   </div>
+
+  <!-- İstatistikler -->
+  <div class="row mt-5">
+     <div class="col-md-12">
+   <div class="card border-0 shadow-sm">
+     <div class="card-body p-4">
+        <h5 class="card-title mb-4">📈 Başvuru İstatistikleri</h5>
+  <div class="row text-center">
+   <div class="col-md-4">
+ <div class="p-3">
+      <h3 class="text-primary mb-2">@myApplications.Count</h3>
+      <p class="text-muted mb-0">Toplam Başvuru</p>
+    </div>
+  </div>
+       <div class="col-md-4">
+        <div class="p-3">
+          <h3 class="text-warning mb-2">@myApplications.Count(a => a.Status == "Pending")</h3>
+ <p class="text-muted mb-0">İnceleniyor</p>
+      </div>
+      </div>
+      <div class="col-md-4">
+     <div class="p-3">
+ <h3 class="text-success mb-2">@myApplications.Count(a => a.Status == "Approved")</h3>
+<p class="text-muted mb-0">Onaylanan</p>
+    </div>
+        </div>
+ </div>
+ </div>
+     </div>
+  </div>
+     </div>
+    }
+</div>
+
+<style>
+    .hover-lift {
+        transition: all 0.3s ease;
+    }
+
+    .hover-lift:hover {
+     transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+    }
+</style>
+
+@code {
+  private List<ApplicationDto>? myApplications;
+
+  protected override async Task OnInitializedAsync()
+  {
+    try
+    {
+      myApplications = await Http.GetFromJsonAsync<List<ApplicationDto>>("api/jobpostings/my-applications");
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Başvurular çekilirken hata: {ex.Message}");
+      myApplications = new List<ApplicationDto>();
+    }
+  }
+}

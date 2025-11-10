@@ -1,163 +1,158 @@
+﻿@page "/account/register"
 @namespace microbloom.Pages
-@page "/account/register"
-@using microbloom.Services.Interfaces
-@using microbloom.DTOs
-@inject IAuthService AuthService
+@using Microsoft.AspNetCore.WebUtilities
+@using System
 @inject NavigationManager NavigationManager
 
-<PageTitle>&#x1F680; Kay�t Ol - microbloom</PageTitle>
+<PageTitle>🚀 Kayıt Ol - microbloom</PageTitle>
 
 <div class="container mt-5 mb-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-<div class="card shadow-lg border-0">
-   <div class="card-body p-5">
-         <div class="text-center mb-4">
-      <div style="font-size: 4rem; margin-bottom: 1rem;">&#x1F680;</div>
-    <h2 class="mb-2" style="font-weight: 800; color: var(--theme-primary);">Yeni Hesap Olu�tur</h2>
-  <p class="text-muted">microbloom ailesine kat�l ve kariyer yolculu�unu ba�lat</p>
-      </div>
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+      <div class="card shadow-lg border-0">
+        <div class="card-body p-5">
+          <div class="text-center mb-4">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">🚀</div>
+            <h2 class="mb-2" style="font-weight: 800; color: var(--theme-primary);">Yeni Hesap Oluştur</h2>
+            <p class="text-muted mb-0">Bireysel aday veya şirket hesabı açarak microbloom ekosistemine katıl</p>
+          </div>
 
-     @if (!string.IsNullOrEmpty(errorMessage))
-   {
-       <div class="alert alert-danger d-flex align-items-start" role="alert">
-        <i class="bi bi-exclamation-circle me-2" style="font-size: 1.5rem;"></i>
-    <div>@errorMessage</div>
-      </div>
-        }
-
-  @if (!string.IsNullOrEmpty(successMessage))
-      {
-        <div class="alert alert-success d-flex align-items-start" role="alert">
-     <i class="bi bi-check-circle me-2" style="font-size: 1.5rem;"></i>
-      <div>@successMessage</div>
-   </div>
-        }
-
-      <EditForm Model="registerDto" OnValidSubmit="HandleRegister">
-       <DataAnnotationsValidator />
-   <ValidationSummary class="alert alert-warning" />
-
-      <div class="mb-3">
-    <label for="email" class="form-label fw-bold">&#x1F4E7; E-posta Adresi</label>
-     <InputText id="email" 
-      class="form-control" 
-   placeholder="ornek@example.com"
-   autocomplete="email" 
-   @bind-Value="registerDto.Email" />
-      <ValidationMessage For="@(() => registerDto.Email)" class="text-danger small" />
-       </div>
-
-     <div class="row">
-        <div class="col-md-6">
-    <div class="mb-3">
-     <label for="firstName" class="form-label fw-bold">&#x1F464; Ad</label>
-      <InputText id="firstName" 
-     class="form-control" 
-       placeholder="Ad�n�z"
-       autocomplete="given-name" 
-    @bind-Value="registerDto.FirstName" />
-         <ValidationMessage For="@(() => registerDto.FirstName)" class="text-danger small" />
-       </div>
-      </div>
-    <div class="col-md-6">
-       <div class="mb-3">
-       <label for="lastName" class="form-label fw-bold">&#x1F465; Soyad</label>
-     <InputText id="lastName" 
-       class="form-control" 
-    placeholder="Soyad�n�z"
-      autocomplete="family-name" 
-      @bind-Value="registerDto.LastName" />
-      </div>
+          @if (!string.IsNullOrEmpty(errorMessage))
+          {
+            <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
+              <i class="bi bi-exclamation-triangle"></i>
+              <span>@errorMessage</span>
             </div>
-    </div>
+          }
 
-       <div class="mb-3">
-    <label for="password" class="form-label fw-bold">&#x1F512; �ifre</label>
-        <InputText id="password" 
-  type="password" 
- class="form-control"
-     placeholder="�ifrenizi olu�turun" 
-   autocomplete="new-password"
-        @bind-Value="registerDto.Password" />
-      <ValidationMessage For="@(() => registerDto.Password)" class="text-danger small" />
-       <small class="form-text text-muted d-block mt-1">
-         &#x26A0; En az 6 karakter uzunlu�unda olmal�d�r
-     </small>
-  </div>
+          <form action="/account/register" method="post">
+            <div class="mb-4">
+              <label class="form-label fw-bold">🧾 Hesap Türü</label>
+              <div class="btn-group w-100" role="group" aria-label="Hesap türü seçimi">
+                <input type="radio" class="btn-check" name="AccountType" id="account-jobseeker" value="JobSeeker" checked="@(isCompanyAccount ? false : true)" autocomplete="off">
+                <label class="btn btn-outline-primary" for="account-jobseeker">👤 Bireysel (İş Arayan)</label>
 
-     <div class="mb-4">
-       <label for="confirmPassword" class="form-label fw-bold">&#x1F511; �ifre Tekrar</label>
-        <InputText id="confirmPassword" 
-     type="password" 
-        class="form-control"
-  placeholder="�ifrenizi tekrar girin" 
-      autocomplete="new-password"
-       @bind-Value="registerDto.ConfirmPassword" />
-        <ValidationMessage For="@(() => registerDto.ConfirmPassword)" class="text-danger small" />
-   </div>
+                <input type="radio" class="btn-check" name="AccountType" id="account-company" value="Employer" checked="@(isCompanyAccount)" autocomplete="off">
+                <label class="btn btn-outline-primary" for="account-company">🏢 Şirket (İşveren)</label>
+              </div>
+            </div>
 
-      <button type="submit" class="btn btn-primary w-100 btn-lg mb-3" disabled="@isSubmitting">
-       @if (isSubmitting)
-      {
-         <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-      <span>Kay�t yap�l�yor...</span>
-      }
-     else
-      {
-        <span>&#x1F680; Kay�t Ol</span>
-     }
-</button>
+            <div class="mb-3">
+              <label for="email" class="form-label fw-bold">📧 E-posta Adresi</label>
+              <input id="email" name="Email" class="form-control" placeholder="ornek@example.com" autocomplete="email" required />
+            </div>
 
-       <div class="text-center mt-4 pt-3" style="border-top: 1px solid var(--theme-border);">
- <p class="text-muted mb-0">
-   Zaten hesab�n var m�?
-       <a href="/account/login" class="text-decoration-none fw-bold" style="color: var(--theme-primary);">
-     &#x1F511; Giri� Yap
-   </a>
-       </p>
-     </div>
-      </EditForm>
-  </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="firstName" class="form-label fw-bold">👤 Ad</label>
+                  <input id="firstName" name="FirstName" class="form-control" placeholder="Adınız" autocomplete="given-name" required />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="lastName" class="form-label fw-bold">👥 Soyad</label>
+                  <input id="lastName" name="LastName" class="form-control" placeholder="Soyadınız" autocomplete="family-name" required />
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label fw-bold">🔒 Şifre</label>
+              <input id="password" name="Password" type="password" class="form-control" placeholder="Şifrenizi oluşturun" autocomplete="new-password" required minlength="6" />
+              <small class="form-text text-muted">⚠️ En az 6 karakter, bir büyük harf ve bir rakam içermelidir</small>
+            </div>
+
+            <div class="mb-4">
+              <label for="confirmPassword" class="form-label fw-bold">🔑 Şifre Tekrar</label>
+              <input id="confirmPassword" name="ConfirmPassword" type="password" class="form-control" placeholder="Şifrenizi tekrar girin" autocomplete="new-password" required />
+            </div>
+
+            <div id="company-fields" class="border rounded p-4 mb-4 bg-light" style="display:@(isCompanyAccount ? "block" : "none")">
+              <h5 class="fw-bold mb-3">🏢 Şirket Bilgileri</h5>
+              <p class="text-muted small mb-4">Şirket hesabı oluşturuyorsanız aşağıdaki alanları doldurun. Bu bilgiler iş ilanlarınızda adaylara gösterilecektir.</p>
+
+              <div class="mb-3">
+                <label for="company-name" class="form-label fw-bold">Şirket Adı</label>
+                <input id="company-name" name="CompanyName" class="form-control" placeholder="Örn: microbloom Teknoloji A.Ş." required="@isCompanyAccount" />
+              </div>
+
+              <div class="mb-3">
+                <label for="company-description" class="form-label fw-bold">Şirket Açıklaması</label>
+                <textarea id="company-description" name="CompanyDescription" class="form-control" rows="4" placeholder="Şirketinizin faaliyetleri, kültürü ve ekibiniz hakkında bilgi paylaşın."></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label for="company-logo" class="form-label fw-bold">Logo Adresi (URL)</label>
+                <input id="company-logo" name="CompanyLogoUrl" class="form-control" placeholder="https://..." />
+                <small class="text-muted">Opsiyonel. 256x256 piksel boyutlarında bir logo önerilir.</small>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 btn-lg mb-3">
+              <span>🚀 Kayıt Ol</span>
+            </button>
+
+            <div class="text-center mt-4 pt-3" style="border-top: 1px solid var(--theme-border);">
+              <p class="text-muted mb-0">
+                Zaten hesabın var mı?
+                <a href="/account/login" class="text-decoration-none fw-bold" style="color: var(--theme-primary);">
+                  🔑 Giriş Yap
+                </a>
+              </p>
+            </div>
+          </form>
         </div>
-        </div>
+      </div>
     </div>
+  </div>
 </div>
 
-@code {
-    private RegisterDto registerDto = new();
-    private string errorMessage = string.Empty;
-    private string successMessage = string.Empty;
-    private bool isSubmitting = false;
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const jobRadio = document.getElementById("account-jobseeker");
+  const companyRadio = document.getElementById("account-company");
+  const companyFields = document.getElementById("company-fields");
+  const companyNameInput = document.getElementById("company-name");
 
-    private async Task HandleRegister()
-{
-        try
-   {
-       isSubmitting = true;
-   errorMessage = string.Empty;
-        successMessage = string.Empty;
-
-      var result = await AuthService.RegisterAsync(registerDto);
-
-       if (result.Successful)
-     {
-successMessage = "Kay�t ba�ar�l�! &#x2705; Giri� sayfas�na y�nlendiriliyorsunuz...";
-         await Task.Delay(1500);
-     NavigationManager.NavigateTo("/account/login");
-        }
-        else
-   {
-       errorMessage = result.Error ?? "Kay�t s�ras�nda bir hata olu�tu.";
+  const toggleCompanyFields = () => {
+    const isCompany = companyRadio && companyRadio.checked;
+    if (companyFields) {
+      companyFields.style.display = isCompany ? "block" : "none";
     }
-       }
-  catch (Exception ex)
-{
-  errorMessage = $"Hata: {ex.Message}";
-   }
-     finally
-        {
-   isSubmitting = false;
+    if (companyNameInput) {
+      companyNameInput.required = !!isCompany;
+    }
+  };
+
+  if (jobRadio) {
+    jobRadio.addEventListener("change", toggleCompanyFields);
   }
+  if (companyRadio) {
+    companyRadio.addEventListener("change", toggleCompanyFields);
+  }
+
+  toggleCompanyFields();
+});
+</script>
+
+@code {
+  private string errorMessage = string.Empty;
+  private bool isCompanyAccount;
+
+  protected override void OnInitialized()
+  {
+    var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+    var query = QueryHelpers.ParseQuery(uri.Query);
+
+    if (query.TryGetValue("ErrorMessage", out var error))
+    {
+      errorMessage = error.ToString();
     }
+
+    if (query.TryGetValue("AccountType", out var accountType))
+    {
+      isCompanyAccount = string.Equals(accountType.ToString(), "Employer", StringComparison.OrdinalIgnoreCase);
+    }
+  }
 }

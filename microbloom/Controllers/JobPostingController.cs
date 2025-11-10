@@ -47,6 +47,20 @@ namespace microbloom.Controllers
             return Ok(jobs);
       }
 
+    [HttpGet("my-applications")]
+    [Authorize(Roles = "JobSeeker")]
+    public async Task<ActionResult<List<ApplicationDto>>> GetMyApplications()
+    {
+      var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+      if (string.IsNullOrEmpty(userId))
+      {
+        return Unauthorized("Kullanıcı kimliği bulunamadı.");
+      }
+
+      var applications = await _jobService.GetUserApplicationsAsync(userId);
+      return Ok(applications);
+    }
+
     // POST: /api/jobpostings/{id}/apply
         [HttpPost("{id:int}/apply")]
         [Authorize]

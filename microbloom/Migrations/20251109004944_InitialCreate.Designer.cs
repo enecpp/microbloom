@@ -11,7 +11,7 @@ using microbloom.Data;
 namespace microbloom.Migrations
 {
     [DbContext(typeof(KariyerDBContext))]
-    [Migration("20251026161539_InitialCreate")]
+    [Migration("20251109004944_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -156,6 +156,9 @@ namespace microbloom.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("CompanyId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
@@ -208,6 +211,8 @@ namespace microbloom.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CompanyId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -251,6 +256,260 @@ namespace microbloom.Migrations
                             Description = "Yazılım ve bulut çözümleri.",
                             LogoUrl = "microsoft.png",
                             Name = "Microsoft"
+                        });
+                });
+
+            modelBuilder.Entity("microbloom.Entities.ContentArticle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ContentCategoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Summary")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContentCategoryId");
+
+                    b.ToTable("ContentArticles");
+                });
+
+            modelBuilder.Entity("microbloom.Entities.ContentCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ContentCategories");
+                });
+
+            modelBuilder.Entity("microbloom.Entities.CvSample", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FileDownloadUrl")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ThumbnailImageUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CvSamples");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Üniversiteden yeni mezun olan bilgisayar mühendisleri için hazırlanmış profesyonel CV örneği.",
+                            FileDownloadUrl = "/samples/cv-bilgisayar-yeni-mezun.pdf",
+                            Title = "Yeni Mezun Bilgisayar Mühendisi CV Örneği"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "3-5 yıl deneyime sahip yazılım geliştiriciler için CV şablonu.",
+                            FileDownloadUrl = "/samples/cv-yazilim-deneyimli.pdf",
+                            Title = "Deneyimli Yazılım Geliştirici CV Örneği"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "İşletme bölümü mezunları için staj başvurularında kullanılabilecek CV örneği.",
+                            FileDownloadUrl = "/samples/cv-isletme-stajyer.pdf",
+                            Title = "İşletme Mezunu Stajyer CV Örneği"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Mühendislik öğrencileri için hazırlanmış staj başvuru CV'si.",
+                            FileDownloadUrl = "/samples/cv-muhendislik-staj.pdf",
+                            Title = "Mühendislik Öğrencisi Staj CV Örneği"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Orta ve üst düzey yönetici pozisyonları için profesyonel CV şablonu.",
+                            FileDownloadUrl = "/samples/cv-yonetici.pdf",
+                            Title = "Yönetici Pozisyonu CV Örneği"
+                        });
+                });
+
+            modelBuilder.Entity("microbloom.Entities.Department", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("LastYearBaseRanking")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("LastYearBaseScore")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ScoreType")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UniversityId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UniversityId");
+
+                    b.ToTable("Departments");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            LastYearBaseRanking = 1250,
+                            LastYearBaseScore = 525.5,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            LastYearBaseRanking = 1580,
+                            LastYearBaseScore = 520.29999999999995,
+                            Name = "Elektrik-Elektronik Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            LastYearBaseRanking = 2100,
+                            LastYearBaseScore = 515.79999999999995,
+                            Name = "Makine Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            LastYearBaseRanking = 980,
+                            LastYearBaseScore = 530.20000000000005,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            LastYearBaseRanking = 3200,
+                            LastYearBaseScore = 495.5,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 2
+                        },
+                        new
+                        {
+                            Id = 6,
+                            LastYearBaseRanking = 4500,
+                            LastYearBaseScore = 485.30000000000001,
+                            Name = "Psikoloji",
+                            ScoreType = "EA",
+                            UniversityId = 2
+                        },
+                        new
+                        {
+                            Id = 7,
+                            LastYearBaseRanking = 1100,
+                            LastYearBaseScore = 528.70000000000005,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 3
+                        },
+                        new
+                        {
+                            Id = 8,
+                            LastYearBaseRanking = 1850,
+                            LastYearBaseScore = 518.20000000000005,
+                            Name = "Endüstri Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 3
+                        },
+                        new
+                        {
+                            Id = 9,
+                            LastYearBaseRanking = 1450,
+                            LastYearBaseScore = 522.5,
+                            Name = "Bilgisayar Bilimi ve Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 4
+                        },
+                        new
+                        {
+                            Id = 10,
+                            LastYearBaseRanking = 2350,
+                            LastYearBaseScore = 512.29999999999995,
+                            Name = "Endüstri Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 4
+                        },
+                        new
+                        {
+                            Id = 11,
+                            LastYearBaseRanking = 1320,
+                            LastYearBaseScore = 524.79999999999995,
+                            Name = "Bilgisayar Mühendisliği",
+                            ScoreType = "SAY",
+                            UniversityId = 5
+                        },
+                        new
+                        {
+                            Id = 12,
+                            LastYearBaseRanking = 3800,
+                            LastYearBaseScore = 490.19999999999999,
+                            Name = "İşletme",
+                            ScoreType = "EA",
+                            UniversityId = 5
                         });
                 });
 
@@ -319,7 +578,7 @@ namespace microbloom.Migrations
                             Description = "ASP.NET Core ve Azure konusunda deneyimli...",
                             IsActive = true,
                             Location = "İstanbul",
-                            PostedDate = new DateTime(2025, 10, 26, 16, 15, 38, 838, DateTimeKind.Utc).AddTicks(5068),
+                            PostedDate = new DateTime(2025, 11, 9, 0, 49, 44, 367, DateTimeKind.Utc).AddTicks(9939),
                             Title = "Kıdemli .NET Geliştiricisi"
                         },
                         new
@@ -329,7 +588,7 @@ namespace microbloom.Migrations
                             Description = "React ve TypeScript bilen...",
                             IsActive = true,
                             Location = "Ankara",
-                            PostedDate = new DateTime(2025, 10, 26, 16, 15, 38, 838, DateTimeKind.Utc).AddTicks(5070),
+                            PostedDate = new DateTime(2025, 11, 9, 0, 49, 44, 367, DateTimeKind.Utc).AddTicks(9942),
                             Title = "Frontend Geliştirici (React)"
                         },
                         new
@@ -339,8 +598,78 @@ namespace microbloom.Migrations
                             Description = "CI/CD süreçlerine hakim...",
                             IsActive = true,
                             Location = "İstanbul",
-                            PostedDate = new DateTime(2025, 10, 26, 16, 15, 38, 838, DateTimeKind.Utc).AddTicks(5070),
+                            PostedDate = new DateTime(2025, 11, 9, 0, 49, 44, 367, DateTimeKind.Utc).AddTicks(9984),
                             Title = "DevOps Mühendisi"
+                        });
+                });
+
+            modelBuilder.Entity("microbloom.Entities.University", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsStateUniversity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("LogoUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("WebSite")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Universities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            City = "İstanbul",
+                            IsStateUniversity = true,
+                            Name = "İstanbul Teknik Üniversitesi",
+                            WebSite = "https://itu.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            City = "İstanbul",
+                            IsStateUniversity = true,
+                            Name = "Boğaziçi Üniversitesi",
+                            WebSite = "https://boun.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            City = "Ankara",
+                            IsStateUniversity = true,
+                            Name = "Orta Doğu Teknik Üniversitesi",
+                            WebSite = "https://metu.edu.tr"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            City = "İstanbul",
+                            IsStateUniversity = false,
+                            Name = "Sabancı Üniversitesi",
+                            WebSite = "https://sabanciuniv.edu"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            City = "İstanbul",
+                            IsStateUniversity = false,
+                            Name = "Koç Üniversitesi",
+                            WebSite = "https://ku.edu.tr"
                         });
                 });
 
@@ -395,6 +724,38 @@ namespace microbloom.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("microbloom.Entities.AppUser", b =>
+                {
+                    b.HasOne("microbloom.Entities.Company", "Company")
+                        .WithMany("Employees")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("microbloom.Entities.ContentArticle", b =>
+                {
+                    b.HasOne("microbloom.Entities.ContentCategory", "ContentCategory")
+                        .WithMany("Articles")
+                        .HasForeignKey("ContentCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ContentCategory");
+                });
+
+            modelBuilder.Entity("microbloom.Entities.Department", b =>
+                {
+                    b.HasOne("microbloom.Entities.University", "University")
+                        .WithMany("Departments")
+                        .HasForeignKey("UniversityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("University");
+                });
+
             modelBuilder.Entity("microbloom.Entities.JobApplication", b =>
                 {
                     b.HasOne("microbloom.Entities.AppUser", "AppUser")
@@ -430,7 +791,19 @@ namespace microbloom.Migrations
 
             modelBuilder.Entity("microbloom.Entities.Company", b =>
                 {
+                    b.Navigation("Employees");
+
                     b.Navigation("JobPostings");
+                });
+
+            modelBuilder.Entity("microbloom.Entities.ContentCategory", b =>
+                {
+                    b.Navigation("Articles");
+                });
+
+            modelBuilder.Entity("microbloom.Entities.University", b =>
+                {
+                    b.Navigation("Departments");
                 });
 #pragma warning restore 612, 618
         }
